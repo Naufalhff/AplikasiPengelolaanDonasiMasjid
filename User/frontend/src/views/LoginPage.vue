@@ -48,9 +48,9 @@
             </div>
 
             <div class="mb-3 text-end">
-              <router-link to="/forgot-password" class="text-secondary"
-                >Lupa password?</router-link
-              >
+              <router-link to="/forgot-password" class="text-secondary">
+                  Lupa password?
+              </router-link>
             </div>
 
             <button type="submit" class="btn btn-success w-100">

@@ -6,6 +6,8 @@ import AboutPage from "../views/AboutPage.vue";
 import DonationPage from "../views/DonationPage.vue";
 import EventsPage from "../views/EventPage.vue";
 import LoginPage from "@/views/LoginPage.vue";
+import ForgotPassword from "@/views/ForgotPassword.vue"; // Sesuaikan dengan lokasi file
+
 
 const routes = [
   {
@@ -27,6 +29,12 @@ const routes = [
   {
     path: "/login",
     component: LoginPage,
+    meta: { hideNavbar: true },
+  },
+  {
+    path: "/forgot-password",
+    name: "ForgotPassword",
+    component: ForgotPassword,
     meta: { hideNavbar: true },
   },
 ];
