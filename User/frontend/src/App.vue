@@ -1,17 +1,20 @@
-<script setup>
-
-import Header from './layouts/Header.vue';
-import Main from './layouts/Main.vue';
-import Footer from './layouts/Footer.vue';
-
-</script>
-
 <template>
-    <Header/>
+  <div>
+    <!-- Navbar hanya muncul jika $route.meta.hideNavbar tidak true -->
+    <NavBar v-if="!$route.meta.hideNavbar" />
 
-    <Main/>
-
-    <Footer />
+    <!-- router-view untuk menampilkan komponen sesuai rute -->
+    <router-view></router-view>
+  </div>
 </template>
 
-<style scoped></style>
+<script>
+import NavBar from "./components/Navbar.vue";
+
+export default {
+  components: {
+    NavBar,
+  },
+};
+</script>
+  

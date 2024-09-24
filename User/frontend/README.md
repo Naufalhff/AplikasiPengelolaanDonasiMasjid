@@ -1,12 +1,24 @@
-# Landing page made with Tailwind css and Vue js.
+# frontend
 
-> ### Live URL: https://fahimanzamdip.github.io/vue-landing-page/
+## Project setup
+```
+npm install
+```
 
-## Local Installation
-- `` git clone https://github.com/FahimAnzamDip/vue-landing-page.git ``
-- `` cd /path/to/project ``
-- `` npm install ``
-- `` npm run dev ``
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
 
-## Screenshot
-![vue-landing-page](screenshot.png)
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
