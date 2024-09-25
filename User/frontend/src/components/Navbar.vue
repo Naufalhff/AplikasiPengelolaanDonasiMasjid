@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container-fluid d-flex justify-content-between">
       <a class="navbar-brand" href="#">hariinidonasi</a>
       <button
@@ -41,8 +41,13 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .navbar {
   margin-bottom: 20px;
+}
+
+/* Menambahkan jarak di bawah navbar agar konten tidak tertutup */
+.navbar + * {
+  margin-top: 70px; /* Disesuaikan dengan tinggi navbar, biasanya 56px + padding */
 }
 </style>
