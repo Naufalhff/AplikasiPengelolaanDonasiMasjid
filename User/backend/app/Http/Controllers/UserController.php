@@ -13,12 +13,12 @@ class UserController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
+    
         $credentials = $request->only('email', 'password');
-
-        if (Auth::attempt($credentials)){
+    
+        if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            return view('welcome');
+            return response()->json(['message' => 'Login berhasil', 'user' => $user], 200);
         } else {
             return response()->json(['message' => 'Email atau Password salah'], 401);
         }
