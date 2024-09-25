@@ -10,11 +10,19 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::create([
-            'nama_lengkap' => 'B-kun',
-            'email' => 'b-kun@gmail.com',
-            'password' => bcrypt('halohalo123'),
-            'role_id' => 4,
+        User::insert([
+            [
+                'nama_lengkap' => 'John Doe',
+                'email' => 'johndoe@gmail.com',
+                'password' => bcrypt('halohalo123'),
+                'role_id' => 1,
+            ],
+            [
+                'nama_lengkap' => 'Jane Doe',
+                'email' => 'janedoe@gmail.com',
+                'password' => bcrypt('halohalo123'),
+                'role_id' => 1,
+            ],
         ]);
     }
 }

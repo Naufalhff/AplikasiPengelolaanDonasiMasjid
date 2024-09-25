@@ -12,11 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama_lengkap');
+            $table->bigIncrements('id_user');
+            $table->string('nama_lengkap', 100);
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('role_id');
+            $table->unsignedBigInteger('id_role');
+            $table->foreign('id_role')->references('id_role')->on('roles')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
