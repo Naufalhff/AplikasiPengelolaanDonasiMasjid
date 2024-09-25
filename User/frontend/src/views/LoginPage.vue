@@ -96,7 +96,7 @@ export default {
         // Simpan token ke localStorage atau Vuex
         // localStorage.setItem('token', response.data.token);
         // Redirect ke halaman lain setelah login berhasil
-        this.$router.push("/dashboard");
+        this.$router.push("/");
       } catch (error) {
         if (error.response && error.response.status === 401) {
           this.errorMessage = "Email atau password salah.";

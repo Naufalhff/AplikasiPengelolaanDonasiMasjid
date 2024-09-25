@@ -36,7 +36,7 @@
           </li>
           <li class="nav-item">
             <router-link to="/login">
-              <button class="btn btn-login ms-3">Login</button>
+              <button class="btn btn-login ms-3 text-white">Login</button>
             </router-link>
           </li>
         </ul>
@@ -69,8 +69,7 @@ export default {
   color: #000000; /* Matching the red color in the logo */
 }
 
-Search Bar Styles
-.search-bar {
+Search Bar Styles .search-bar {
   border-radius: 20px; /* Rounded edges */
   padding: 0.5rem 1rem;
   border: 1px solid #ccc;
@@ -88,9 +87,8 @@ Search Bar Styles
   color: #28a745; /* Hover color */
 }
 
-
 .btn-login {
-  background-color: #28a745; 
+  background-color: #28a745;
   color: #000; /* Black text */
   border-radius: 20px; /* Rounded button */
   padding: 0.5rem 1.5rem;
