@@ -22,10 +22,7 @@
             <router-link class="nav-link" to="/about">Tentang Kami</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/donation">Donasi</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/events">Kegiatan</router-link>
+            <router-link class="nav-link" to="/donasi">Donasi</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="login"

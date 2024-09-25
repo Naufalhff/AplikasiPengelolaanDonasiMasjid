@@ -22,13 +22,20 @@
               >Kembali</router-link
             >
           </div>
-          <h2 class="mb-4">Masuk</h2>
-
-          <div v-if="errorMessage" class="alert alert-danger" role="alert">
-            {{ errorMessage }}
-          </div>
+          <h2 class="mb-4">Daftar</h2>
 
           <form @submit.prevent="submitForm">
+            <div class="mb-3">
+              <label for="nama" class="form-label">Nama Lengkap</label>
+              <input
+                type="name"
+                id="nama"
+                v-model="nama"
+                class="form-control"
+                required
+              />
+            </div>
+
             <div class="mb-3">
               <label for="email" class="form-label">Email address</label>
               <input
@@ -51,21 +58,15 @@
               />
             </div>
 
-            <div class="mb-3 text-end">
-              <router-link to="/forgot-password" class="text-secondary">
-                Lupa password?
-              </router-link>
-            </div>
-
             <button type="submit" class="btn btn-success w-100">
               Masuk Sekarang
             </button>
           </form>
 
           <p class="mt-4 text-center">
-            Belum Punya Akun?
-            <router-link to="/register" class="text-secondary">
-              Daftar Di Sini
+            Sudah Punya Akun?
+            <router-link to="/login" class="text-secondary">
+              Login Di Sini
             </router-link>
           </p>
         </div>
@@ -78,21 +79,17 @@
 export default {
   data() {
     return {
+      nama: "",
       email: "",
       password: "",
-      errorMessage: "",
     };
   },
   methods: {
     submitForm() {
-      if (this.email === "user@gmail.com" && this.password === "123456") {
-        console.log("Login Berhasil");
-        //redirect
-      } else if (this.email === "user@gmail.com") {
-        this.errorMessage = "Password salah. Silakan coba lagi.";
-      } else {
-        this.errorMessage = "Email tidak terdaftar.";
-      }
+      // Submit form logic here
+      console.log("Email:", this.namax);
+      console.log("Email:", this.email);
+      console.log("Password:", this.password);
     },
   },
 };
@@ -134,9 +131,5 @@ h2 {
 
 .btn-success:hover {
   background-color: #218838;
-}
-
-.alert {
-  font-size: 14px;
 }
 </style>
