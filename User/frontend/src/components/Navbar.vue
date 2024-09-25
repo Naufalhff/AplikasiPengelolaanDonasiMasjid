@@ -25,9 +25,6 @@
             <router-link class="nav-link" to="/donation">Donasi</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/events">Kegiatan</router-link>
-          </li>
-          <li class="nav-item">
             <router-link class="nav-link" to="login"
               ><button class="btn btn-success">Login</button></router-link
             >
