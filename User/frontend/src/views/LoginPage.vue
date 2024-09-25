@@ -86,14 +86,23 @@ export default {
     };
   },
   methods: {
-    submitForm() {
-      if (this.email === "user@gmail.com" && this.password === "123456") {
-        console.log("Login Berhasil");
-        //redirect
-      } else if (this.email === "user@gmail.com") {
-        this.errorMessage = "Password salah. Silakan coba lagi.";
-      } else {
-        this.errorMessage = "Email tidak terdaftar.";
+    async submitForm() {
+      try {
+        const response = await axios.post("/login", {
+          email: this.email,
+          password: this.password,
+        });
+        console.log("Login berhasil:", response.data);
+        // Simpan token ke localStorage atau Vuex
+        // localStorage.setItem('token', response.data.token);
+        // Redirect ke halaman lain setelah login berhasil
+        this.$router.push("/dashboard");
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          this.errorMessage = "Email atau password salah.";
+        } else {
+          this.errorMessage = "Terjadi kesalahan, silakan coba lagi.";
+        }
       }
     },
   },
