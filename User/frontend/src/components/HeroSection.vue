@@ -1,8 +1,8 @@
 <template>
     <section class="hero-section">
       <div class="overlay"></div>
-      <div class="content">
-        <h1>Ulurkan Tangan, Ringankan Beban</h1>
+      <div class="content pt-5">
+        <h2>Ulurkan Tangan, Ringankan Beban</h2>
         <p>
           Melalui Donasi Anda, Kita Bersama Menghadirkan Kebaikan untuk Sesama. Setiap kontribusi yang Anda berikan membantu mereka yang membutuhkan dan turut membangun masyarakat yang lebih kuat dan peduli.
         </p>
@@ -29,10 +29,10 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Overlay dengan transparansi */
+    background-color: rgba(0, 0, 0, 0.6); /* Overlay dengan transparansi */
     
     /* Masking dengan gradient */
-    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.6));
   }
   
   .hero-section .content {
@@ -42,7 +42,7 @@
     max-width: 800px;
   }
   
-  h1 {
+  h2 {
     font-size: 3rem;
     font-weight: bold;
   }
@@ -50,6 +50,7 @@
   p {
     font-size: 1.25rem;
     margin-top: 1rem;
+    padding-top: 20px;
   }
   </style>
   
