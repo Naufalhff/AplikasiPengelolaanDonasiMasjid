@@ -15,13 +15,17 @@ class UserSeeder extends Seeder
                 'nama_lengkap' => 'John Doe',
                 'email' => 'johndoe@gmail.com',
                 'password' => bcrypt('halohalo123'),
-                'role_id' => 1,
+                'id_role' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'nama_lengkap' => 'Jane Doe',
                 'email' => 'janedoe@gmail.com',
                 'password' => bcrypt('halohalo123'),
-                'role_id' => 1,
+                'id_role' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ]);
     }
