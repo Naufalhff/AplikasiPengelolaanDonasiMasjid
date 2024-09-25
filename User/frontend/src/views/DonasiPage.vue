@@ -11,29 +11,38 @@
     <p class="text-center">
       Pilih dan salurkan donasi untuk program yang berarti bagi Anda dan mereka
     </p>
-    <!-- menu -->
+
+    <!-- menu kategori -->
     <div class="d-flex justify-content-center mb-5 mt-4">
       <div class="btn-group">
         <div
           class="d-flex flex-column align-items-center p-3 mr-5 me-4 border rounded"
+          :class="{ 'border-success': selectedCategory === 'infaq' }"
+          @click="selectedCategory = 'infaq'"
         >
           <i class="fas fa-donate fa-2x text-success p-3 mb-2"></i>
-          <span>Infak</span>
+          <span>Infaq</span>
         </div>
         <div
           class="d-flex flex-column align-items-center p-3 mr-5 me-4 border rounded"
+          :class="{ 'border-success': selectedCategory === 'zakat' }"
+          @click="selectedCategory = 'zakat'"
         >
           <i class="fas fa-balance-scale fa-2x text-success p-3 mb-2"></i>
           <span>Zakat</span>
         </div>
         <div
           class="d-flex flex-column align-items-center p-3 mr-5 me-4 border rounded"
+          :class="{ 'border-success': selectedCategory === 'sedekah' }"
+          @click="selectedCategory = 'sedekah'"
         >
           <i class="fas fa-hand-holding-heart fa-2x text-success p-3 mb-2"></i>
           <span>Sedekah</span>
         </div>
         <div
           class="d-flex flex-column align-items-center p-3 mr-5 border rounded"
+          :class="{ 'border-success': selectedCategory === 'kegiatan' }"
+          @click="selectedCategory = 'kegiatan'"
         >
           <i class="fas fa-mosque fa-2x text-success p-3 mb-2"></i>
           <span>Kegiatan</span>
@@ -42,6 +51,7 @@
     </div>
 
     <h5 class="text-left">Rekomendasi Program</h5>
+
     <!-- Search -->
     <div class="input-group mb-3">
       <input
@@ -82,10 +92,12 @@ export default {
   data() {
     return {
       search: "",
+      selectedCategory: "infaq",
       programs: [
         {
           id: 1,
-          name: "infaq",
+          name: "Infaq Pendidikan",
+          category: "infaq",
           amount: "1.293.662.858",
           donors: 12607,
           image: require("../assets/images/infaq.jpeg"),
@@ -93,6 +105,7 @@ export default {
         {
           id: 2,
           name: "Sedekah Subuh",
+          category: "sedekah",
           amount: "472.153.364",
           donors: 10764,
           image: require("../assets/images/infaq.jpeg"),
@@ -100,6 +113,7 @@ export default {
         {
           id: 3,
           name: "Zakat Penghasilan",
+          category: "zakat",
           amount: "1.628.618.676",
           donors: 3418,
           image: require("../assets/images/infaq.jpeg"),
@@ -107,6 +121,7 @@ export default {
         {
           id: 4,
           name: "Zakat Emas dan Perak",
+          category: "zakat",
           amount: "824.964.392",
           donors: 100,
           image: require("../assets/images/infaq.jpeg"),
@@ -114,22 +129,17 @@ export default {
         {
           id: 5,
           name: "Zakat Investasi dan Saham",
+          category: "zakat",
           amount: "114.335.456",
           donors: 30,
           image: require("../assets/images/infaq.jpeg"),
         },
         {
           id: 6,
-          name: "Zakat Tabungan",
+          name: "Kegiatan Masjid",
+          category: "kegiatan",
           amount: "245.154.135",
-          donors: 19,
-          image: require("../assets/images/infaq.jpeg"),
-        },
-        {
-          id: 7,
-          name: "Zakat Perniagaan",
-          amount: "83.112.470",
-          donors: 75,
+          donors: 190,
           image: require("../assets/images/infaq.jpeg"),
         },
       ],
@@ -137,12 +147,13 @@ export default {
   },
   computed: {
     filteredPrograms() {
-      if (!this.search) {
-        return this.programs;
-      }
-      return this.programs.filter((program) =>
-        program.name.toLowerCase().includes(this.search.toLowerCase())
-      );
+      return this.programs.filter((program) => {
+        const matchesCategory = program.category === this.selectedCategory;
+        const matchesSearch =
+          this.search === "" ||
+          program.name.toLowerCase().includes(this.search.toLowerCase());
+        return matchesCategory && matchesSearch;
+      });
     },
   },
 };
@@ -163,7 +174,15 @@ export default {
 }
 
 input.form-control {
-  max-width: 100;
-  margin: 2 auto;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.btn-group div {
+  cursor: pointer;
+}
+
+.border-success {
+  border-color: #28a745 !important;
 }
 </style>
