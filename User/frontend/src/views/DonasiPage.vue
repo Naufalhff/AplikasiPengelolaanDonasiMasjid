@@ -14,30 +14,35 @@
     <!-- menu -->
     <div class="d-flex justify-content-center mb-5 mt-4">
       <div class="btn-group">
-        <div class="d-flex flex-column align-items-center me-4">
-          <i class="fas fa-donate fa-2x text-secondary mb-2"></i>
-          <!-- Infak Icon -->
+        <div
+          class="d-flex flex-column align-items-center p-3 mr-5 me-4 border rounded"
+        >
+          <i class="fas fa-donate fa-2x text-success p-3 mb-2"></i>
           <span>Infak</span>
         </div>
-        <div class="d-flex flex-column align-items-center me-4">
-          <i class="fas fa-balance-scale fa-2x text-secondary mb-2"></i>
-          <!-- Zakat Icon -->
+        <div
+          class="d-flex flex-column align-items-center p-3 mr-5 me-4 border rounded"
+        >
+          <i class="fas fa-balance-scale fa-2x text-success p-3 mb-2"></i>
           <span>Zakat</span>
         </div>
-        <div class="d-flex flex-column align-items-center me-4">
-          <i class="fas fa-hand-holding-heart fa-2x text-secondary mb-2"></i>
-          <!-- Sedekah Icon -->
+        <div
+          class="d-flex flex-column align-items-center p-3 mr-5 me-4 border rounded"
+        >
+          <i class="fas fa-hand-holding-heart fa-2x text-success p-3 mb-2"></i>
           <span>Sedekah</span>
         </div>
-        <div class="d-flex flex-column align-items-center">
-          <i class="fas fa-mosque fa-2x text-success mb-2"></i>
-          <!-- Kegiatan Icon -->
+        <div
+          class="d-flex flex-column align-items-center p-3 mr-5 border rounded"
+        >
+          <i class="fas fa-mosque fa-2x text-success p-3 mb-2"></i>
           <span>Kegiatan</span>
         </div>
       </div>
     </div>
 
-    <!-- Pencarian Program -->
+    <h5 class="text-left">Rekomendasi Program</h5>
+    <!-- Search -->
     <div class="input-group mb-3">
       <input
         type="text"
@@ -83,49 +88,49 @@ export default {
           name: "infaq",
           amount: "1.293.662.858",
           donors: 12607,
-          image: "link-ke-gambar-infak.jpg",
+          image: require("../assets/images/infaq.jpeg"),
         },
         {
           id: 2,
           name: "Sedekah Subuh",
           amount: "472.153.364",
           donors: 10764,
-          image: "link-ke-gambar-sedekah-subuh.jpg",
+          image: require("../assets/images/infaq.jpeg"),
         },
         {
           id: 3,
           name: "Zakat Penghasilan",
           amount: "1.628.618.676",
           donors: 3418,
-          image: "link-ke-gambar-zakat-penghasilan.jpg",
+          image: require("../assets/images/infaq.jpeg"),
         },
         {
           id: 4,
           name: "Zakat Emas dan Perak",
           amount: "824.964.392",
           donors: 100,
-          image: "link-ke-gambar-zakat-emas.jpg",
+          image: require("../assets/images/infaq.jpeg"),
         },
         {
           id: 5,
           name: "Zakat Investasi dan Saham",
           amount: "114.335.456",
           donors: 30,
-          image: "link-ke-gambar-zakat-investasi.jpg",
+          image: require("../assets/images/infaq.jpeg"),
         },
         {
           id: 6,
           name: "Zakat Tabungan",
           amount: "245.154.135",
           donors: 19,
-          image: "link-ke-gambar-zakat-tabungan.jpg",
+          image: require("../assets/images/infaq.jpeg"),
         },
         {
           id: 7,
           name: "Zakat Perniagaan",
           amount: "83.112.470",
           donors: 75,
-          image: "link-ke-gambar-zakat-perniagaan.jpg",
+          image: require("../assets/images/infaq.jpeg"),
         },
       ],
     };
@@ -158,7 +163,7 @@ export default {
 }
 
 input.form-control {
-  max-width: 500px;
-  margin: 0 auto;
+  max-width: 100;
+  margin: 2 auto;
 }
 </style>
