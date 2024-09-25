@@ -18,7 +18,7 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-success mt-4">Lebih Lanjut</button>
+        <RouterLink class="donate-link" to="/donasi"><button class="btn btn-success mt-4">Lebih Lanjut</button></RouterLink>
       </div>
     </section>
   </template>

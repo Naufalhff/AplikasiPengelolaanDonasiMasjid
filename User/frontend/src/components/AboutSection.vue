@@ -14,20 +14,20 @@
           dengan transparansi dan amanah.
         </p>
         <div class="row mt-4">
-          <div class="col-md-4 mb-4">
-            <i class="fas fa-hand-holding-water fa-5x text-success mb-3"></i>
-            <p class="lead">Bantu Sesama</p>
+          <div class="col-md-4 mb-4 mt-4">
+            <i class="fas fa-hand-holding-water fa-7x text-success mb-3"></i>
+            <p class="lead mb-3">Bantu Sesama</p>
           </div>
-          <div class="col-md-4 mb-4">
-            <i class="fas fa-search fa-5x text-success mb-3"></i>
-            <p class="lead">Transparan</p>
+          <div class="col-md-4 mb-4 mt-4">
+            <i class="fas fa-search fa-7x text-success mb-3"></i>
+            <p class="lead mb-3">Transparan</p>
           </div>
-          <div class="col-md-4 mb-4">
-            <i class="fas fa-mosque fa-5x text-success mb-3"></i>
-            <p class="lead">Untuk Masjid</p>
+          <div class="col-md-4 mb-4 mt-4">
+            <i class="fas fa-mosque fa-7x text-success mb-3"></i>
+            <p class="lead mb-3">Untuk Masjid</p>
           </div>
         </div>
-        <button class="btn btn-success mt-4">Lebih Lanjut</button>
+        <button class="btn btn-success mt-3">Lebih Lanjut</button>
       </div>
     </section>
   </template>
@@ -41,13 +41,15 @@
   <style scoped>
   .about {
     padding: 60px 0; /* Menambah padding di sekitar section */
+    margin-bottom: 70px;
+    margin-top: 70px;
   }
   .about h2 {
-    margin-bottom: 2rem; /* Jarak bawah heading */
+    margin-bottom: 3rem; /* Jarak bawah heading */
   }
   .about .lead {
-    margin-bottom: 2.5rem; /* Jarak bawah paragraf */
-    padding: 20px;
+    margin-bottom: 3rem; /* Jarak bawah paragraf */
+    padding: 40px;
   }
   .about i {
     margin-bottom: 1.5rem; /* Jarak bawah icon */
@@ -57,7 +59,7 @@
   }
   .about .btn {
     padding: 10px 20px; /* Padding tombol */
-    font-size: 1.2rem; /* Ukuran font tombol */
+    font-size: 1rem; /* Ukuran font tombol */
   }
   </style>
   
