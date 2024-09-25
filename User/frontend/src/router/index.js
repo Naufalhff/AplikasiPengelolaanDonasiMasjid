@@ -6,7 +6,9 @@ import AboutPage from "../views/AboutPage.vue";
 import DonationPage from "../views/DonationPage.vue";
 import EventsPage from "../views/EventPage.vue";
 import LoginPage from "@/views/LoginPage.vue";
-import ForgotPassword from "@/views/ForgotPassword.vue"; // Sesuaikan dengan lokasi file
+import ForgotPassword from "@/views/ForgotPassword.vue"; 
+import VerifyCode from '@/views/VerifyCode.vue';
+import ResetPassword from '@/views/ResetPassword.vue';
 
 
 const routes = [
@@ -35,6 +37,18 @@ const routes = [
     path: "/forgot-password",
     name: "ForgotPassword",
     component: ForgotPassword,
+    meta: { hideNavbar: true },
+  },
+  {
+    path: '/verify-code',
+    name: 'VerifyCode',
+    component: VerifyCode,
+    meta: { hideNavbar: true },
+  },
+  {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    component: ResetPassword,
     meta: { hideNavbar: true },
   },
 ];

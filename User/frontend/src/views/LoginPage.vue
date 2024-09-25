@@ -60,9 +60,9 @@
 
           <p class="mt-4 text-center">
             Belum Punya Akun?
-            <router-link to="/register" class="text-success"
-              >Daftar Di Sini</router-link
-            >
+            <router-link to="/register" class="text-secondary">
+                  Daftar Di Sini
+            </router-link>
           </p>
         </div>
       </div>
