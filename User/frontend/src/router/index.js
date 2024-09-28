@@ -9,7 +9,8 @@ import ForgotPassword from "@/views/ForgotPassword.vue";
 import VerifyCode from "@/views/VerifyCode.vue";
 import ResetPassword from "@/views/ResetPassword.vue";
 import RegisterPage from "../views/RegisterPage.vue";
-import DonasiPage from "../views/DonasiPage.vue";
+// import DonasiPage from "../views/DonasiPage.vue";
+import VerifyRegister from "@/views/VerifyRegister.vue";
 
 const routes = [
   {
@@ -53,11 +54,17 @@ const routes = [
     component: RegisterPage,
     meta: { hideNavbar: true },
   },
+  // {
+  //   path: "/donasi",
+  //   name: "DonasiPage",
+  //   component: DonasiPage,
+  // },
   {
-    path: "/donasi",
-    name: "DonasiPage",
-    component: DonasiPage,
-  },
+    path: "/verify-register",
+    name: "VerifyRegister",
+    component: VerifyRegister,
+    meta: { hideNavbar: true},
+  }
 ];
 
 const router = createRouter({
