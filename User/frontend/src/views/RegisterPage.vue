@@ -25,7 +25,7 @@
           <h2 class="mb-4">Daftar</h2>
 
           <form @submit.prevent="submitForm">
-            <div class="mb-3">
+            <div class="mb-2">
               <label for="nama" class="form-label">Nama Lengkap</label>
               <input
                 type="name"
@@ -36,7 +36,7 @@
               />
             </div>
 
-            <div class="mb-3">
+            <div class="mb-2">
               <label for="email" class="form-label">Email address</label>
               <input
                 type="email"
@@ -47,7 +47,9 @@
               />
             </div>
 
-            <div class="mb-3">
+          <p v-if="errorMessage" class="text-danger mt-3">{{ errorMessage }}</p>
+
+            <div class="mb-2">
               <label for="password" class="form-label">Password</label>
               <input
                 type="password"
@@ -82,14 +84,19 @@ export default {
       nama: "",
       email: "",
       password: "",
+      errorMessage: "",
     };
   },
   methods: {
     submitForm() {
       // Submit form logic here
-      console.log("Email:", this.namax);
-      console.log("Email:", this.email);
+      console.log("Email:", this.nama);
+      if (this.email === "user@gmail.com") {
+        this.errorMessage = "Email sudah digunakan.";
+        return;
+      }
       console.log("Password:", this.password);
+      this.$router.push({ name: 'VerifyRegister'});
     },
   },
 };
@@ -131,5 +138,9 @@ h2 {
 
 .btn-success:hover {
   background-color: #218838;
+}
+
+.text-danger {
+  font-size: 14px; 
 }
 </style>
