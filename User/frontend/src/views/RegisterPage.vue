@@ -4,22 +4,22 @@
       <!-- Left Section -->
       <div class="col-md-6 d-none d-md-block p-0">
         <img
-          src="../assets/images/mesjid.jpg"
-          alt="mesjid"
-          class="img-fluid building-image"
+            src="../assets/images/mesjid.jpg"
+            alt="mesjid"
+            class="img-fluid building-image"
         />
       </div>
 
       <!-- Right Section -->
       <div
-        class="col-md-6 d-flex justify-content-center align-items-center form-section"
+          class="col-md-6 d-flex justify-content-center align-items-center form-section"
       >
         <div class="login-form w-75">
           <div class="position-relative mb-5">
             <router-link
-              to="/"
-              class="text-secondary mb-5 position_absolute d-block"
-              >Kembali</router-link
+                to="/"
+                class="text-secondary mb-5 position_absolute d-block"
+            >Kembali</router-link
             >
           </div>
           <h2 class="mb-4">Daftar</h2>
@@ -28,40 +28,40 @@
             <div class="mb-2">
               <label for="nama" class="form-label">Nama Lengkap</label>
               <input
-                type="name"
-                id="nama"
-                v-model="nama"
-                class="form-control"
-                required
+                  type="text"
+                  id="nama"
+                  v-model="nama"
+                  class="form-control"
+                  required
               />
             </div>
 
             <div class="mb-2">
               <label for="email" class="form-label">Email address</label>
               <input
-                type="email"
-                id="email"
-                v-model="email"
-                class="form-control"
-                required
+                  type="email"
+                  id="email"
+                  v-model="email"
+                  class="form-control"
+                  required
               />
             </div>
 
-          <p v-if="errorMessage" class="text-danger mt-3">{{ errorMessage }}</p>
+            <p v-if="errorMessage" class="text-danger mt-3">{{ errorMessage }}</p>
 
             <div class="mb-2">
               <label for="password" class="form-label">Password</label>
               <input
-                type="password"
-                id="password"
-                v-model="password"
-                class="form-control"
-                required
+                  type="password"
+                  id="password"
+                  v-model="password"
+                  class="form-control"
+                  required
               />
             </div>
 
             <button type="submit" class="btn btn-success w-100">
-              Masuk Sekarang
+              Daftar Sekarang
             </button>
           </form>
 
@@ -78,6 +78,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
@@ -88,17 +90,45 @@ export default {
     };
   },
   methods: {
-    submitForm() {
-      // Submit form logic here
-      console.log("Email:", this.nama);
-      if (this.email === "user@gmail.com") {
+    async checkEmailExists(email) {
+      try {
+        const response = await axios.get(`/api/check-email?email=${email}`);
+        return response.data.exists; // Assume your API returns { exists: true/false }
+      } catch (error) {
+        console.error("Error checking email:", error);
+        return false; // Default to false on error
+      }
+    },
+
+    async submitForm() {
+      this.errorMessage = ""; // Reset the error message
+
+      // Check if the email already exists
+      const emailExists = await this.checkEmailExists(this.email);
+      if (emailExists) {
         this.errorMessage = "Email sudah digunakan.";
         return;
       }
-      console.log("Password:", this.password);
-      this.$router.push({ name: 'VerifyRegister'});
+
+      try {
+        const response = await axios.post('http://localhost:8000/api/register', {
+          nama_lengkap: this.nama,
+          email: this.email,
+          password: this.password,
+        });
+
+        // Successful registration, redirect to VerifyRegister
+        console.log(response.data.message);
+        this.$router.push({ name: 'VerifyRegister' }); // Ensure this matches your route name for VerifyRegister
+      } catch (error) {
+        if (error.response) {
+          this.errorMessage = error.response.data.message || 'Terjadi kesalahan. Silakan coba lagi.';
+        } else {
+          this.errorMessage = 'Terjadi kesalahan. Silakan coba lagi.';
+        }
+      }
     },
-  },
+  }
 };
 </script>
 
@@ -141,6 +171,6 @@ h2 {
 }
 
 .text-danger {
-  font-size: 14px; 
+  font-size: 14px;
 }
 </style>
