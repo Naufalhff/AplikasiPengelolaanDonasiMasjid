@@ -44,14 +44,12 @@ export default {
   methods: {
     async submitCode() {
       try {
-        // Kirim OTP untuk verifikasi
         await axios.post('http://localhost:8000/api/verify-otp', null, {
           params: {
-            email: this.$route.query.email, // Mengirim email sebagai parameter query
+            email: this.$route.query.email,
             otp: this.verifyCode,
           },
         });
-        // Jika verifikasi berhasil, arahkan ke halaman login
         this.$router.push('/login');
       } catch (error) {
         if (error.response) {
@@ -69,7 +67,7 @@ export default {
       try {
         await axios.post('http://localhost:8000/api/resend-otp', null, {
           params: {
-            email: this.$route.query.email // Mengirim email sebagai parameter query
+            email: this.$route.query.email
           }
         });
         this.errorMessage = "Kode OTP telah dikirim ulang.";

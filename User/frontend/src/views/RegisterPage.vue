@@ -87,17 +87,16 @@ export default {
     async checkEmailExists(email) {
       try {
         const response = await axios.get(`/api/check-email?email=${email}`);
-        return response.data.exists; // Asumsikan API mengembalikan { exists: true/false }
+        return response.data.exists;
       } catch (error) {
         console.error("Error checking email:", error);
-        return false; // Default ke false saat error
+        return false;
       }
     },
 
     async submitForm() {
-      this.errorMessage = ""; // Reset pesan error
+      this.errorMessage = "";
 
-      // Cek apakah email sudah ada
       const emailExists = await this.checkEmailExists(this.email);
       if (emailExists) {
         this.errorMessage = "Email sudah digunakan.";
@@ -111,11 +110,8 @@ export default {
           password: this.password,
         });
 
-        // Pendaftaran berhasil, arahkan ke halaman verifikasi
         console.log(response.data.message);
-        // Pada bagian submitForm
         this.$router.push({ name: 'VerifyRegister', query: { email: this.email } });
-        // Pastikan ini sesuai dengan nama rute untuk VerifyRegister
       } catch (error) {
         if (error.response) {
           this.errorMessage = error.response.data.message || 'Terjadi kesalahan. Silakan coba lagi.';
