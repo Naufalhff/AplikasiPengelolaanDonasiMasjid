@@ -21,6 +21,7 @@
     justify-content: center;
     align-items: center;
     color: #fff;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
   
   .hero-section .overlay {
