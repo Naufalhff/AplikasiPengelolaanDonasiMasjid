@@ -11,16 +11,10 @@
       </div>
 
       <!-- Right Section -->
-      <div
-          class="col-md-6 d-flex justify-content-center align-items-center form-section"
-      >
+      <div class="col-md-6 d-flex justify-content-center align-items-center form-section">
         <div class="login-form w-75">
           <div class="position-relative mb-5">
-            <router-link
-                to="/"
-                class="text-secondary mb-5 position_absolute d-block"
-            >Kembali</router-link
-            >
+            <router-link to="/" class="text-secondary mb-5 position_absolute d-block">Kembali</router-link>
           </div>
           <h2 class="mb-4">Daftar</h2>
 
@@ -93,17 +87,17 @@ export default {
     async checkEmailExists(email) {
       try {
         const response = await axios.get(`/api/check-email?email=${email}`);
-        return response.data.exists; // Assume your API returns { exists: true/false }
+        return response.data.exists; // Asumsikan API mengembalikan { exists: true/false }
       } catch (error) {
         console.error("Error checking email:", error);
-        return false; // Default to false on error
+        return false; // Default ke false saat error
       }
     },
 
     async submitForm() {
-      this.errorMessage = ""; // Reset the error message
+      this.errorMessage = ""; // Reset pesan error
 
-      // Check if the email already exists
+      // Cek apakah email sudah ada
       const emailExists = await this.checkEmailExists(this.email);
       if (emailExists) {
         this.errorMessage = "Email sudah digunakan.";
@@ -117,9 +111,11 @@ export default {
           password: this.password,
         });
 
-        // Successful registration, redirect to VerifyRegister
+        // Pendaftaran berhasil, arahkan ke halaman verifikasi
         console.log(response.data.message);
-        this.$router.push({ name: 'VerifyRegister' }); // Ensure this matches your route name for VerifyRegister
+        // Pada bagian submitForm
+        this.$router.push({ name: 'VerifyRegister', query: { email: this.email } });
+        // Pastikan ini sesuai dengan nama rute untuk VerifyRegister
       } catch (error) {
         if (error.response) {
           this.errorMessage = error.response.data.message || 'Terjadi kesalahan. Silakan coba lagi.';
