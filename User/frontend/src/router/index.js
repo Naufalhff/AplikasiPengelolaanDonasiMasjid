@@ -11,6 +11,7 @@ import ResetPassword from "@/views/ResetPassword.vue";
 import RegisterPage from "../views/RegisterPage.vue";
 import DonasiPage from "../views/DonasiPage.vue";
 import VerifyRegister from "@/views/VerifyRegister.vue";
+import DashboardPage from "../views/DashboardPage.vue";
 
 const routes = [
   {
@@ -64,6 +65,11 @@ const routes = [
     name: "VerifyRegister",
     component: VerifyRegister,
     meta: { hideNavbar: true },
+  },
+  {
+    path: "/dashboard",
+    name: "DashboardPage",
+    component: DashboardPage,
   },
 ];
 

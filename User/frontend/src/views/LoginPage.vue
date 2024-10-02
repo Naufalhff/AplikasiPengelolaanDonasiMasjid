@@ -93,10 +93,16 @@ export default {
           password: this.password,
         });
         console.log("Login berhasil:", response.data);
+
+        const UserRoleid = response.data.user.id_role;
+
+        if (UserRoleid === 4) {
+          this.$router.push("/");
+        } else {
+          this.$router.push("/dashboard");
+        }
         // Simpan token ke localStorage atau Vuex
         // localStorage.setItem('token', response.data.token);
-        // Redirect ke halaman lain setelah login berhasil
-        this.$router.push("/");
       } catch (error) {
         if (error.response && error.response.status === 401) {
           this.errorMessage = "Email atau password salah.";

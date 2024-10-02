@@ -21,9 +21,9 @@ class UserSeeder extends Seeder
             ],
             [
                 'nama_lengkap' => 'Jane Doe',
-                'email' => 'janedoe@gmail.com',
+                'email' => 'user@gmail.com',
                 'password' => bcrypt('halohalo123'),
-                'id_role' => 1,
+                'id_role' => 4,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
