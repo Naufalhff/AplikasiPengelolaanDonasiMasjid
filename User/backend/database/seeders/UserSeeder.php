@@ -12,21 +12,13 @@ class UserSeeder extends Seeder
     {
         User::insert([
             [
-                'nama_lengkap' => 'John Doe',
-                'email' => 'johndoe@gmail.com',
+                'nama_lengkap' => 'Unknown',
+                'email' => 'unknown@gmail.com',
                 'password' => bcrypt('halohalo123'),
-                'id_role' => 1,
+                'id_role' =>4 ,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
-            [
-                'nama_lengkap' => 'Jane Doe',
-                'email' => 'user@gmail.com',
-                'password' => bcrypt('halohalo123'),
-                'id_role' => 4,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+            ]
         ]);
     }
 }
