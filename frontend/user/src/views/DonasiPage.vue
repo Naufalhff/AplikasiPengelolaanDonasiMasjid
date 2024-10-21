@@ -80,6 +80,11 @@
             <h5 class="card-title">{{ program.name }}</h5>
             <p class="card-text">Terkumpul: Rp. {{ program.amount }}</p>
             <p class="card-text">Donatur: {{ program.donors }}</p>
+            <div class="d-flex justify-content-end">
+              <RouterLink to="/detaildonasi">
+                <button class="btn btn-success px-3">Details Donasi</button>
+              </RouterLink>
+            </div>
           </div>
         </div>
       </div>

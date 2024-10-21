@@ -12,6 +12,9 @@ import RegisterPage from "../views/RegisterPage.vue";
 import DonasiPage from "../views/DonasiPage.vue";
 import VerifyRegister from "@/views/VerifyRegister.vue";
 import DashboardPage from "../views/DashboardPage.vue";
+import DetailDonasi from "../views/DetailDonasi.vue";
+import NominalPage from "../views/NominalPage.vue";
+import FormDonasi from "../views/FormDonasi.vue";
 
 const routes = [
   {
@@ -74,6 +77,21 @@ const routes = [
     path: "/dashboard",
     name: "DashboardPage",
     component: DashboardPage,
+  },
+  {
+    path: "/detaildonasi",
+    name: "DetailDonasi",
+    component: DetailDonasi,
+  },
+  {
+    path: "/nominal",
+    name: "NominalPage",
+    component: NominalPage,
+  },
+  {
+    path: "/formdonasi",
+    name: "FormDonasi",
+    component: FormDonasi,
   },
 ];
 
