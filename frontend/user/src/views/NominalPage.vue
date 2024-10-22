@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-5">
+  <div class="container mt-5 p-5">
     <div class="card p-4">
       <div class="text-center">
         <img :src="donation.image" alt="Donasi" class="img-thumbnail mb-3" />
@@ -12,8 +12,8 @@
           <button
             v-for="(amount, index) in presetAmounts"
             :key="index"
-            class="btn btn-outline-secondary me-2 mb-2 mr-3"
-            :class="{ 'btn-danger': selectedAmount === amount }"
+            class="btn me-2 mb-2 mr-3 border border-secondary"
+            :class="{ 'btn-success': selectedAmount === amount }"
             @click="selectAmount(amount)"
           >
             Rp{{ amount.toLocaleString() }}
@@ -46,7 +46,7 @@ export default {
       selectedAmount: null,
       customAmount: "",
       donation: {
-        title: "Sedeqah Subuh",
+        title: "Sedekah Subuh",
         description: "DKM Masjid Lukmanul hakim Hakim",
         image: require("../assets/images/infaq.jpeg"),
       },
@@ -55,7 +55,7 @@ export default {
   methods: {
     selectAmount(amount) {
       this.selectedAmount = amount;
-      this.customAmount = "";
+      this.customAmount = amount;
     },
     submitDonation() {
       const amount = this.selectedAmount || this.customAmount;

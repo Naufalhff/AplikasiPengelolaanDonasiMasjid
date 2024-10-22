@@ -1,4 +1,10 @@
 <template>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
   <div class="container mt-5">
     <div class="card p-4">
       <div class="text-center">
@@ -104,24 +110,25 @@
     >
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-body text-center p-5">
-            <img src="" alt="Konfirmasi Donasi" class="mb-4" />
-            <h5 class="mb-3">Konfirmasi Donasi</h5>
+          <div class="modal-body text-center p-4">
+            <i class="fas fa-check-circle fa-5x text-success"></i>
+            <h5 class="mb-3 mt-2">Konfirmasi Donasi</h5>
             <p>
               Donasi Anda senilai Rp{{ selectedAmount.toLocaleString() }} akan
               disalurkan
             </p>
-            <div class="d-flex justify-content-between mt-4">
+            <div class="d-flex justify-content-center mt-4">
               <button
                 type="button"
                 class="btn btn-secondary"
                 data-bs-dismiss="modal"
+                @click="KembaliDonasi"
               >
                 Kembali
               </button>
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-success ml-5"
                 @click="submitDonation"
               >
                 OK, Kirim
@@ -153,7 +160,11 @@ export default {
         email: "",
         paymentMethod: "",
       },
+      donationModal: null,
     };
+  },
+  mounted() {
+    this.donationModal = new Modal(document.getElementById("donationModal"));
   },
   methods: {
     goBack() {
@@ -161,20 +172,16 @@ export default {
     },
     confirmDonation() {
       if (this.validateForm()) {
-        this.$nextTick(() => {
-          const donationModal = new Modal(
-            document.getElementById("donationModal")
-          );
-          donationModal.show();
-        });
-      } else {
-        alert("Harap lengkapi semua data donatur.");
+        this.donationModal.show();
       }
     },
     submitDonation() {
       if (this.validateForm()) {
         this.$router.push({ name: "PembayaranPage" });
       }
+    },
+    KembaliDonasi() {
+      this.donationModal.hide();
     },
     validateForm() {
       return (

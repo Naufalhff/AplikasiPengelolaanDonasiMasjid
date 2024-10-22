@@ -1,7 +1,6 @@
 <template>
   <div class="container mt-5 pt-5">
     <div class="row">
-      <!-- Left Column (Image and Quote) -->
       <div class="col-md-8">
         <div class="card">
           <img :src="image" class="card-img-top" alt="Donation Box" />
@@ -94,9 +93,8 @@ export default {
       }).format(value);
     },
     fetchCampaignData() {
-      // Make API call to fetch campaign data
       axios
-        .get("/api/campaign/1") // Replace with the actual campaign ID or dynamic route
+        .get("/api/campaign/1")
         .then((response) => {
           this.campaign = response.data;
         })
@@ -106,7 +104,6 @@ export default {
     },
   },
   mounted() {
-    // Fetch the campaign data when the component is mounted
     this.fetchCampaignData();
   },
 };
@@ -122,6 +119,6 @@ export default {
 }
 
 .small-title {
-  font-size: 20px; /* Adjust this value as needed */
+  font-size: 20px;
 }
 </style>

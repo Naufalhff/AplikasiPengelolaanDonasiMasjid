@@ -67,7 +67,7 @@
       <div
         v-for="program in filteredPrograms"
         :key="program.id"
-        class="col-md-4 mb-4"
+        class="col-md-3 mb-4"
       >
         <div class="card h-100">
           <img

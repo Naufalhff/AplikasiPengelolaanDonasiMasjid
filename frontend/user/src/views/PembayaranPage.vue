@@ -98,7 +98,7 @@
           memverifikasi.
         </p>
         <button class="btn btn-success btn-block" @click="completePayment">
-          Saya telah menyelesaikan pembayaran
+          Upload Bukti Pembayaran
         </button>
       </div>
     </div>
