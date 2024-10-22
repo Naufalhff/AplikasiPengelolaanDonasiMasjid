@@ -15,6 +15,8 @@ import DashboardPage from "../views/DashboardPage.vue";
 import DetailDonasi from "../views/DetailDonasi.vue";
 import NominalPage from "../views/NominalPage.vue";
 import FormDonasi from "../views/FormDonasi.vue";
+import PembayaranPage from "../views/PembayaranPage.vue";
+import UploadBukti from "../views/UploadBukti.vue";
 
 const routes = [
   {
@@ -92,6 +94,16 @@ const routes = [
     path: "/formdonasi",
     name: "FormDonasi",
     component: FormDonasi,
+  },
+  {
+    path: "/pembayaran",
+    name: "PembayaranPage",
+    component: PembayaranPage,
+  },
+  {
+    path: "/uploadbukti",
+    name: "UploadBukti",
+    component: UploadBukti,
   },
 ];
 

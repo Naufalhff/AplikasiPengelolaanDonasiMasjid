@@ -17,10 +17,14 @@
             >Rp{{ selectedAmount.toLocaleString() }}</span
           >
         </div>
-        <div class="mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
           <h6>Metode Pembayaran</h6>
-          <select class="form-select" aria-label="Metode Pembayaran">
-            <option selected disabled>Pilih Metode Pembayaran</option>
+          <select
+            class="form-select form-select-sm border-0 text-end"
+            aria-label="Metode Pembayaran"
+            v-model="donor.paymentMethod"
+          >
+            <option value="" selected disabled>Pilih</option>
             <option value="bca">BCA</option>
             <option value="bri">BRI</option>
           </select>
@@ -34,7 +38,7 @@
             >
             atau lengkapi data dibawah ini
           </p>
-          <form @submit.prevent="submitDonation">
+          <form @submit.prevent="confirmDonation">
             <div class="form-group">
               <label for="fullName">Nama Lengkap</label>
               <input
@@ -88,10 +92,51 @@
         </div>
       </div>
     </div>
+
+    <div
+      class="modal fade"
+      id="donationModal"
+      tabindex="-1"
+      aria-labelledby="donationModalLabel"
+      aria-hidden="true"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body text-center p-5">
+            <img src="" alt="Konfirmasi Donasi" class="mb-4" />
+            <h5 class="mb-3">Konfirmasi Donasi</h5>
+            <p>
+              Donasi Anda senilai Rp{{ selectedAmount.toLocaleString() }} akan
+              disalurkan
+            </p>
+            <div class="d-flex justify-content-between mt-4">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Kembali
+              </button>
+              <button
+                type="button"
+                class="btn btn-success"
+                @click="submitDonation"
+              >
+                OK, Kirim
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { Modal } from "bootstrap";
+
 export default {
   data() {
     return {
@@ -106,25 +151,29 @@ export default {
         phoneNumber: "",
         address: "",
         email: "",
+        paymentMethod: "",
       },
     };
   },
   methods: {
     goBack() {
-      // Logika untuk kembali ke halaman sebelumnya untuk mengubah nominal
       this.$router.push({ name: "NominalPage" });
     },
-    login() {
-      // Logika untuk proses login
-      alert("Fitur login belum tersedia");
+    confirmDonation() {
+      if (this.validateForm()) {
+        this.$nextTick(() => {
+          const donationModal = new Modal(
+            document.getElementById("donationModal")
+          );
+          donationModal.show();
+        });
+      } else {
+        alert("Harap lengkapi semua data donatur.");
+      }
     },
     submitDonation() {
       if (this.validateForm()) {
-        // Logika pengiriman data donasi
-        alert("Donasi berhasil diproses!");
-        this.$router.push({ name: "ThankYouPage" });
-      } else {
-        alert("Harap lengkapi semua data donatur.");
+        this.$router.push({ name: "PembayaranPage" });
       }
     },
     validateForm() {
@@ -132,7 +181,8 @@ export default {
         this.donor.fullName &&
         this.donor.phoneNumber &&
         this.donor.address &&
-        this.donor.email
+        this.donor.email &&
+        this.donor.paymentMethod
       );
     },
   },
