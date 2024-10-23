@@ -21,6 +21,7 @@ class Donation extends Model
         'no_telepon_donatur',
         'email_donatur',
         'jumlah_donasi',
+        'metode_pembayaran',
         'bukti_pembayaran',
         'status_verifikasi',
         'tanggal_donasi',
