@@ -11,7 +11,6 @@ class Event extends Model
 
     protected $primaryKey = 'id_kegiatan';
     public $incrementing = true;
-    protected $keyType = 'bigint';
 
     protected $fillable = [
         'foto_kegiatan',
