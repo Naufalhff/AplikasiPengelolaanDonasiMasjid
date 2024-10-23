@@ -18,31 +18,31 @@
         <div
           class="d-flex flex-column align-items-center p-3 mr-5 me-4 border rounded"
           :class="{ 'border-success': selectedCategory === 'infaq' }"
-          @click="selectedCategory = 'infaq'"
+          @click="selectedCategory = 'INFAQ'"
         >
           <i class="fas fa-donate fa-2x text-success p-3 mb-2"></i>
           <span>Infaq</span>
         </div>
         <div
           class="d-flex flex-column align-items-center p-3 mr-5 me-4 border rounded"
-          :class="{ 'border-success': selectedCategory === 'zakat' }"
-          @click="selectedCategory = 'zakat'"
+          :class="{ 'border-success': selectedCategory === 'ZAKAT' }"
+          @click="selectedCategory = 'ZAKAT'"
         >
           <i class="fas fa-balance-scale fa-2x text-success p-3 mb-2"></i>
           <span>Zakat</span>
         </div>
         <div
           class="d-flex flex-column align-items-center p-3 mr-5 me-4 border rounded"
-          :class="{ 'border-success': selectedCategory === 'sedekah' }"
-          @click="selectedCategory = 'sedekah'"
+          :class="{ 'border-success': selectedCategory === 'SEDEKAH' }"
+          @click="selectedCategory = 'SEDEKAH'"
         >
           <i class="fas fa-hand-holding-heart fa-2x text-success p-3 mb-2"></i>
           <span>Sedekah</span>
         </div>
         <div
           class="d-flex flex-column align-items-center p-3 mr-5 border rounded"
-          :class="{ 'border-success': selectedCategory === 'kegiatan' }"
-          @click="selectedCategory = 'kegiatan'"
+          :class="{ 'border-success': selectedCategory === 'KEGIATAN' }"
+          @click="selectedCategory = 'KEGIATAN'"
         >
           <i class="fas fa-mosque fa-2x text-success p-3 mb-2"></i>
           <span>Kegiatan</span>
@@ -71,15 +71,14 @@
       >
         <div class="card h-100">
           <img
-            :src="program.image"
+            :src="image"
             class="card-img-top"
-            :alt="program.name"
+            :alt="program.nama_kegiatan"
             style="height: 180px; object-fit: cover"
           />
           <div class="card-body">
-            <h5 class="card-title">{{ program.name }}</h5>
-            <p class="card-text">Terkumpul: Rp. {{ program.amount }}</p>
-            <p class="card-text">Donatur: {{ program.donors }}</p>
+            <h5 class="card-title">{{ program.nama_kegiatan }}</h5>
+            <p class="card-text">Terkumpul: Rp. {{ program.anggaran_terkumpul }}</p>
             <div class="d-flex justify-content-end">
               <RouterLink to="/detaildonasi">
                 <button class="btn btn-success px-3">Details Donasi</button>
@@ -93,67 +92,21 @@
 </template>
 
 <script>
+import axios from "../axios";
+
 export default {
   data() {
     return {
       search: "",
-      selectedCategory: "infaq",
-      programs: [
-        {
-          id: 1,
-          name: "Infaq Pendidikan",
-          category: "infaq",
-          amount: "1.293.662.858",
-          donors: 12607,
-          image: require("../assets/images/infaq.jpeg"),
-        },
-        {
-          id: 2,
-          name: "Sedekah Subuh",
-          category: "sedekah",
-          amount: "472.153.364",
-          donors: 10764,
-          image: require("../assets/images/infaq.jpeg"),
-        },
-        {
-          id: 3,
-          name: "Zakat Penghasilan",
-          category: "zakat",
-          amount: "1.628.618.676",
-          donors: 3418,
-          image: require("../assets/images/infaq.jpeg"),
-        },
-        {
-          id: 4,
-          name: "Zakat Emas dan Perak",
-          category: "zakat",
-          amount: "824.964.392",
-          donors: 100,
-          image: require("../assets/images/infaq.jpeg"),
-        },
-        {
-          id: 5,
-          name: "Zakat Investasi dan Saham",
-          category: "zakat",
-          amount: "114.335.456",
-          donors: 30,
-          image: require("../assets/images/infaq.jpeg"),
-        },
-        {
-          id: 6,
-          name: "Kegiatan Masjid",
-          category: "kegiatan",
-          amount: "245.154.135",
-          donors: 190,
-          image: require("../assets/images/infaq.jpeg"),
-        },
-      ],
+      selectedCategory: "INFAQ",
+      image: require('../assets/images/infaq.jpeg'),
+      program:[],
     };
   },
   computed: {
     filteredPrograms() {
-      return this.programs.filter((program) => {
-        const matchesCategory = program.category === this.selectedCategory;
+      return this.program.filter((program) => {
+        const matchesCategory = program.jenis_kegiatan === this.selectedCategory;
         const matchesSearch =
           this.search === "" ||
           program.name.toLowerCase().includes(this.search.toLowerCase());
@@ -161,6 +114,23 @@ export default {
       });
     },
   },
+  methods: {
+    test(){
+      console.log("OK");
+    },
+    fetchPrograms() {
+      axios.get('/donasi').then(response => {
+        this.program = response.data;
+        console.log(response.data);
+      }).catch(error => {
+        console.error("Error fetching programs:", error);
+      });
+    }
+  },
+  mounted() {
+    this.test();
+    this.fetchPrograms();
+  }
 };
 </script>
 

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('no_telepon_donatur');
             $table->string('email_donatur');
             $table->float('jumlah_donasi');
+            $table->string('metode_pembayaran');
             $table->string('bukti_pembayaran');
             $table->enum('status_verifikasi', ['PENDING', 'VALID', 'INVALID'])->default('PENDING');
             $table->timestamp('tanggal_donasi')->useCurrent();
