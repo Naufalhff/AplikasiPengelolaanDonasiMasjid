@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->bigIncrements('id_kegiatan');
-            $table->unsignedBigInteger('id_donasi');
-            $table->foreign('id_donasi')->references('id_donasi')->on('donations')->onDelete('cascade');
+            $table->string('foto_kegiatan');
             $table->string('nama_kegiatan');
+            $table->enum('jenis_kegiatan', ['INFAQ', 'ZAKAT', 'SEDEKAH', 'KEGIATAN']);
+            $table->text('deskripsi_kegiatan');
             $table->float('anggaran_kegiatan');
+            $table->float('anggaran_terkumpul')->default(0);
             $table->string('penerima_manfaat');
-            $table->timestamps();
+            $table->timestamp('tanggal_dibuat')->useCurrent();
+            $table->timestamp('tanggal_diubah')->nullable()->useCurrentOnUpdate();
         });
     }
 
@@ -27,8 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('events');
     }
 };

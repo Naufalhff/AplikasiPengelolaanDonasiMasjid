@@ -15,10 +15,50 @@ class UserSeeder extends Seeder
                 'nama_lengkap' => 'Unknown',
                 'email' => 'unknown@gmail.com',
                 'password' => bcrypt('halohalo123'),
-                'id_role' =>4 ,
+                'id_role' => 4,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
+            [
+                'nama_lengkap' => 'John Doe',
+                'email' => 'johndoe@gmail.com',
+                'password' => bcrypt('password123'),
+                'id_role' => 4,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama_lengkap' => 'Jane Smith',
+                'email' => 'janesmith@gmail.com',
+                'password' => bcrypt('password123'),
+                'id_role' => 4,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama_lengkap' => 'Alice Johnson',
+                'email' => 'alicejohnson@gmail.com',
+                'password' => bcrypt('password123'),
+                'id_role' => 4,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama_lengkap' => 'Bob Williams',
+                'email' => 'bobwilliams@gmail.com',
+                'password' => bcrypt('password123'),
+                'id_role' => 4,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama_lengkap' => 'Charlie Davis',
+                'email' => 'charliedavis@gmail.com',
+                'password' => bcrypt('password123'),
+                'id_role' => 4,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }
