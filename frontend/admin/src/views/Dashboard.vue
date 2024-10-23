@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-lg-3 col-md-6 col-sm-6">
             <mini-statistics-card
-              :title="{ text: 'Today\'s Money', value: '$53k' }"
+              :title="{ text: 'Total Donasi', value: 'Rp. 50.000' }"
               detail="<span class='text-success text-sm font-weight-bolder'>+55%</span> than last week"
               :icon="{
                 name: 'weekend',
@@ -16,7 +16,7 @@
           </div>
           <div class="col-lg-3 col-md-6 col-sm-6 mt-lg-0 mt-4">
             <mini-statistics-card
-              :title="{ text: 'Today\'s Users', value: '2,300' }"
+              :title="{ text: 'Jumlah Donasi', value: '2,300' }"
               detail="<span class='text-success text-sm font-weight-bolder'>+3%</span> than last month"
               :icon="{
                 name: 'leaderboard',
@@ -27,7 +27,7 @@
           </div>
           <div class="col-lg-3 col-md-6 col-sm-6 mt-lg-0 mt-4">
             <mini-statistics-card
-              :title="{ text: 'New Clients', value: '3,462' }"
+              :title="{ text: 'Jumlah Donatur', value: '3,462' }"
               detail="<span class='text-danger text-sm font-weight-bolder'>-2%</span> than yesterday"
               :icon="{
                 name: 'person',
@@ -38,7 +38,7 @@
           </div>
           <div class="col-lg-3 col-md-6 col-sm-6 mt-lg-0 mt-4">
             <mini-statistics-card
-              :title="{ text: 'Sales', value: '$103,430' }"
+              :title="{ text: 'Total Kegiatan', value: '10' }"
               detail="<span class='text-success text-sm font-weight-bolder'>+5%</span> Just updated"
               :icon="{
                 name: 'weekend',

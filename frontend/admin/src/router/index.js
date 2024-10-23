@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
 import Tables from "../views/Tables.vue";
 import Billing from "../views/Billing.vue";
+import ActivityList from "../views/ActivityList.vue";
+import CreateActivity from "../views/CreateActivity.vue";
 import RTL from "../views/Rtl.vue";
 import Notifications from "../views/Notifications.vue";
 import Profile from "../views/Profile.vue";
@@ -34,6 +36,16 @@ const routes = [
     path: "/billing",
     name: "Billing",
     component: Billing,
+  },
+  {
+    path: "/activitylist",
+    name: "ActivityList",
+    component: ActivityList,
+  },
+  {
+    path: '/create-activity',
+    name: 'CreateActivity',
+    component: CreateActivity
   },
   {
     path: "/rtl-page",
