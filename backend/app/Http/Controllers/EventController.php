@@ -15,6 +15,17 @@ class EventController extends Controller
         return response()->json($events);
     }
 
+    public function getDataById($id)
+    {
+        $event = Event::find($id);
+    
+        if ($event) {
+            return response()->json($event);
+        }
+    
+        return response()->json(['message' => 'Event not found'], 404);
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [

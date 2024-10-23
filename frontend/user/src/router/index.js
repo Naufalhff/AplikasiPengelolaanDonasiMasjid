@@ -71,6 +71,11 @@ const routes = [
     component: DonasiPage,
   },
   {
+    path: "/detaildonasi",
+    name: "DetailDonasi",
+    component: DetailDonasi
+  },
+  {
     path: "/verify-register",
     name: "VerifyRegister",
     component: VerifyRegister,
@@ -80,11 +85,6 @@ const routes = [
     path: "/dashboard",
     name: "DashboardPage",
     component: DashboardPage,
-  },
-  {
-    path: "/detaildonasi",
-    name: "DetailDonasi",
-    component: DetailDonasi,
   },
   {
     path: "/nominal",

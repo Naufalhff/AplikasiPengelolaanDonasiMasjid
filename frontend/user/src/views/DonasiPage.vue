@@ -66,7 +66,7 @@
     <div class="row">
       <div
         v-for="program in filteredPrograms"
-        :key="program.id"
+        :key="program.id_kegiatan"
         class="col-md-3 mb-4"
       >
         <div class="card h-100">
@@ -82,9 +82,13 @@
               Terkumpul: Rp. {{ program.anggaran_terkumpul }}
             </p>
             <div class="d-flex justify-content-end">
+<<<<<<< HEAD
               <RouterLink
                 :to="{ name: 'DetailDonasi', params: { id: program.id } }"
               >
+=======
+              <RouterLink :to="{ path: '/detaildonasi', query: { id: program.id_kegiatan } }">
+>>>>>>> 3a90d086e85a8b5ae74fb6ef687a27635fbabfbc
                 <button class="btn btn-success px-3">Details Donasi</button>
               </RouterLink>
             </div>
@@ -124,6 +128,7 @@ export default {
       console.log("OK");
     },
     fetchPrograms() {
+<<<<<<< HEAD
       axios
         .get("/donasi")
         .then((response) => {
@@ -134,6 +139,15 @@ export default {
           console.error("Error fetching programs:", error);
         });
     },
+=======
+      axios.get('http://localhost:8000/api/donasi').then(response => {
+        this.program = response.data;
+        console.log(response.data);
+      }).catch(error => {
+        console.error("Error fetching programs:", error);
+      });
+    }
+>>>>>>> 3a90d086e85a8b5ae74fb6ef687a27635fbabfbc
   },
   mounted() {
     this.test();
