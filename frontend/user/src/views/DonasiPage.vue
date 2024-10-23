@@ -66,7 +66,7 @@
     <div class="row">
       <div
         v-for="program in filteredPrograms"
-        :key="program.id"
+        :key="program.id_kegiatan"
         class="col-md-3 mb-4"
       >
         <div class="card h-100">
@@ -80,7 +80,7 @@
             <h5 class="card-title">{{ program.nama_kegiatan }}</h5>
             <p class="card-text">Terkumpul: Rp. {{ program.anggaran_terkumpul }}</p>
             <div class="d-flex justify-content-end">
-              <RouterLink to="/detaildonasi">
+              <RouterLink :to="{ path: '/detaildonasi', query: { id: program.id_kegiatan } }">
                 <button class="btn btn-success px-3">Details Donasi</button>
               </RouterLink>
             </div>
@@ -119,7 +119,7 @@ export default {
       console.log("OK");
     },
     fetchPrograms() {
-      axios.get('/donasi').then(response => {
+      axios.get('http://localhost:8000/api/donasi').then(response => {
         this.program = response.data;
         console.log(response.data);
       }).catch(error => {

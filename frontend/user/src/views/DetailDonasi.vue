@@ -13,12 +13,12 @@
           </div>
         </div>
         <div class="mt-3">
-          <h4>Sedekah</h4>
+          <h4>{{ program.nama_kegiatan }}</h4>
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Deskripsi</h5>
               <p class="card-text">
-                {{ campaign.description }}
+                {{ program.deskripsi_kegiatan }}
               </p>
             </div>
           </div>
@@ -34,10 +34,10 @@
             </h4>
             <img :src="image" class="img-fluid mb-3" alt="Donation Campaign" />
             <p class="card-text">
-              Terkumpul: Rp. {{ formatCurrency(campaign.amount_collected) }}
+              Terkumpul: Rp. {{ program.anggaran_terkumpul }}
             </p>
             <p class="card-text">
-              Target: Rp. {{ formatCurrency(campaign.target_amount) }}
+              Target: Rp. {{ program.anggaran_kegiatan }}
             </p>
             <div class="progress mb-2">
               <div
@@ -71,11 +71,12 @@ export default {
         description: "",
         amount_collected: 0,
         target_amount: 0,
-        days_left: 0,
+        days_left: 0
       },
       image: require("../assets/images/infaq.jpeg"),
       quote: '"Sedekah dapat menghapus dosa sebagaimana air memadamkan api."',
       hadith: "Hadist Riwayat Tirmidzi",
+      program: []
     };
   },
   computed: {
@@ -92,19 +93,21 @@ export default {
         currency: "IDR",
       }).format(value);
     },
-    fetchCampaignData() {
-      axios
-        .get("/api/campaign/1")
-        .then((response) => {
-          this.campaign = response.data;
-        })
-        .catch((error) => {
-          console.error("Error fetching campaign data:", error);
-        });
-    },
+    fetchProgram() {
+      const id = this.$route.query.id
+      console.log(id)
+      axios.get(`http://localhost:8000/api/donasi/${id}`)
+      .then(response => {
+        this.program = response.data;
+        console.log(response.data);
+      })
+    .catch(error => {
+      console.error("Gagal fetch data", error);
+    });
+}
   },
   mounted() {
-    this.fetchCampaignData();
+    this.fetchProgram();
   },
 };
 </script>
