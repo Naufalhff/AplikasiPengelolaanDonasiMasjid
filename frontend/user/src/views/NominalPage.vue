@@ -25,10 +25,13 @@
             type="number"
             class="form-control"
             id="customAmount"
-            v-model="customAmount"
+            v-model.number="customAmount"
             placeholder="Minimal donasi Rp 1.000"
-            min="10000"
+            min="1000"
           />
+        </div>
+        <div v-if="errorMessage" class="alert alert-danger mt-2" role="alert">
+          {{ errorMessage }}
         </div>
       </div>
       <button class="btn btn-success w-100" @click="submitDonation">
@@ -50,19 +53,22 @@ export default {
         description: "DKM Masjid Lukmanul hakim Hakim",
         image: require("../assets/images/infaq.jpeg"),
       },
+
+      errorMessage: "",
     };
   },
   methods: {
     selectAmount(amount) {
       this.selectedAmount = amount;
       this.customAmount = amount;
+      this.errorMessage = "";
     },
     submitDonation() {
       const amount = this.selectedAmount || this.customAmount;
       if (amount < 1000) {
-        alert("Minimal donasi Rp 1.000");
-        return;
+        this.errorMessage = "Minimal donasi Rp.1000";
       } else {
+        this.errorMessage = " ";
         this.$router.push({ name: "FormDonasi", query: { amount } });
       }
     },
@@ -80,5 +86,8 @@ export default {
   width: 100%;
   max-width: 200px;
   height: auto;
+}
+.alert {
+  margin-top: 20px;
 }
 </style>

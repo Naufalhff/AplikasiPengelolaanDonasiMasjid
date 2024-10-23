@@ -93,6 +93,13 @@
               Dengan melanjutkan donasi, saya setuju
               <a href="#" class="text-primary">Syarat & Ketentuan</a>
             </p>
+            <div
+              v-if="errorMessage"
+              class="alert alert-danger mt-2"
+              role="alert"
+            >
+              {{ errorMessage }}
+            </div>
             <button class="btn btn-success w-100">Donasi Sekarang</button>
           </form>
         </div>
@@ -161,6 +168,8 @@ export default {
         paymentMethod: "",
       },
       donationModal: null,
+
+      errorMessage: "",
     };
   },
   mounted() {

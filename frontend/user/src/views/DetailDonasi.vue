@@ -5,7 +5,9 @@
         <div class="card">
           <img :src="image" class="card-img-top" alt="Donation Box" />
           <div class="card-body">
-            <h2 class="card-title text-primary">{{ campaign.title }}</h2>
+            <h2 class="card-title text-primary">
+              {{ detailProgram.nama_kegiatan }}
+            </h2>
             <p class="card-text">
               {{ quote }}<br />
               <strong>{{ hadith }}</strong>
@@ -18,7 +20,7 @@
             <div class="card-body">
               <h5 class="card-title">Deskripsi</h5>
               <p class="card-text">
-                {{ campaign.description }}
+                {{ detailProgram.deskripsi_kegiatan }}
               </p>
             </div>
           </div>
@@ -34,10 +36,11 @@
             </h4>
             <img :src="image" class="img-fluid mb-3" alt="Donation Campaign" />
             <p class="card-text">
-              Terkumpul: Rp. {{ formatCurrency(campaign.amount_collected) }}
+              Terkumpul: Rp.
+              {{ formatCurrency(detailProgram.anggaran_terkumpul) }}
             </p>
             <p class="card-text">
-              Target: Rp. {{ formatCurrency(campaign.target_amount) }}
+              Target: Rp. {{ formatCurrency(detailProgram.anggaran_kegiatan) }}
             </p>
             <div class="progress mb-2">
               <div
@@ -49,7 +52,6 @@
                 aria-valuemax="100"
               ></div>
             </div>
-            <p class="card-text">{{ campaign.days_left }} hari lagi</p>
             <RouterLink to="/nominal">
               <button class="btn btn-success">Donasi Sekarang</button>
             </RouterLink>
@@ -66,25 +68,13 @@ import axios from "axios";
 export default {
   data() {
     return {
-      campaign: {
-        title: "",
-        description: "",
-        amount_collected: 0,
-        target_amount: 0,
-        days_left: 0,
-      },
+      detailProgram: [],
       image: require("../assets/images/infaq.jpeg"),
       quote: '"Sedekah dapat menghapus dosa sebagaimana air memadamkan api."',
       hadith: "Hadist Riwayat Tirmidzi",
     };
   },
-  computed: {
-    progress() {
-      return (
-        (this.campaign.amount_collected / this.campaign.target_amount) * 100
-      );
-    },
-  },
+
   methods: {
     formatCurrency(value) {
       return new Intl.NumberFormat("id-ID", {
@@ -92,9 +82,9 @@ export default {
         currency: "IDR",
       }).format(value);
     },
-    fetchCampaignData() {
+    fetchDetailData() {
       axios
-        .get("/api/campaign/1")
+        .get("/donasi")
         .then((response) => {
           this.campaign = response.data;
         })
@@ -104,7 +94,7 @@ export default {
     },
   },
   mounted() {
-    this.fetchCampaignData();
+    this.fetchDetailData();
   },
 };
 </script>
@@ -119,6 +109,6 @@ export default {
 }
 
 .small-title {
-  font-size: 20px;
+  font-size: 20px; /* Adjust this value as needed */
 }
 </style>

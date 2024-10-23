@@ -78,9 +78,13 @@
           />
           <div class="card-body">
             <h5 class="card-title">{{ program.nama_kegiatan }}</h5>
-            <p class="card-text">Terkumpul: Rp. {{ program.anggaran_terkumpul }}</p>
+            <p class="card-text">
+              Terkumpul: Rp. {{ program.anggaran_terkumpul }}
+            </p>
             <div class="d-flex justify-content-end">
-              <RouterLink to="/detaildonasi">
+              <RouterLink
+                :to="{ name: 'DetailDonasi', params: { id: program.id } }"
+              >
                 <button class="btn btn-success px-3">Details Donasi</button>
               </RouterLink>
             </div>
@@ -99,14 +103,15 @@ export default {
     return {
       search: "",
       selectedCategory: "INFAQ",
-      image: require('../assets/images/infaq.jpeg'),
-      program:[],
+      image: require("../assets/images/infaq.jpeg"),
+      program: [],
     };
   },
   computed: {
     filteredPrograms() {
       return this.program.filter((program) => {
-        const matchesCategory = program.jenis_kegiatan === this.selectedCategory;
+        const matchesCategory =
+          program.jenis_kegiatan === this.selectedCategory;
         const matchesSearch =
           this.search === "" ||
           program.name.toLowerCase().includes(this.search.toLowerCase());
@@ -115,22 +120,25 @@ export default {
     },
   },
   methods: {
-    test(){
+    test() {
       console.log("OK");
     },
     fetchPrograms() {
-      axios.get('/donasi').then(response => {
-        this.program = response.data;
-        console.log(response.data);
-      }).catch(error => {
-        console.error("Error fetching programs:", error);
-      });
-    }
+      axios
+        .get("/donasi")
+        .then((response) => {
+          this.program = response.data;
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching programs:", error);
+        });
+    },
   },
   mounted() {
     this.test();
     this.fetchPrograms();
-  }
+  },
 };
 </script>
 
