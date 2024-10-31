@@ -9,8 +9,8 @@
     <div class="card p-4">
       <div class="text-center">
         <img :src="donation.image" alt="Donasi" class="img-thumbnail mb-3" />
-        <h5>{{ donation.title }}</h5>
-        <p>{{ donation.description }}</p>
+        <h5>{{ data.nama_kegiatan }}</h5>
+        <p>{{ data.deskripsi_kegiatan }}</p>
       </div>
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -100,7 +100,7 @@
             >
               {{ errorMessage }}
             </div>
-            <button class="btn btn-success w-100">Donasi Sekarang</button>
+            <button  class="btn btn-success w-100" @click="confirmDonation">Donasi Sekarang</button>
           </form>
         </div>
       </div>
@@ -133,13 +133,15 @@
               >
                 Kembali
               </button>
+              <RouterLink :to="{ path: '/detaildonasi/nominal/formdonasi/pembayaran', query: { id: data.id_kegiatan } }">
               <button
                 type="button"
                 class="btn btn-success ml-5"
-                @click="submitDonation"
+                @click="KembaliDonasi"
               >
                 OK, Kirim
               </button>
+              </RouterLink>
             </div>
           </div>
         </div>
@@ -149,15 +151,14 @@
 </template>
 
 <script>
+import axios from "axios";
 import { Modal } from "bootstrap";
 
 export default {
   data() {
     return {
-      selectedAmount: 50000,
+      selectedAmount: this.$route.query.amount,
       donation: {
-        title: "Donasi Penggalangan Dana korban bencana Gempa Bumi",
-        description: "DKM Masjid Lukmanul Hakim",
         image: require("../assets/images/infaq.jpeg"),
       },
       donor: {
@@ -170,23 +171,20 @@ export default {
       donationModal: null,
 
       errorMessage: "",
+      data: [],
     };
   },
   mounted() {
     this.donationModal = new Modal(document.getElementById("donationModal"));
+    this.fetchData()
   },
   methods: {
     goBack() {
-      this.$router.push({ name: "NominalPage" });
+      this.$router.push({ path: "/detaildonasi/nominal/formdonasi" });
     },
     confirmDonation() {
       if (this.validateForm()) {
         this.donationModal.show();
-      }
-    },
-    submitDonation() {
-      if (this.validateForm()) {
-        this.$router.push({ name: "PembayaranPage" });
       }
     },
     KembaliDonasi() {
@@ -200,6 +198,12 @@ export default {
         this.donor.email &&
         this.donor.paymentMethod
       );
+    },
+    fetchData(){
+      const id = this.$route.query.id
+      axios.get(`http://localhost:8000/api/donasi/${id}`)
+      .then(response => {this.data = response.data})
+      .catch(error => {console.error(error)})
     },
   },
 };

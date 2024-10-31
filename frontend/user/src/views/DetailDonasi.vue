@@ -49,7 +49,7 @@
                 aria-valuemax="100"
               ></div>
             </div>
-            <RouterLink to="/nominal">
+            <RouterLink :to="{ path: '/detaildonasi/nominal', query: { id: program.id_kegiatan } }">
               <button class="btn btn-success">Donasi Sekarang</button>
             </RouterLink>
           </div>

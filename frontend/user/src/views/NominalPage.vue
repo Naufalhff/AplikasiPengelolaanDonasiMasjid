@@ -3,8 +3,8 @@
     <div class="card p-4">
       <div class="text-center">
         <img :src="donation.image" alt="Donasi" class="img-thumbnail mb-3" />
-        <h5>{{ donation.title }}</h5>
-        <p>{{ donation.description }}</p>
+        <h5>{{ program.nama_kegiatan }}</h5>
+        <p>{{ program.deskripsi_kegiatan }}</p>
       </div>
       <div class="mb-3">
         <h6>Nominal</h6>
@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -49,12 +50,12 @@ export default {
       selectedAmount: null,
       customAmount: "",
       donation: {
-        title: "Sedekah Subuh",
-        description: "DKM Masjid Lukmanul hakim Hakim",
+        title: "Test",
+        description: "Halo",
         image: require("../assets/images/infaq.jpeg"),
       },
-
       errorMessage: "",
+      program: [],
     };
   },
   methods: {
@@ -69,10 +70,19 @@ export default {
         this.errorMessage = "Minimal donasi Rp.1000";
       } else {
         this.errorMessage = " ";
-        this.$router.push({ name: "FormDonasi", query: { amount } });
+        this.$router.push({ path: "/detaildonasi/nominal/formdonasi", query: { id: this.program.id_kegiatan, amount: amount } });
       }
     },
+    fetchData() {
+      const id = this.$route.query.id
+      axios.get(`http://localhost:8000/api/donasi/${id}`)
+      .then(response => {this.program = response.data})
+      .catch(error => {console.error(error)});
+    }
   },
+  mounted(){
+    this.fetchData()
+  }
 };
 </script>
 
