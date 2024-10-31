@@ -73,7 +73,7 @@ const routes = [
   {
     path: "/detaildonasi",
     name: "DetailDonasi",
-    component: DetailDonasi
+    component: DetailDonasi,
   },
   {
     path: "/verify-register",

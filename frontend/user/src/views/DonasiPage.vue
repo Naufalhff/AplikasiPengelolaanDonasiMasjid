@@ -17,14 +17,6 @@
       <div class="btn-group">
         <div
           class="d-flex flex-column align-items-center p-3 mr-5 me-4 border rounded"
-          :class="{ 'border-success': selectedCategory === 'infaq' }"
-          @click="selectedCategory = 'INFAQ'"
-        >
-          <i class="fas fa-donate fa-2x text-success p-3 mb-2"></i>
-          <span>Infaq</span>
-        </div>
-        <div
-          class="d-flex flex-column align-items-center p-3 mr-5 me-4 border rounded"
           :class="{ 'border-success': selectedCategory === 'ZAKAT' }"
           @click="selectedCategory = 'ZAKAT'"
         >
@@ -33,19 +25,11 @@
         </div>
         <div
           class="d-flex flex-column align-items-center p-3 mr-5 me-4 border rounded"
-          :class="{ 'border-success': selectedCategory === 'SEDEKAH' }"
-          @click="selectedCategory = 'SEDEKAH'"
+          :class="{ 'border-success': selectedCategory === 'SUMBANGAN' }"
+          @click="selectedCategory = 'SUMBANGAN'"
         >
           <i class="fas fa-hand-holding-heart fa-2x text-success p-3 mb-2"></i>
-          <span>Sedekah</span>
-        </div>
-        <div
-          class="d-flex flex-column align-items-center p-3 mr-5 border rounded"
-          :class="{ 'border-success': selectedCategory === 'KEGIATAN' }"
-          @click="selectedCategory = 'KEGIATAN'"
-        >
-          <i class="fas fa-mosque fa-2x text-success p-3 mb-2"></i>
-          <span>Kegiatan</span>
+          <span>Sumbangan</span>
         </div>
       </div>
     </div>
@@ -82,7 +66,12 @@
               Terkumpul: Rp. {{ program.anggaran_terkumpul }}
             </p>
             <div class="d-flex justify-content-end">
-              <RouterLink :to="{ path: '/detaildonasi', query: { id: program.id_kegiatan } }">
+              <RouterLink
+                :to="{
+                  path: '/detaildonasi',
+                  query: { id: program.id_kegiatan },
+                }"
+              >
                 <button class="btn btn-success px-3">Details Donasi</button>
               </RouterLink>
             </div>
@@ -100,7 +89,7 @@ export default {
   data() {
     return {
       search: "",
-      selectedCategory: "INFAQ",
+      selectedCategory: "SUMBANGAN",
       image: require("../assets/images/infaq.jpeg"),
       program: [],
     };
@@ -122,13 +111,16 @@ export default {
       console.log("OK");
     },
     fetchPrograms() {
-      axios.get('http://localhost:8000/api/donasi').then(response => {
-        this.program = response.data;
-        console.log(response.data);
-      }).catch(error => {
-        console.error("Error fetching programs:", error);
-      });
-    }
+      axios
+        .get("http://localhost:8000/api/donasi")
+        .then((response) => {
+          this.program = response.data;
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching programs:", error);
+        });
+    },
   },
   mounted() {
     this.test();

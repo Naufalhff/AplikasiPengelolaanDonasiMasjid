@@ -6,7 +6,7 @@
           <img :src="image" class="card-img-top" alt="Donation Box" />
           <div class="card-body">
             <h2 class="card-title text-primary">
-              {{ detailProgram.nama_kegiatan }}
+              {{ program.nama_kegiatan }}
             </h2>
             <p class="card-text">
               {{ quote }}<br />
@@ -38,9 +38,7 @@
             <p class="card-text">
               Terkumpul: Rp. {{ program.anggaran_terkumpul }}
             </p>
-            <p class="card-text">
-              Target: Rp. {{ program.anggaran_kegiatan }}
-            </p>
+            <p class="card-text">Target: Rp. {{ program.anggaran_kegiatan }}</p>
             <div class="progress mb-2">
               <div
                 class="progress-bar"
@@ -72,12 +70,12 @@ export default {
         description: "",
         amount_collected: 0,
         target_amount: 0,
-        days_left: 0
+        days_left: 0,
       },
       image: require("../assets/images/infaq.jpeg"),
       quote: '"Sedekah dapat menghapus dosa sebagaimana air memadamkan api."',
       hadith: "Hadist Riwayat Tirmidzi",
-      program: []
+      program: [],
     };
   },
 
@@ -89,17 +87,18 @@ export default {
       }).format(value);
     },
     fetchProgram() {
-      const id = this.$route.query.id
-      console.log(id)
-      axios.get(`http://localhost:8000/api/donasi/${id}`)
-      .then(response => {
-        this.program = response.data;
-        console.log(response.data);
-      })
-    .catch(error => {
-      console.error("Gagal fetch data", error);
-    });
-}
+      const id = this.$route.query.id;
+      console.log(id);
+      axios
+        .get(`http://localhost:8000/api/donasi/${id}`)
+        .then((response) => {
+          this.program = response.data;
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("Gagal fetch data", error);
+        });
+    },
   },
   mounted() {
     this.fetchProgram();
