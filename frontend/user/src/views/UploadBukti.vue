@@ -5,21 +5,21 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
   </head>
-  <div class="container mt-5">
+  <div class="container mt-5 pt-5">
     <div class="card shadow-sm">
       <div class="card-body text-center">
         <!-- Donation Information Section -->
         <div class="d-flex align-items-center mb-3">
           <img
-            src="/mnt/data/image.png"
-            alt="Donation Image"
+            :src="donation.image"
+            alt="Donasi"
             class="rounded"
             width="100"
             height="100"
           />
           <div class="ml-3 text-left">
             <h5 class="mb-1">
-              Donasi Penggalangan Dana korban bencana Gempa Bumi
+              {{ data.nama_kegiatan }}
             </h5>
             <p class="text-muted mb-0">DKM Masjid Luqmanul Hakim</p>
           </div>
@@ -70,6 +70,11 @@
           </button>
         </div>
 
+        <!-- Error Message -->
+        <div v-if="errorMessage" class="alert alert-danger mt-2" role="alert">
+          {{ errorMessage }}
+        </div>
+
         <!-- Submit Button -->
         <button class="btn btn-success btn-block mt-4" @click="submitFile">
           Kirim
@@ -108,7 +113,9 @@
     </div>
   </div>
 </template>
+
 <script>
+import axios from "axios";
 import { Modal } from "bootstrap";
 
 export default {
@@ -117,7 +124,15 @@ export default {
       isDragging: false,
       selectedFile: null,
       imageUrl: null,
+      errorMessage: "",
+      data: [],
+      donation: {
+        image: require("../assets/images/infaq.jpeg"),
+      },
     };
+  },
+  mounted() {
+    this.fetchData();
   },
   methods: {
     handleFileDrop(event) {
@@ -126,6 +141,7 @@ export default {
       if (files.length > 0) {
         this.selectedFile = files[0];
         this.updateImageUrl();
+        this.errorMessage = "";
       }
     },
     handleFileSelect(event) {
@@ -133,6 +149,7 @@ export default {
       if (files.length > 0) {
         this.selectedFile = files[0];
         this.updateImageUrl();
+        this.errorMessage = "";
       }
     },
     browseFile() {
@@ -142,8 +159,9 @@ export default {
       if (this.selectedFile) {
         const modal = new Modal(document.getElementById("confirmationModal"));
         modal.show();
+        this.errorMessage = "";
       } else {
-        alert("Please select a file before submitting.");
+        this.errorMessage = "Maaf, gambar belum di upload.";
       }
     },
     redirectToDonationPage() {
@@ -161,6 +179,17 @@ export default {
     },
     isPDF(file) {
       return file && file.type === "application/pdf";
+    },
+    fetchData() {
+      const id = this.$route.query.id;
+      axios
+        .get(`http://localhost:8000/api/donasi/${id}`)
+        .then((response) => {
+          this.data = response.data;
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
     },
   },
 };

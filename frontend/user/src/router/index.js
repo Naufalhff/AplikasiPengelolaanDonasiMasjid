@@ -74,7 +74,6 @@ const routes = [
     path: "/detaildonasi",
     name: "DetailDonasi",
     component: DetailDonasi,
-<<<<<<< HEAD
   },
   {
     path: "/detaildonasi/nominal",
@@ -90,8 +89,6 @@ const routes = [
     path: "/detaildonasi/nominal/formdonasi/pembayaran",
     name: "PembayaranPage",
     component: PembayaranPage,
-=======
->>>>>>> a6a24ddb53f721dc8f4ee5fa1a697a9c82d4cb01
   },
   {
     path: "/verify-register",
@@ -105,7 +102,7 @@ const routes = [
     component: DashboardPage,
   },
   {
-    path: "/uploadbukti",
+    path: "/detaildonasi/nominal/formdonasi/pembayaran/uploadbukti",
     name: "UploadBukti",
     component: UploadBukti,
   },

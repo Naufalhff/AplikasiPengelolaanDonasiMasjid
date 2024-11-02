@@ -69,7 +69,10 @@
               <RouterLink
                 :to="{
                   path: '/detaildonasi',
-                  query: { id: program.id_kegiatan },
+                  query: {
+                    id: program.id_kegiatan,
+                    category: selectedCategory,
+                  },
                 }"
               >
                 <button class="btn btn-success px-3">Details Donasi</button>

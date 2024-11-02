@@ -31,8 +31,8 @@
             v-model="donor.paymentMethod"
           >
             <option value="" selected disabled>Pilih</option>
-            <option value="bca">BCA</option>
-            <option value="bri">BRI</option>
+            <option value="bsi">BSI</option>
+            <option value="qris">QRIS</option>
           </select>
         </div>
         <hr />
@@ -100,7 +100,9 @@
             >
               {{ errorMessage }}
             </div>
-            <button  class="btn btn-success w-100" @click="confirmDonation">Donasi Sekarang</button>
+            <button class="btn btn-success w-100" @click="confirmDonation">
+              Donasi Sekarang
+            </button>
           </form>
         </div>
       </div>
@@ -133,14 +135,24 @@
               >
                 Kembali
               </button>
-              <RouterLink :to="{ path: '/detaildonasi/nominal/formdonasi/pembayaran', query: { id: data.id_kegiatan } }">
-              <button
-                type="button"
-                class="btn btn-success ml-5"
-                @click="KembaliDonasi"
+
+              <RouterLink
+                :to="{
+                  path: '/detaildonasi/nominal/formdonasi/pembayaran',
+                  query: {
+                    id: this.data.id_kegiatan,
+                    amount: this.selectedAmount,
+                    metodePembayaran: this.donor.paymentMethod,
+                  },
+                }"
               >
-                OK, Kirim
-              </button>
+                <button
+                  type="button"
+                  class="btn btn-success ml-5"
+                  @click="KembaliDonasi"
+                >
+                  OK, Kirim
+                </button>
               </RouterLink>
             </div>
           </div>
@@ -176,14 +188,18 @@ export default {
   },
   mounted() {
     this.donationModal = new Modal(document.getElementById("donationModal"));
-    this.fetchData()
+    this.fetchData();
   },
   methods: {
     goBack() {
       this.$router.push({ path: "/detaildonasi/nominal/formdonasi" });
     },
     confirmDonation() {
-      if (this.validateForm()) {
+      if (!this.validateForm()) {
+        this.errorMessage =
+          "Harap lengkapi semua data dan Pilih metode pembayaran";
+      } else {
+        this.errorMessage = "";
         this.donationModal.show();
       }
     },
@@ -199,11 +215,16 @@ export default {
         this.donor.paymentMethod
       );
     },
-    fetchData(){
-      const id = this.$route.query.id
-      axios.get(`http://localhost:8000/api/donasi/${id}`)
-      .then(response => {this.data = response.data})
-      .catch(error => {console.error(error)})
+    fetchData() {
+      const id = this.$route.query.id;
+      axios
+        .get(`http://localhost:8000/api/donasi/${id}`)
+        .then((response) => {
+          this.data = response.data;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
   },
 };

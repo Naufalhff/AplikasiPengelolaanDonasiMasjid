@@ -1,19 +1,17 @@
 <template>
-  <div class="container mt-5">
+  <div class="container mt-5 pt-3">
     <div class="card shadow-sm">
       <div class="card-body">
         <div class="d-flex align-items-center mb-3">
           <img
-            src="https://via.placeholder.com/100x100"
-            alt="Donation Image"
+            :src="donation.image"
+            alt="Donasi"
             class="rounded"
             width="100"
             height="100"
           />
           <div class="ml-3">
-            <h5 class="mb-1">
-              Donasi Penggalangan Dana korban bencana Gempa Bumi
-            </h5>
+            <h5 class="mb-1">{{ data.nama_kegiatan }}</h5>
             <p class="text-muted mb-0">DKM Masjid Luqmanul Hakim</p>
           </div>
         </div>
@@ -22,14 +20,16 @@
         <h6 class="font-weight-bold">Selesaikan Pembayaran Anda</h6>
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Total Donasi</span>
-          <span class="font-weight-bold">Rp. 50.000</span>
+          <span class="font-weight-bold"
+            >Rp{{ selectedAmount.toLocaleString() }}</span
+          >
         </div>
 
-        <!-- Account Number -->
-        <div class="mb-3">
+        <!-- Account Number for BSI -->
+        <div class="mb-3" v-if="metodePembayaran === 'bsi'">
           <p class="mb-0">Nomor Rekening:</p>
           <div class="d-flex justify-content-between align-items-center">
-            <h4>32425262732</h4>
+            <h4>{{ rekening }}</h4>
             <button
               class="btn btn-outline-secondary btn-sm"
               @click="copyAccountNumber"
@@ -39,63 +39,105 @@
           </div>
         </div>
 
-        <!-- Payment Method Tabs -->
-        <ul class="nav nav-tabs mb-3" role="tablist">
-          <li class="nav-item">
-            <a
-              class="nav-link active"
-              id="atm-tab"
-              data-toggle="tab"
-              href="#atm"
-              role="tab"
-              >ATM</a
-            >
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              id="mbanking-tab"
-              data-toggle="tab"
-              href="#mbanking"
-              role="tab"
-              >M-Banking</a
-            >
-          </li>
-        </ul>
-        <div class="tab-content">
-          <!-- ATM Instructions -->
-          <div class="tab-pane fade show active" id="atm" role="tabpanel">
-            <ul class="list-unstyled">
-              <li>Masukkan kartu ATM BCA & PIN</li>
-              <li>Pilih transaksi lainnya</li>
-              <li>Pilih transfer</li>
-              <li>Pilih transfer sesama BCA</li>
-              <li>Masukkan nomor rekening tujuan</li>
-              <li>Masukkan jumlah yang ingin dibayarkan</li>
-              <li>Validasi pembayaran anda</li>
-              <li>Pembayaran selesai</li>
-            </ul>
-          </div>
+        <!-- Payment Method Tabs for BSI -->
+        <div v-if="metodePembayaran === 'bsi'">
+          <ul class="nav nav-tabs mb-3" role="tablist">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                id="atm-tab"
+                data-toggle="tab"
+                href="#atm"
+                role="tab"
+                >ATM</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                id="mbanking-tab"
+                data-toggle="tab"
+                href="#mbanking"
+                role="tab"
+                >M-Banking</a
+              >
+            </li>
+          </ul>
 
-          <!-- M-Banking Instructions -->
-          <div class="tab-pane fade" id="mbanking" role="tabpanel">
-            <ul class="list-unstyled">
-              <li>Buka aplikasi BCA Mobile</li>
-              <li>Pilih "m-Transfer"</li>
-              <li>Pilih transfer</li>
-              <li>Pilih "Transfer Antar Bank"</li>
-              <li>Masukkan nomor rekening tujuan</li>
-              <li>Masukkan jumlah yang ingin dibayarkan</li>
-              <li>Validasi pembayaran anda</li>
-              <li>Pembayaran selesai</li>
-            </ul>
+          <div class="tab-content">
+            <!-- ATM Instructions -->
+            <div class="tab-pane fade show active" id="atm" role="tabpanel">
+              <ul class="list-unstyled">
+                <li>Masukkan kartu ATM BCA & PIN</li>
+                <li>Pilih transaksi lainnya</li>
+                <li>Pilih transfer</li>
+                <li>Pilih transfer sesama BCA</li>
+                <li>Masukkan nomor rekening tujuan</li>
+                <li>Masukkan jumlah yang ingin dibayarkan</li>
+                <li>Validasi pembayaran anda</li>
+                <li>Pembayaran selesai</li>
+              </ul>
+            </div>
+
+            <!-- M-Banking Instructions -->
+            <div class="tab-pane fade" id="mbanking" role="tabpanel">
+              <ul class="list-unstyled">
+                <li>Buka aplikasi BCA Mobile</li>
+                <li>Pilih "m-Transfer"</li>
+                <li>Pilih transfer</li>
+                <li>Pilih "Transfer Antar Bank"</li>
+                <li>Masukkan nomor rekening tujuan</li>
+                <li>Masukkan jumlah yang ingin dibayarkan</li>
+                <li>Validasi pembayaran anda</li>
+                <li>Pembayaran selesai</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Method Tabs for QRIS -->
+        <div v-if="metodePembayaran === 'qris'">
+          <ul class="nav nav-tabs mb-3" role="tablist">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                id="qris-tab"
+                data-toggle="tab"
+                href="#qris"
+                role="tab"
+                >Cara Pembayaran</a
+              >
+            </li>
+          </ul>
+
+          <div class="tab-content">
+            <!-- QRIS Instructions -->
+            <div class="tab-pane fade show active" id="qris" role="tabpanel">
+              <p class="mb-0">Scan kode QRIS di bawah ini untuk membayar:</p>
+              <img
+                :src="qrisImage"
+                alt="QRIS"
+                class="img-fluid mx-auto"
+                style="max-width: 200px"
+              />
+              <h6 class="font-weight-bold mt-3">Cara Pembayaran QRIS:</h6>
+              <ul>
+                <li>
+                  Buka Aplikasi Gopay/OVO/Shopeepay/LinkAja/DANA atau lainnya
+                </li>
+                <li>Pilih Scan pada menu aplikasi Anda</li>
+                <li>Lakukan Scan pada Barcode di atas</li>
+                <li>Pilih Bayar dan masukkan PIN Anda</li>
+                <li>Tunggu hingga proses pembayaran berhasil</li>
+              </ul>
+            </div>
           </div>
         </div>
 
         <!-- Final Action -->
         <p class="text-muted">
-          Silahkan melakukan transfer ke nomor Rekening diatas. Sistem kami akan
-          memverifikasi.
+          Silahkan melakukan transfer ke nomor Rekening di atas. Sistem kami
+          akan memverifikasi.
         </p>
         <button class="btn btn-success btn-block" @click="completePayment">
           Upload Bukti Pembayaran
@@ -106,14 +148,60 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
+  data() {
+    return {
+      donation: {
+        image: require("../assets/images/infaq.jpeg"),
+      },
+      data: {},
+      selectedAmount: this.$route.query.amount || 0,
+      metodePembayaran: this.$route.query.metodePembayaran || " ",
+      rekening: "",
+      qrisImage: require("../assets/images/qris.jpg"),
+    };
+  },
+  mounted() {
+    this.fetchData();
+    this.setRekening();
+  },
+  watch: {
+    "$route.query.amount"(newAmount) {
+      this.selectedAmount = newAmount;
+    },
+  },
   methods: {
+    fetchData() {
+      const id = this.$route.query.id;
+      axios
+        .get(`http://localhost:8000/api/donasi/${id}`)
+        .then((response) => {
+          this.data = response.data;
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    },
+    setRekening() {
+      if (this.metodePembayaran === "bsi") {
+        this.rekening = "1234567890"; // Ganti dengan nomor rekening BSI
+      } else if (this.metodePembayaran === "qris") {
+        this.rekening = "0987654321"; // Ganti dengan nomor rekening QRIS
+      } else {
+        this.rekening = "Nomor rekening tidak tersedia";
+      }
+    },
     copyAccountNumber() {
       navigator.clipboard.writeText("32425262732");
       alert("Nomor rekening berhasil disalin!");
     },
     completePayment() {
-      this.$router.push("/uploadbukti");
+      this.$router.push({
+        path: "/detaildonasi/nominal/formdonasi/pembayaran/uploadbukti",
+        query: { id: this.data.id_kegiatan },
+      });
     },
   },
 };

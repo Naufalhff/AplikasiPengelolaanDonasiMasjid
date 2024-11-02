@@ -49,9 +49,20 @@
                 aria-valuemax="100"
               ></div>
             </div>
-            <RouterLink :to="{ path: '/detaildonasi/nominal', query: { id: program.id_kegiatan } }">
-              <button class="btn btn-success">Donasi Sekarang</button>
-            </RouterLink>
+            <div v-if="selectedCategory === 'ZAKAT'" class="d-flex mt-3">
+              <RouterLink :to="{ path: '/kalkulatorzakat' }">
+                <button class="btn btn-success mr-3">Kalkulator Zakat</button>
+              </RouterLink>
+
+              <RouterLink
+                :to="{
+                  path: '/detaildonasi/nominal',
+                  query: { id: program.id_kegiatan },
+                }"
+              >
+                <button class="btn btn-success">Donasi Sekarang</button>
+              </RouterLink>
+            </div>
           </div>
         </div>
       </div>
@@ -65,6 +76,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      selectedCategory: this.$route.query.category || "SUMBANGAN",
       campaign: {
         title: "",
         description: "",
