@@ -16,10 +16,9 @@ class DonationController extends Controller
 
         $donationDetails = $donations->map(function($donation) {
             return [
-                'id_user' => $donation->id_user,
+                'id_donasi' => $donation->id_donasi,
                 'nama_donatur' => $donation->nama_donatur,
-                'nama_kegiatan' => $donation->event->nama_kegiatan,  // mengambil nama_kegiatan dari relasi event
-                'jenis_kegiatan' => $donation->event->jenis_kegiatan, // mengambil jenis_kegiatan dari relasi event
+                'nama_kegiatan' => $donation->event->nama_kegiatan,
                 'status_verifikasi' => $donation->status_verifikasi,
             ];
         });
@@ -48,5 +47,30 @@ class DonationController extends Controller
         ]);
 
         return response()->json(['message' => 'Donation verified successfully', 'donation' => $donation], 200);
+    }
+
+    public function viewDetailDonation($id_donasi)
+    {
+        $donation = Donation::with('event')->find($id_donasi);
+
+        if (!$donation) {
+            return response()->json(['message' => 'Donation not found'], 404);
+        }
+
+        return response()->json([
+            'nama_donatur' => $donation->nama_donatur,
+            'alamat_donatur' => $donation->alamat_donatur,
+            'no_telepon_donatur' => $donation->no_telepon_donatur,
+            'email_donatur' => $donation->email_donatur,
+            'jumlah_donasi' => $donation->jumlah_donasi,
+            'metode_pembayaran' => $donation->metode_pembayaran,
+            'bukti_pembayaran' => $donation->bukti_pembayaran,
+            'status_verifikasi' => $donation->status_verifikasi,
+            'tanggal_donasi' => $donation->tanggal_donasi,
+            'tanggal_verifikasi' => $donation->tanggal_verifikasi,
+            'event' => [
+                'nama_kegiatan' => $donation->event->nama_kegiatan,
+            ],
+        ], 200);
     }
 }

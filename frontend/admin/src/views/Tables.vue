@@ -29,19 +29,27 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
-      transactions: [
-        { id: 123, name: "Tono", activity: "Kurban", verificationStatus: "Pending" },
-        { id: 234, name: "Tono", activity: "Kurban", verificationStatus: "Pending" },
-        { id: 345, name: "Tono", activity: "Kurban", verificationStatus: "Pending" },
-        { id: 456, name: "Tono", activity: "Kurban", verificationStatus: "Terverifikasi" },
-        { id: 567, name: "Tono", activity: "Kurban", verificationStatus: "Terverifikasi" },
-        { id: 678, name: "Tono", activity: "Kurban", verificationStatus: "Ditolak" },
-        { id: 789, name: "Tono", activity: "Kurban", verificationStatus: "Ditolak" }
-      ]
+      transactions: []
     };
+  },
+  created() {
+    axios.get('/api/transaksi-donasi')
+        .then(response => {
+          this.transactions = response.data.map(donation => ({
+            id: donation.id_donasi,
+            name: donation.nama_donatur,
+            activity: donation.nama_kegiatan,
+            verificationStatus: donation.status_verifikasi
+          }));
+        })
+        .catch(error => {
+          console.error("Error fetching transactions:", error);
+        });
   },
   methods: {
     getStatusClass(status) {

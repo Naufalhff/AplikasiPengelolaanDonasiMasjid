@@ -56,28 +56,43 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: "RingkasanDonasi",
   data() {
     return {
-      donation: {
-        amount: "Rp50.000",
-        donorInfo: {
-          fullName: "Ariq Fakhri Indrawan",
-          phoneNumber: "08123456789",
-          address: "Indonesia",
-          email: "Ariq@gmail.com",
-          activity: "Kurban",
-          transactionDate: "02/11/2024 12:13:14",
-          status: "Pending"
-        },
-        receiptImage: require("@/assets/img/icon-image.png")
-      },
-      showConfirmDialog: false, // Untuk menampilkan atau menyembunyikan dialog konfirmasi
-      confirmAction: "" // Menyimpan aksi konfirmasi ("approve" atau "reject")
+      donation: {},
+      showConfirmDialog: false,
+      confirmAction: "",
     };
   },
+  created() {
+    const id_donasi = this.$route.query.id;
+    this.fetchDonationDetail(id_donasi);
+  },
   methods: {
+    fetchDonationDetail(id_donasi) {
+      axios.get(`/api/transaksi-donasi/ringkasan-donasi?id=${id_donasi}`)
+          .then(response => {
+            this.donation = {
+              amount: response.data.jumlah_donasi,
+              donorInfo: {
+                fullName: response.data.nama_donatur,
+                phoneNumber: response.data.no_telepon_donatur,
+                address: response.data.alamat_donatur,
+                email: response.data.email_donatur,
+                activity: response.data.event.nama_kegiatan,
+                transactionDate: response.data.tanggal_donasi,
+                status: response.data.status_verifikasi,
+              },
+              receiptImage: response.data.bukti_pembayaran
+            };
+          })
+          .catch(error => {
+            console.error("Error fetching donation details:", error);
+          });
+    },
     confirmReject() {
       this.confirmAction = "reject";
       this.showConfirmDialog = true;
@@ -87,12 +102,21 @@ export default {
       this.showConfirmDialog = true;
     },
     handleConfirmedAction() {
-      if (this.confirmAction === "approve") {
-        this.$router.push({ name: 'Tables' }); // Aksi untuk tombol "Setuju"
-      } else if (this.confirmAction === "reject") {
-        this.$router.push({ name: 'Tables' }); // Aksi untuk tombol "Tolak"
-      }
-      this.showConfirmDialog = false; // Tutup dialog setelah aksi
+      const id_donasi = this.donation.id_donasi;
+      const status = this.confirmAction === "approve" ? "VALID" : "INVALID";
+
+      axios.put(`/api/transaksi-donasi/ringkasan-donasi/${id_donasi}`, {
+        status_verifikasi: status,
+      })
+          .then(response => {
+            console.log(response.data.message);
+            this.$router.push({ name: 'Tables' });
+          })
+          .catch(error => {
+            console.error("Error verifying donation:", error);
+          });
+
+      this.showConfirmDialog = false;
     },
     getStatusClass(status) {
       return status.toLowerCase() === "pending" ? "status-pending" : "";
