@@ -6,6 +6,7 @@ import ActivityList from "../views/ActivityList.vue";
 import CreateActivity from "../views/CreateActivity.vue";
 import RTL from "../views/Rtl.vue";
 import Notifications from "../views/Notifications.vue";
+import RingkasanDonasi from "../views/RingkasanDonasi.vue";
 import Profile from "../views/Profile.vue";
 import SignIn from "../views/SignIn.vue";
 import SignUp from "../views/SignUp.vue";
@@ -101,6 +102,11 @@ const routes = [
     path: '/users',
     name: "Users",
     component: Users
+  },
+  {
+    path: '/ringkasan-donasi',
+    name: "RingkasanDonasi",
+    component: RingkasanDonasi
   }
 ];
 
