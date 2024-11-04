@@ -20,5 +20,6 @@ Route::delete('/daftar-kegiatan/hapus-kegiatan/{id_kegiatan}', [EventController:
 Route::get('/transaksi-donasi', [DonationController::class, 'index']);
 Route::get('/transaksi-donasi/ringkasan-donasi', [DonationController::class, 'viewDetailDonation']);
 Route::put('/transaksi-donasi/ringkasan-donasi/{id_donasi}', [DonationController::class, 'verifyDonation']);
+Route::post('/send-donation-receipt/{id_donasi}', [UserController::class, 'sendDonationReceipt']);
 
 Route::post('/upload', [FileUploadController::class, 'upload']);

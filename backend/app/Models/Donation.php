@@ -11,7 +11,7 @@ class Donation extends Model
 
     protected $primaryKey = 'id_donasi';
     public $incrementing = true;
-    protected $keyType = 'bigint';
+    protected $keyType = 'int';
 
     protected $fillable = [
         'id_user',

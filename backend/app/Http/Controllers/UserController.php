@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Donation;
+use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\OTPMail;
+use App\Mail\DonationReceipt;
 
 class UserController extends Controller
 {
@@ -100,5 +103,20 @@ class UserController extends Controller
         Cache::forget('user_register_' . $request->email);
 
         return response()->json(['message' => 'Verifikasi berhasil, user telah terdaftar.', 'user' => $user], 201);
+    }
+
+    public function sendDonationReceipt($id_donasi)
+    {
+        $donation = Donation::with('event')->findOrFail($id_donasi);
+
+        $id_donasi = $donation->id_donasi;
+        $tanggal_donasi = $donation->tanggal_donasi;
+        $nama_kegiatan = $donation->event->nama_kegiatan;
+        $jumlah_donasi = $donation->jumlah_donasi;
+        $nama_donatur = $donation->nama_donatur;
+
+        Mail::to($donation->email_donatur)->send(new DonationReceipt($id_donasi, $tanggal_donasi, $nama_kegiatan, $jumlah_donasi, $nama_donatur));
+
+        return response()->json(['message' => 'Kuitansi donasi berhasil dikirim']);
     }
 }
