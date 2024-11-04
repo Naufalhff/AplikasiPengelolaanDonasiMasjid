@@ -2,6 +2,7 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\DonationController;
+use App\Http\Controllers\FileUploadController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [UserController::class, 'login']);
@@ -19,3 +20,5 @@ Route::delete('/daftar-kegiatan/hapus-kegiatan/{id_kegiatan}', [EventController:
 Route::get('/transaksi-donasi', [DonationController::class, 'index']);
 Route::get('/transaksi-donasi/ringkasan-donasi', [DonationController::class, 'viewDetailDonation']);
 Route::put('/transaksi-donasi/ringkasan-donasi/{id_donasi}', [DonationController::class, 'verifyDonation']);
+
+Route::post('/upload', [FileUploadController::class, 'upload']);

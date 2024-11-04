@@ -117,6 +117,7 @@
 <script>
 import axios from "axios";
 import { Modal } from "bootstrap";
+import CryptoJS from "crypto-js";
 
 export default {
   data() {
@@ -126,13 +127,21 @@ export default {
       imageUrl: null,
       errorMessage: "",
       data: [],
+      modal: null,
       donation: {
         image: require("../assets/images/infaq.jpeg"),
       },
+      key: "Proyek-3-Mantap",
+      name: "",
+      phone: "",
+      address: "",
+      email: "",
     };
   },
   mounted() {
+    this.modal = new Modal(document.getElementById("confirmationModal"));
     this.fetchData();
+    this.decrypt();
   },
   methods: {
     handleFileDrop(event) {
@@ -157,14 +166,40 @@ export default {
     },
     submitFile() {
       if (this.selectedFile) {
-        const modal = new Modal(document.getElementById("confirmationModal"));
-        modal.show();
-        this.errorMessage = "";
+        console.log("FILE OK")
+        const formData = new FormData();
+        formData.append('file', this.selectedFile);
+        formData.append('id', this.$route.query.id);
+        formData.append('name', this.name);
+        formData.append('phone', this.phone);
+        formData.append('address', this.address);
+        formData.append('email', this.email);
+        formData.append('amount', this.$route.query.amount);
+        formData.append('payment', this.$route.query.payment);
+
+        fetch('http://localhost:8000/api/upload', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.message) {
+            console.log("DATA OK")
+            this.modal.show()
+          } else {
+            console.log("DATA FAIL")
+          }
+        })
+        .catch(error => {
+          console.error('Upload error:', error);
+        });
       } else {
-        this.errorMessage = "Maaf, gambar belum di upload.";
+        this.errorMessage = "Maaf, gambar belum di-upload.";
+        this.successMessage = "";
       }
     },
     redirectToDonationPage() {
+      this.modal.hide();
       this.$router.push("/donasi");
     },
     updateImageUrl() {
@@ -191,6 +226,16 @@ export default {
           console.error("Error fetching data:", error);
         });
     },
+    decrypt(){
+      const bytes1 = CryptoJS.AES.decrypt(this.$route.query.name, this.key);
+      this.name = bytes1.toString(CryptoJS.enc.Utf8);
+      const bytes2 = CryptoJS.AES.decrypt(this.$route.query.phone, this.key);
+      this.phone = bytes2.toString(CryptoJS.enc.Utf8);
+      const bytes3 = CryptoJS.AES.decrypt(this.$route.query.address, this.key);
+      this.address = bytes3.toString(CryptoJS.enc.Utf8);
+      const bytes4 = CryptoJS.AES.decrypt(this.$route.query.email, this.key);
+      this.email = bytes4.toString(CryptoJS.enc.Utf8);
+    }
   },
 };
 </script>

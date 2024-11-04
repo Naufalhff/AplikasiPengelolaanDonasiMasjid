@@ -21,7 +21,7 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Total Donasi</span>
           <span class="font-weight-bold"
-            >Rp{{ selectedAmount.toLocaleString() }}</span
+            >Rp{{ this.$route.query.amount }}</span
           >
         </div>
 
@@ -200,7 +200,15 @@ export default {
     completePayment() {
       this.$router.push({
         path: "/detaildonasi/nominal/formdonasi/pembayaran/uploadbukti",
-        query: { id: this.data.id_kegiatan },
+        query: { 
+          id: this.data.id_kegiatan,
+          name: this.$route.query.name,
+          phone: this.$route.query.phone,
+          address: this.$route.query.address,
+          email: this.$route.query.email,
+          amount: this.$route.query.amount,
+          payment: this.$route.query.payment
+         },
       });
     },
   },
