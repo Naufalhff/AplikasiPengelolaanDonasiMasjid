@@ -5,7 +5,7 @@
         <div class="card">
           <img :src="image" class="card-img-top" alt="Donation Box" />
           <div class="card-body">
-            <h2 class="card-title text-primary">
+            <h2 class="card-title">
               {{ program.nama_kegiatan }}
             </h2>
             <p class="card-text">

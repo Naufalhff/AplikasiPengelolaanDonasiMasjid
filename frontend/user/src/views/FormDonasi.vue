@@ -135,13 +135,13 @@
               >
                 Kembali
               </button>
-                <button
-                  type="button"
-                  class="btn btn-success ml-5"
-                  @click="submit"
-                >
-                  OK, Kirim
-                </button>
+              <button
+                type="button"
+                class="btn btn-success ml-5"
+                @click="submit"
+              >
+                OK, Kirim
+              </button>
             </div>
           </div>
         </div>
@@ -158,7 +158,7 @@ import CryptoJS from "crypto-js";
 export default {
   data() {
     return {
-      selectedAmount: this.$route.query.amount,
+      selectedAmount: this.$route.query.amount || 0,
       donation: {
         image: require("../assets/images/infaq.jpeg"),
       },
@@ -173,7 +173,7 @@ export default {
 
       errorMessage: "",
       data: [],
-      key: "Proyek-3-Mantap"
+      key: "Proyek-3-Mantap",
     };
   },
   mounted() {
@@ -182,7 +182,8 @@ export default {
   },
   methods: {
     goBack() {
-      this.$router.push({ path: "/detaildonasi/nominal/formdonasi" });
+      const id = this.$route.query.id; // ambil id dari query yang sudah ada
+      this.$router.push({ path: "/detaildonasi/nominal", query: { id } });
     },
     confirmDonation() {
       if (!this.validateForm()) {
@@ -218,24 +219,34 @@ export default {
     },
     submit() {
       this.KembaliDonasi();
-      const name = CryptoJS.AES.encrypt(this.donor.fullName, this.key).toString();
-      const phone = CryptoJS.AES.encrypt(this.donor.phoneNumber, this.key).toString();
-      const address = CryptoJS.AES.encrypt(this.donor.address, this.key).toString();
+      const name = CryptoJS.AES.encrypt(
+        this.donor.fullName,
+        this.key
+      ).toString();
+      const phone = CryptoJS.AES.encrypt(
+        this.donor.phoneNumber,
+        this.key
+      ).toString();
+      const address = CryptoJS.AES.encrypt(
+        this.donor.address,
+        this.key
+      ).toString();
       const email = CryptoJS.AES.encrypt(this.donor.email, this.key).toString();
 
       this.$router.push({
-        path: '/detaildonasi/nominal/formdonasi/pembayaran',
+        path: "/detaildonasi/nominal/formdonasi/pembayaran",
         query: {
           id: this.data.id_kegiatan,
+
           name: name,
           phone: phone,
           address: address,
           email: email,
           amount: this.selectedAmount,
-          payment: this.donor.paymentMethod
-        }
-      })
-    }
+          payment: this.donor.paymentMethod,
+        },
+      });
+    },
   },
 };
 </script>

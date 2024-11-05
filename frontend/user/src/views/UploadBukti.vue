@@ -97,7 +97,11 @@
           <div class="modal-body text-center p-4">
             <i class="fas fa-check-circle fa-5x text-success"></i>
             <h5 class="mb-3 mt-3">Bukti Pembayaran Berhasil Dikirim!</h5>
-            <p>Terima kasih, bukti pembayaran Anda telah berhasil dikirim.</p>
+            <p>
+              Terima kasih, pembayaran Anda akan diverifikasi oleh admin. Mohon
+              tunggu maksimal 24 jam. Bukti pembayaran akan dikirimkan ke email
+              Anda!
+            </p>
             <div class="d-flex justify-content-center mt-4">
               <button
                 type="button"
@@ -166,33 +170,33 @@ export default {
     },
     submitFile() {
       if (this.selectedFile) {
-        console.log("FILE OK")
+        console.log("FILE OK");
         const formData = new FormData();
-        formData.append('file', this.selectedFile);
-        formData.append('id', this.$route.query.id);
-        formData.append('name', this.name);
-        formData.append('phone', this.phone);
-        formData.append('address', this.address);
-        formData.append('email', this.email);
-        formData.append('amount', this.$route.query.amount);
-        formData.append('payment', this.$route.query.payment);
+        formData.append("file", this.selectedFile);
+        formData.append("id", this.$route.query.id);
+        formData.append("name", this.name);
+        formData.append("phone", this.phone);
+        formData.append("address", this.address);
+        formData.append("email", this.email);
+        formData.append("amount", this.$route.query.amount);
+        formData.append("payment", this.$route.query.payment);
 
-        fetch('http://localhost:8000/api/upload', {
-          method: 'POST',
-          body: formData
+        fetch("http://localhost:8000/api/upload", {
+          method: "POST",
+          body: formData,
         })
-        .then(response => response.json())
-        .then(data => {
-          if (data.message) {
-            console.log("DATA OK")
-            this.modal.show()
-          } else {
-            console.log("DATA FAIL")
-          }
-        })
-        .catch(error => {
-          console.error('Upload error:', error);
-        });
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.message) {
+              console.log("DATA OK");
+              this.modal.show();
+            } else {
+              console.log("DATA FAIL");
+            }
+          })
+          .catch((error) => {
+            console.error("Upload error:", error);
+          });
       } else {
         this.errorMessage = "Maaf, gambar belum di-upload.";
         this.successMessage = "";
@@ -226,7 +230,7 @@ export default {
           console.error("Error fetching data:", error);
         });
     },
-    decrypt(){
+    decrypt() {
       const bytes1 = CryptoJS.AES.decrypt(this.$route.query.name, this.key);
       this.name = bytes1.toString(CryptoJS.enc.Utf8);
       const bytes2 = CryptoJS.AES.decrypt(this.$route.query.phone, this.key);
@@ -235,7 +239,7 @@ export default {
       this.address = bytes3.toString(CryptoJS.enc.Utf8);
       const bytes4 = CryptoJS.AES.decrypt(this.$route.query.email, this.key);
       this.email = bytes4.toString(CryptoJS.enc.Utf8);
-    }
+    },
   },
 };
 </script>

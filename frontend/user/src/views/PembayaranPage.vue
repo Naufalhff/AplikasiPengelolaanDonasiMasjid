@@ -20,13 +20,11 @@
         <h6 class="font-weight-bold">Selesaikan Pembayaran Anda</h6>
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Total Donasi</span>
-          <span class="font-weight-bold"
-            >Rp{{ this.$route.query.amount }}</span
-          >
+          <span class="font-weight-bold">Rp{{ selectedAmount }}</span>
         </div>
 
         <!-- Account Number for BSI -->
-        <div class="mb-3" v-if="metodePembayaran === 'bsi'">
+        <div class="mb-3" v-if="metodePembayaran === 'BSI'">
           <p class="mb-0">Nomor Rekening:</p>
           <div class="d-flex justify-content-between align-items-center">
             <h4>{{ rekening }}</h4>
@@ -40,7 +38,7 @@
         </div>
 
         <!-- Payment Method Tabs for BSI -->
-        <div v-if="metodePembayaran === 'bsi'">
+        <div v-if="metodePembayaran === 'BSI'">
           <ul class="nav nav-tabs mb-3" role="tablist">
             <li class="nav-item">
               <a
@@ -96,7 +94,7 @@
         </div>
 
         <!-- Payment Method Tabs for QRIS -->
-        <div v-if="metodePembayaran === 'qris'">
+        <div v-if="metodePembayaran === 'QRIS'">
           <ul class="nav nav-tabs mb-3" role="tablist">
             <li class="nav-item">
               <a
@@ -112,7 +110,7 @@
 
           <div class="tab-content">
             <!-- QRIS Instructions -->
-            <div class="tab-pane fade show active" id="qris" role="tabpanel">
+            <div class="tab-pane fade show active" id="QRIS" role="tabpanel">
               <p class="mb-0">Scan kode QRIS di bawah ini untuk membayar:</p>
               <img
                 :src="qrisImage"
@@ -158,7 +156,7 @@ export default {
       },
       data: {},
       selectedAmount: this.$route.query.amount || 0,
-      metodePembayaran: this.$route.query.metodePembayaran || " ",
+      metodePembayaran: this.$route.query.payment || "BSI", // default to "BSI"
       rekening: "",
       qrisImage: require("../assets/images/qris.jpg"),
     };
@@ -170,6 +168,10 @@ export default {
   watch: {
     "$route.query.amount"(newAmount) {
       this.selectedAmount = newAmount;
+    },
+    "$route.query.payment"(newPayment) {
+      this.metodePembayaran = newPayment;
+      this.setRekening(); // update rekening when payment method changes
     },
   },
   methods: {
@@ -185,30 +187,30 @@ export default {
         });
     },
     setRekening() {
-      if (this.metodePembayaran === "bsi") {
-        this.rekening = "1234567890"; // Ganti dengan nomor rekening BSI
-      } else if (this.metodePembayaran === "qris") {
-        this.rekening = "0987654321"; // Ganti dengan nomor rekening QRIS
+      if (this.metodePembayaran === "BSI") {
+        this.rekening = "1234567890"; // Replace with actual BSI account number
+      } else if (this.metodePembayaran === "QRIS") {
+        this.rekening = "0987654321"; // Replace with actual QRIS account number
       } else {
         this.rekening = "Nomor rekening tidak tersedia";
       }
     },
     copyAccountNumber() {
-      navigator.clipboard.writeText("32425262732");
+      navigator.clipboard.writeText(this.rekening); // dynamic rekening number
       alert("Nomor rekening berhasil disalin!");
     },
     completePayment() {
       this.$router.push({
         path: "/detaildonasi/nominal/formdonasi/pembayaran/uploadbukti",
-        query: { 
+        query: {
           id: this.data.id_kegiatan,
           name: this.$route.query.name,
           phone: this.$route.query.phone,
           address: this.$route.query.address,
           email: this.$route.query.email,
           amount: this.$route.query.amount,
-          payment: this.$route.query.payment
-         },
+          payment: this.$route.query.payment,
+        },
       });
     },
   },
