@@ -18,8 +18,8 @@ Route::put('/daftar-kegiatan/edit-kegiatan/{id_kegiatan}', [EventController::cla
 Route::delete('/daftar-kegiatan/hapus-kegiatan/{id_kegiatan}', [EventController::class, 'destroy']);
 
 Route::get('/transaksi-donasi', [DonationController::class, 'index']);
-Route::get('/transaksi-donasi/ringkasan-donasi', [DonationController::class, 'viewDetailDonation']);
-Route::put('/transaksi-donasi/ringkasan-donasi/{id_donasi}', [DonationController::class, 'verifyDonation']);
+Route::get('/ringkasan-donasi/{id_donasi}', [DonationController::class, 'viewDetailDonation']);
+Route::put('/verifikasi-donasi/{id_donasi}', [DonationController::class, 'verifyDonation']);
 Route::post('/send-donation-receipt/{id_donasi}', [UserController::class, 'sendDonationReceipt']);
 
 Route::post('/upload', [FileUploadController::class, 'upload']);

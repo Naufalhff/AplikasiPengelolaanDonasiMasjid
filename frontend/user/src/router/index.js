@@ -125,7 +125,7 @@ const routes = [
     component: TransaksiDonasi,
   },
   {
-    path: "/ringkasandonasi",
+    path: '/ringkasan-donasi/:id',
     name: "RingkasanDonasi",
     component: RingkasanDonasi,
   },

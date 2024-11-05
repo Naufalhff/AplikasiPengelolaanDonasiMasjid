@@ -12,7 +12,7 @@ class DonationController extends Controller
 
     public function index()
     {
-        $donations = Donation::with('event')->get();
+        $donations = Donation::with('event')->orderBy('id_donasi', 'asc')->get();
 
         $donationDetails = $donations->map(function($donation) {
             return [
@@ -25,6 +25,7 @@ class DonationController extends Controller
 
         return response()->json($donationDetails, 200);
     }
+
     public function verifyDonation(Request $request, $id_donasi)
     {
         $donation = Donation::find($id_donasi);

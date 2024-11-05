@@ -38,7 +38,7 @@ export default {
     };
   },
   created() {
-    axios.get('/api/transaksi-donasi')
+    axios.get('http://localhost:8000/api/transaksi-donasi')
         .then(response => {
           this.transactions = response.data.map(donation => ({
             id: donation.id_donasi,

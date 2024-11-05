@@ -8,10 +8,7 @@
 
         <div class="payment-method">
           <p>
-            <strong
-              >Metode Pembayaran
-              <!-- <img src="@/assets/img/GOPAY.png" alt="GoPay" class="payment-logo" /> -->
-            </strong>
+            <strong>Metode Pembayaran</strong>
           </p>
         </div>
 
@@ -39,14 +36,13 @@
       <div class="receipt">
         <p><strong>Bukti Transfer</strong></p>
         <img
-          :src="donation.receiptImage"
-          alt="Bukti Transfer"
-          class="transfer-receipt"
+            :src="donation.receiptImage"
+            alt="Bukti Transfer"
+            class="transfer-receipt"
         />
       </div>
     </div>
 
-    <!-- Dialog konfirmasi -->
     <div v-if="showConfirmDialog" class="confirmation-dialog">
       <p>
         Apakah Anda yakin ingin
@@ -58,8 +54,8 @@
           Kembali
         </button>
         <button
-          @click="handleConfirmedAction"
-          :class="
+            @click="handleConfirmedAction"
+            :class="
             confirmAction === 'approve' ? 'confirm-button' : 'reject2-button'
           "
         >
@@ -68,7 +64,7 @@
       </div>
     </div>
 
-    <div class="action-buttons">
+    <div v-if="showActionButtons" class="action-buttons">
       <button class="reject-button" @click="confirmReject">✖</button>
       <button class="approve-button" @click="confirmApprove">✔</button>
     </div>
@@ -88,31 +84,36 @@ export default {
     };
   },
   created() {
-    const id_donasi = this.$route.query.id;
+    const id_donasi = this.$route.params.id;
     this.fetchDonationDetail(id_donasi);
+  },
+  computed: {
+    showActionButtons() {
+      return this.donation.donorInfo?.status === "PENDING";
+    },
   },
   methods: {
     fetchDonationDetail(id_donasi) {
       axios
-        .get(`/api/transaksi-donasi/ringkasan-donasi?id=${id_donasi}`)
-        .then((response) => {
-          this.donation = {
-            amount: response.data.jumlah_donasi,
-            donorInfo: {
-              fullName: response.data.nama_donatur,
-              phoneNumber: response.data.no_telepon_donatur,
-              address: response.data.alamat_donatur,
-              email: response.data.email_donatur,
-              activity: response.data.event.nama_kegiatan,
-              transactionDate: response.data.tanggal_donasi,
-              status: response.data.status_verifikasi,
-            },
-            receiptImage: response.data.bukti_pembayaran,
-          };
-        })
-        .catch((error) => {
-          console.error("Error fetching donation details:", error);
-        });
+          .get(`http://localhost:8000/api/ringkasan-donasi/${id_donasi}`)
+          .then((response) => {
+            this.donation = {
+              amount: response.data.jumlah_donasi,
+              donorInfo: {
+                fullName: response.data.nama_donatur,
+                phoneNumber: response.data.no_telepon_donatur,
+                address: response.data.alamat_donatur,
+                email: response.data.email_donatur,
+                activity: response.data.event.nama_kegiatan,
+                transactionDate: response.data.tanggal_donasi,
+                status: response.data.status_verifikasi,
+              },
+              receiptImage: response.data.bukti_pembayaran,
+            };
+          })
+          .catch((error) => {
+            console.error("Error fetching donation details:", error);
+          });
     },
     confirmReject() {
       this.confirmAction = "reject";
@@ -123,20 +124,32 @@ export default {
       this.showConfirmDialog = true;
     },
     handleConfirmedAction() {
-      const id_donasi = this.donation.id_donasi;
+      const id_donasi = this.$route.params.id;
       const status = this.confirmAction === "approve" ? "VALID" : "INVALID";
 
       axios
-        .put(`/api/transaksi-donasi/ringkasan-donasi/${id_donasi}`, {
-          status_verifikasi: status,
-        })
-        .then((response) => {
-          console.log(response.data.message);
-          this.$router.push({ name: "Tables" });
-        })
-        .catch((error) => {
-          console.error("Error verifying donation:", error);
-        });
+          .put(`http://localhost:8000/api/verifikasi-donasi/${id_donasi}`, {
+            status_verifikasi: status,
+          })
+          .then((response) => {
+            console.log(response.data.message);
+
+            if (status === "VALID") {
+              axios
+                  .post(`http://localhost:8000/api/send-donation-receipt/${id_donasi}`)
+                  .then((receiptResponse) => {
+                    console.log(receiptResponse.data.message);
+                  })
+                  .catch((receiptError) => {
+                    console.error("Error sending donation receipt:", receiptError);
+                  });
+            }
+
+            this.$router.push({ name: "Tables" });
+          })
+          .catch((error) => {
+            console.error("Error verifying donation:", error);
+          });
 
       this.showConfirmDialog = false;
     },

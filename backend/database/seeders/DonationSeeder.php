@@ -21,7 +21,7 @@ class DonationSeeder extends Seeder
                 'nama_donatur' => 'John Doe',
                 'alamat_donatur' => 'Jl. Indah gang 5',
                 'no_telepon_donatur' => '0812 8273 1372',
-                'email_donatur' => 'johndoe@gmail.com',
+                'email_donatur' => 'ariqfkhrii@gmail.com',
                 'jumlah_donasi' => 1000000,
                 'metode_pembayaran' => 'BCA',
                 'bukti_pembayaran' => 'C:\documents\bukti_pembayaran\001.jpg',
