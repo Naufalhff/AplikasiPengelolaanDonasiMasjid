@@ -182,7 +182,7 @@ export default {
   },
   methods: {
     goBack() {
-      const id = this.$route.query.id; // ambil id dari query yang sudah ada
+      const id = this.$route.query.id;
       this.$router.push({ path: "/detaildonasi/nominal", query: { id } });
     },
     confirmDonation() {

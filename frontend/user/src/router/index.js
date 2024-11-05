@@ -19,6 +19,8 @@ import PembayaranPage from "../views/PembayaranPage.vue";
 import UploadBukti from "../views/UploadBukti.vue";
 import KalkulatorZakat from "../views/KalkulatorZakat.vue";
 import DetailZakat from "../views/DetailZakat.vue";
+import TransaksiDonasi from "../views/TransaksiDonasi.vue";
+import RingkasanDonasi from "../views/RingkasanDonasi.vue";
 
 const routes = [
   {
@@ -116,6 +118,16 @@ const routes = [
     path: "/DetailZakat",
     name: "DetailZakat",
     component: DetailZakat,
+  },
+  {
+    path: "/transaksidonasi",
+    name: "TransaksiDonasi",
+    component: TransaksiDonasi,
+  },
+  {
+    path: "/ringkasandonasi",
+    name: "RingkasanDonasi",
+    component: RingkasanDonasi,
   },
 ];
 
