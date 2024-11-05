@@ -18,6 +18,7 @@ import FormDonasi from "../views/FormDonasi.vue";
 import PembayaranPage from "../views/PembayaranPage.vue";
 import UploadBukti from "../views/UploadBukti.vue";
 import KalkulatorZakat from "../views/KalkulatorZakat.vue";
+import DetailZakat from "../views/DetailZakat.vue";
 
 const routes = [
   {
@@ -110,6 +111,11 @@ const routes = [
     path: "/kalkulatorzakat",
     name: "KalkulatorZakat",
     component: KalkulatorZakat,
+  },
+  {
+    path: "/DetailZakat",
+    name: "DetailZakat",
+    component: DetailZakat,
   },
 ];
 

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -15,7 +14,7 @@ return new class extends Migration
             $table->bigIncrements('id_kegiatan');
             $table->string('foto_kegiatan');
             $table->string('nama_kegiatan');
-            $table->enum('jenis_kegiatan', ['INFAQ', 'ZAKAT', 'SEDEKAH', 'KEGIATAN']);
+            $table->string('jenis_kegiatan');
             $table->text('deskripsi_kegiatan');
             $table->float('anggaran_kegiatan');
             $table->float('anggaran_terkumpul')->default(0);

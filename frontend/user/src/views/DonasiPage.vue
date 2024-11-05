@@ -17,7 +17,11 @@
       <div class="btn-group">
         <div
           class="d-flex flex-column align-items-center p-3 mr-5 me-4 border rounded"
-          :class="{ 'border-success': selectedCategory === 'ZAKAT' }"
+          :class="{
+            'border-success':
+              selectedCategory === 'ZAKAT' ||
+              selectedCategory === 'ZAKAT FITRAH',
+          }"
           @click="selectedCategory = 'ZAKAT'"
         >
           <i class="fas fa-balance-scale fa-2x text-success p-3 mb-2"></i>
@@ -56,26 +60,28 @@
         <div class="card h-100">
           <img
             :src="image"
-            class="card-img-top"
+            class="card-img-top rounded"
             :alt="program.nama_kegiatan"
             style="height: 180px; object-fit: cover"
           />
-          <div class="card-body">
+          <div class="card-body d-flex flex-column">
             <h5 class="card-title">{{ program.nama_kegiatan }}</h5>
             <p class="card-text">
-              Terkumpul: Rp. {{ program.anggaran_terkumpul }}
+              Terkumpul: Rp. {{ formatCurrency(program.anggaran_terkumpul) }}
             </p>
-            <div class="d-flex justify-content-end">
+            <div class="mt-auto text-end">
               <RouterLink
                 :to="{
-                  path: '/detaildonasi',
+                  path: determineRoute(program.jenis_kegiatan),
                   query: {
                     id: program.id_kegiatan,
                     category: selectedCategory,
                   },
                 }"
               >
-                <button class="btn btn-success px-3">Details Donasi</button>
+                <button class="btn btn-success px-3 mt-3">
+                  Details Donasi
+                </button>
               </RouterLink>
             </div>
           </div>
@@ -100,18 +106,27 @@ export default {
   computed: {
     filteredPrograms() {
       return this.program.filter((program) => {
+        const isZakatCategory =
+          this.selectedCategory === "ZAKAT" &&
+          (program.jenis_kegiatan === "ZAKAT" ||
+            program.jenis_kegiatan === "ZAKAT FITRAH");
         const matchesCategory =
-          program.jenis_kegiatan === this.selectedCategory;
+          program.jenis_kegiatan === this.selectedCategory || isZakatCategory;
         const matchesSearch =
           this.search === "" ||
-          program.name.toLowerCase().includes(this.search.toLowerCase());
+          program.nama_kegiatan
+            .toLowerCase()
+            .includes(this.search.toLowerCase());
         return matchesCategory && matchesSearch;
       });
     },
   },
   methods: {
-    test() {
-      console.log("OK");
+    formatCurrency(value) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      }).format(value);
     },
     fetchPrograms() {
       axios
@@ -124,9 +139,17 @@ export default {
           console.error("Error fetching programs:", error);
         });
     },
+    determineRoute(category) {
+      // Routing based on the category type
+      if (category === "ZAKAT") {
+        return "/detailzakat";
+      } else if (category === "ZAKAT FITRAH") {
+        return "/detaildonasi";
+      }
+      return "/detaildonasi"; // Default for other categories
+    },
   },
   mounted() {
-    this.test();
     this.fetchPrograms();
   },
 };

@@ -15,7 +15,6 @@
           </div>
         </div>
         <div class="mt-3">
-          <h4>{{ program.nama_kegiatan }}</h4>
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Deskripsi</h5>
@@ -36,9 +35,11 @@
             </h4>
             <img :src="image" class="img-fluid mb-3" alt="Donation Campaign" />
             <p class="card-text">
-              Terkumpul: Rp. {{ program.anggaran_terkumpul }}
+              Terkumpul: Rp. {{ formatCurrency(program.anggaran_terkumpul) }}
             </p>
-            <p class="card-text">Target: Rp. {{ program.anggaran_kegiatan }}</p>
+            <p class="card-text">
+              Target: Rp. {{ formatCurrency(program.anggaran_kegiatan) }}
+            </p>
             <div class="progress mb-2">
               <div
                 class="progress-bar"
@@ -49,11 +50,25 @@
                 aria-valuemax="100"
               ></div>
             </div>
-            <div v-if="selectedCategory === 'ZAKAT'" class="d-flex mt-3">
+
+            <!-- Kondisi untuk ZAKAT dan ZAKAT_MAL -->
+            <div v-if="isZakatCategory" class="d-flex mt-3">
               <RouterLink :to="{ path: '/kalkulatorzakat' }">
                 <button class="btn btn-success mr-3">Kalkulator Zakat</button>
               </RouterLink>
 
+              <RouterLink
+                :to="{
+                  path: '/detaildonasi/nominal',
+                  query: { id: program.id_kegiatan },
+                }"
+              >
+                <button class="btn btn-success">Donasi Sekarang</button>
+              </RouterLink>
+            </div>
+
+            <!-- Kondisi untuk kategori lain, hanya menampilkan Donasi Sekarang di tengah -->
+            <div v-else class="d-flex mt-3 justify-content-center">
               <RouterLink
                 :to="{
                   path: '/detaildonasi/nominal',
@@ -91,6 +106,26 @@ export default {
     };
   },
 
+  computed: {
+    // Tambahkan computed property untuk mengecek apakah kategori adalah ZAKAT atau ZAKAT_MAL
+    isZakatCategory() {
+      return (
+        this.selectedCategory === "ZAKAT" ||
+        this.selectedCategory === "ZAKAT MAL"
+      );
+    },
+    // Hitung progress persentase
+    progress() {
+      if (this.program.anggaran_kegiatan > 0) {
+        return (
+          (this.program.anggaran_terkumpul / this.program.anggaran_kegiatan) *
+          100
+        );
+      }
+      return 0;
+    },
+  },
+
   methods: {
     formatCurrency(value) {
       return new Intl.NumberFormat("id-ID", {
@@ -100,18 +135,26 @@ export default {
     },
     fetchProgram() {
       const id = this.$route.query.id;
-      console.log(id);
       axios
         .get(`http://localhost:8000/api/donasi/${id}`)
         .then((response) => {
           this.program = response.data;
-          console.log(response.data);
         })
         .catch((error) => {
           console.error("Gagal fetch data", error);
         });
     },
   },
+
+  watch: {
+    "$route.query.category": {
+      immediate: true,
+      handler(newCategory) {
+        this.selectedCategory = newCategory || "SUMBANGAN";
+      },
+    },
+  },
+
   mounted() {
     this.fetchProgram();
   },

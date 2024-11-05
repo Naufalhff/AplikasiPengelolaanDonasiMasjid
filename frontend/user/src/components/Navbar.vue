@@ -1,9 +1,12 @@
 <template>
-  <nav class="navbar navbar-expand-lg fixed-top" :class="{ transparent: isHomePage }">
+  <nav
+    class="navbar navbar-expand-lg fixed-top"
+    :class="{ transparent: isHomePage }"
+  >
     <div class="container-fluid">
       <!-- Logo and Brand Name -->
       <a class="navbar-brand d-flex align-items-center" href="#">
-        <router-link to="/"> <span>hariinidonasi</span> </router-link>
+        <router-link to="/"> <span>LuqmanulHakim</span> </router-link>
       </a>
 
       <button
@@ -55,7 +58,7 @@ export default {
   },
   methods: {
     checkRoute() {
-      this.isHomePage = this.$route.path === '/';
+      this.isHomePage = this.$route.path === "/";
       this.handleScroll();
     },
     handleScroll() {

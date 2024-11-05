@@ -68,10 +68,10 @@
             <!-- ATM Instructions -->
             <div class="tab-pane fade show active" id="atm" role="tabpanel">
               <ul class="list-unstyled">
-                <li>Masukkan kartu ATM BCA & PIN</li>
+                <li>Masukkan kartu ATM BSI & PIN</li>
                 <li>Pilih transaksi lainnya</li>
                 <li>Pilih transfer</li>
-                <li>Pilih transfer sesama BCA</li>
+                <li>Pilih transfer sesama BSI atau Antar Bank</li>
                 <li>Masukkan nomor rekening tujuan</li>
                 <li>Masukkan jumlah yang ingin dibayarkan</li>
                 <li>Validasi pembayaran anda</li>
@@ -82,7 +82,7 @@
             <!-- M-Banking Instructions -->
             <div class="tab-pane fade" id="mbanking" role="tabpanel">
               <ul class="list-unstyled">
-                <li>Buka aplikasi BCA Mobile</li>
+                <li>Buka aplikasi BSI Mobile</li>
                 <li>Pilih "m-Transfer"</li>
                 <li>Pilih transfer</li>
                 <li>Pilih "Transfer Antar Bank"</li>

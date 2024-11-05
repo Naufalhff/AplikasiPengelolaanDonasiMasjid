@@ -17,7 +17,7 @@ class DonationSeeder extends Seeder
         Donation::insert([
             [
                 'id_user' => 1,
-                'id_kegiatan' => 1,
+                'id_kegiatan' => 7,
                 'nama_donatur' => 'John Doe',
                 'alamat_donatur' => 'Jl. Indah gang 5',
                 'no_telepon_donatur' => '0812 8273 1372',
@@ -31,7 +31,7 @@ class DonationSeeder extends Seeder
             ],
             [
                 'id_user' => 2,
-                'id_kegiatan' => 2,
+                'id_kegiatan' => 8,
                 'nama_donatur' => 'Jane Smith',
                 'alamat_donatur' => 'Jl. Harmoni No.12',
                 'no_telepon_donatur' => '0812 1234 5678',
@@ -45,7 +45,7 @@ class DonationSeeder extends Seeder
             ],
             [
                 'id_user' => 3,
-                'id_kegiatan' => 1,
+                'id_kegiatan' => 9,
                 'nama_donatur' => 'Alice Johnson',
                 'alamat_donatur' => 'Jl. Bahagia No.8',
                 'no_telepon_donatur' => '0812 9988 7766',
@@ -59,7 +59,7 @@ class DonationSeeder extends Seeder
             ],
             [
                 'id_user' => 4,
-                'id_kegiatan' => 3,
+                'id_kegiatan' => 10,
                 'nama_donatur' => 'Bob Williams',
                 'alamat_donatur' => 'Jl. Kenangan No.15',
                 'no_telepon_donatur' => '0812 4321 8765',
@@ -73,7 +73,7 @@ class DonationSeeder extends Seeder
             ],
             [
                 'id_user' => 5,
-                'id_kegiatan' => 2,
+                'id_kegiatan' => 11,
                 'nama_donatur' => 'Charlie Davis',
                 'alamat_donatur' => 'Jl. Bunga Mawar No.3',
                 'no_telepon_donatur' => '0812 2345 6789',
