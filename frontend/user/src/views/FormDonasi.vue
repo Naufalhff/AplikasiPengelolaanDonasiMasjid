@@ -31,8 +31,8 @@
             v-model="donor.paymentMethod"
           >
             <option value="" selected disabled>Pilih</option>
-            <option value="bsi">BSI</option>
-            <option value="qris">QRIS</option>
+            <option value="BSI">BSI</option>
+            <option value="QRIS">QRIS</option>
           </select>
         </div>
         <hr />
@@ -135,25 +135,13 @@
               >
                 Kembali
               </button>
-
-              <RouterLink
-                :to="{
-                  path: '/detaildonasi/nominal/formdonasi/pembayaran',
-                  query: {
-                    id: this.data.id_kegiatan,
-                    amount: this.selectedAmount,
-                    metodePembayaran: this.donor.paymentMethod,
-                  },
-                }"
-              >
                 <button
                   type="button"
                   class="btn btn-success ml-5"
-                  @click="KembaliDonasi"
+                  @click="submit"
                 >
                   OK, Kirim
                 </button>
-              </RouterLink>
             </div>
           </div>
         </div>
@@ -165,6 +153,7 @@
 <script>
 import axios from "axios";
 import { Modal } from "bootstrap";
+import CryptoJS from "crypto-js";
 
 export default {
   data() {
@@ -184,6 +173,7 @@ export default {
 
       errorMessage: "",
       data: [],
+      key: "Proyek-3-Mantap"
     };
   },
   mounted() {
@@ -226,6 +216,26 @@ export default {
           console.error(error);
         });
     },
+    submit() {
+      this.KembaliDonasi();
+      const name = CryptoJS.AES.encrypt(this.donor.fullName, this.key).toString();
+      const phone = CryptoJS.AES.encrypt(this.donor.phoneNumber, this.key).toString();
+      const address = CryptoJS.AES.encrypt(this.donor.address, this.key).toString();
+      const email = CryptoJS.AES.encrypt(this.donor.email, this.key).toString();
+
+      this.$router.push({
+        path: '/detaildonasi/nominal/formdonasi/pembayaran',
+        query: {
+          id: this.data.id_kegiatan,
+          name: name,
+          phone: phone,
+          address: address,
+          email: email,
+          amount: this.selectedAmount,
+          payment: this.donor.paymentMethod
+        }
+      })
+    }
   },
 };
 </script>
