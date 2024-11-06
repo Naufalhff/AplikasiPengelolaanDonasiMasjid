@@ -19,8 +19,8 @@ import PembayaranPage from "../views/PembayaranPage.vue";
 import UploadBukti from "../views/UploadBukti.vue";
 import KalkulatorZakat from "../views/KalkulatorZakat.vue";
 import DetailZakat from "../views/DetailZakat.vue";
-// import TransaksiDonasi from "../views/TransaksiDonasi.vue";
-// import RingkasanDonasi from "../views/RingkasanDonasi.vue";
+import TransaksiDonasi from "../views/admin/TransaksiDonasi.vue";
+import RingkasanDonasi from "../views/admin/RingkasanDonasi.vue";
 
 const routes = [
   {
@@ -119,16 +119,16 @@ const routes = [
     name: "DetailZakat",
     component: DetailZakat,
   },
-  // {
-  //   path: "/transaksidonasi",
-  //   name: "TransaksiDonasi",
-  //   component: TransaksiDonasi,
-  // },
-  // {
-  //   path: '/ringkasan-donasi/:id',
-  //   name: "RingkasanDonasi",
-  //   component: RingkasanDonasi,
-  // },
+  {
+    path: "/transaksidonasi",
+    name: "TransaksiDonasi",
+    component: TransaksiDonasi,
+  },
+  {
+    path: "/ringkasan-donasi/:id",
+    name: "RingkasanDonasi",
+    component: RingkasanDonasi,
+  },
 ];
 
 const router = createRouter({
