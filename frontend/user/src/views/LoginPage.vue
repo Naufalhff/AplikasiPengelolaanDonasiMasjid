@@ -96,7 +96,7 @@ export default {
 
         const UserRoleid = response.data.user.id_role;
 
-        if (UserRoleid === 8) {
+        if (UserRoleid === 4) {
           this.$router.push("/home");
         } else {
           this.$router.push("/transaksidonasi");
