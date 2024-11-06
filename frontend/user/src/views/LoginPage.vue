@@ -96,10 +96,10 @@ export default {
 
         const UserRoleid = response.data.user.id_role;
 
-        if (UserRoleid === 4) {
+        if (UserRoleid === 8) {
           this.$router.push("/home");
         } else {
-          this.$router.push("/dashboard");
+          this.$router.push("/transaksidonasi");
         }
         // Simpan token ke localStorage atau Vuex
         // localStorage.setItem('token', response.data.token);
