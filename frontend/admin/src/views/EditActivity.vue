@@ -3,7 +3,7 @@
       <div class="row justify-content-center">
         <div class="col-xl-8 col-lg-10 col-md-12">
           <!-- Form Title -->
-          <h2 class="mb-5 text-center">Buat Kegiatan Baru</h2>
+          <h2 class="mb-5 text-center">Edit Kegiatan</h2>
   
           <!-- Form -->
           <form @submit.prevent="validateForm" novalidate>
@@ -111,7 +111,7 @@
             <!-- Submit and Cancel Buttons -->
             <div class="d-flex justify-content-between mt-4">
               <button @click="cancel" class="btn btn-outline-secondary btn-lg">Batalkan</button>
-              <button type="submit" class="btn btn-success btn-lg">Buat Kegiatan</button>
+              <button type="submit" class="btn btn-success btn-lg">Simpan Perubahan</button>
             </div>
           </form>
         </div>

@@ -37,42 +37,42 @@ export default {
           title: 'Sedekah Subuh',
           collected: 'Rp. 47,328,354',
           donors: 18746,
-          image: require('@/assets/img/infaq.jpeg')
+          image: require('@/assets/images/infaq.jpeg')
         },
         {
           id: 2,
           title: 'Zakat Penghasilan',
           collected: 'Rp. 1,828,658,876',
           donors: 3418,
-          image: require('@/assets/img/infaq.jpeg')
+          image: require('@/assets/images/infaq.jpeg')
         },
         {
           id: 3,
           title: 'Zakat Emas dan Perak',
           collected: 'Rp. 214,964,932',
           donors: 108,
-          image: require('@/assets/img/infaq.jpeg')
+          image: require('@/assets/images/infaq.jpeg')
         },
         {
           id: 4,
           title: 'Zakat Investasi dan Saham',
           collected: 'Rp. 13,140,356',
           donors: 30,
-          image: require('@/assets/img/infaq.jpeg')
+          image: require('@/assets/images/infaq.jpeg')
         },
         {
           id: 5,
           title: 'Zakat Tabungan',
           collected: 'Rp. 364,155,868',
           donors: 169,
-          image: require('@/assets/img/infaq.jpeg')
+          image: require('@/assets/images/infaq.jpeg')
         },
         {
           id: 6,
           title: 'Zakat Perniagaan',
           collected: 'Rp. 85,112,470',
           donors: 73,
-          image: require('@/assets/img/infaq.jpeg')
+          image: require('@/assets/images/infaq.jpeg')
         }
       ]
     };
