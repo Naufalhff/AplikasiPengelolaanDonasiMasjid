@@ -13,7 +13,7 @@
         </div>
 
         <p><strong>Info Donatur</strong></p>
-        <ul>
+        <ul v-if="donation.donorInfo"> 
           <li><strong>Nama Lengkap</strong></li>
           <li>{{ donation.donorInfo.fullName }}</li>
           <li><strong>No Telepon</strong></li>
@@ -133,6 +133,7 @@ export default {
           })
           .then((response) => {
             console.log(response.data.message);
+            this.donation.donorInfo.status = status;
 
             if (status === "VALID") {
               axios

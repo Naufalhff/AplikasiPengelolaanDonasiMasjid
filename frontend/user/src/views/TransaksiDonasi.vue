@@ -14,10 +14,10 @@
       <tbody>
         <tr v-for="(transaction, index) in transactions" :key="index">
           <td>{{ transaction.id }}</td>
-          <td>{{ transaction.name }}</td>
+          <td>{{ transaction.nama }}</td>
           <td>{{ transaction.activity }}</td>
           <td :class="getStatusClass(transaction.verificationStatus)">
-            {{ transaction.verificationStatus }}
+            {{ transaction.verificationStatus || 'Tidak Tersedia' }}
           </td>
           <td>
             <button @click="viewDetails(transaction.id)" class="btn btn-detail">Lihat Detail</button>
@@ -42,7 +42,7 @@ export default {
         .then(response => {
           this.transactions = response.data.map(donation => ({
             id: donation.id_donasi,
-            name: donation.nama_donatur,
+            nama: donation.nama_donatur,
             activity: donation.nama_kegiatan,
             verificationStatus: donation.status_verifikasi
           }));

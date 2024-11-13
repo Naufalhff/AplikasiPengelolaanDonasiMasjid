@@ -21,6 +21,7 @@ import KalkulatorZakat from "../views/KalkulatorZakat.vue";
 import DetailZakat from "../views/DetailZakat.vue";
 import TransaksiDonasi from "../views/TransaksiDonasi.vue";
 import RingkasanDonasi from "../views/RingkasanDonasi.vue";
+import LaporanKeuangan from "../views/LaporanKeuangan.vue";
 
 const routes = [
   {
@@ -129,6 +130,11 @@ const routes = [
     name: "RingkasanDonasi",
     component: RingkasanDonasi,
   },
+  {
+    path: '/laporankeuangan',
+    name: "LaporanKeuangan",
+    component: LaporanKeuangan,
+  }
 ];
 
 const router = createRouter({
