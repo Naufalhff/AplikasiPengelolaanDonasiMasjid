@@ -15,29 +15,29 @@
           >
             <option value="" selected disabled>Pilih Jenis Zakat</option>
             <option value="emas">Zakat Emas, Perak, dan Logam Mulia</option>
-            <option value="uang">Zakat Uang dan Surat Berharga</option>
+            <option value="tabungan">Zakat Tabungan dan Investasi</option>
             <option value="perdagangan">Zakat Perdagangan</option>
             <option value="perusahaan">Zakat Perusahaan</option>
             <option value="pertanian">
               Zakat Pertanian, Perkebunan, dan Kehutanan
             </option>
-            <option value="peternakan">Zakat Peternakan dan Perikanan</option>
+            <option value="peternakan">Zakat Peternakan</option>
             <option value="pertambangan">Zakat Pertambangan</option>
             <option value="pendapatan">Zakat Pendapatan dan Jasa</option>
             <option value="rikaz">Zakat Rikaz</option>
           </select>
         </div>
 
-        <!-- Conditional Input Fields Based on Zakat Type -->
+        <!-- Zakat Emas -->
         <div v-if="selectedZakatType === 'emas'" class="mb-3">
           <div class="mb-3">
-            <label for="zakatType" class="form-label d-block"
+            <label for="logamMuliaType" class="form-label d-block"
               >Pilih Jenis Logam Mulia</label
             >
             <select
               v-model="selectedLogamMulia"
               class="form-select border rounded-3 p-2 w-100"
-              id="LogamMuliaType"
+              id="logamMuliaType"
             >
               <option value="" selected disabled>
                 Pilih Jenis Logam Mulia
@@ -78,29 +78,51 @@
           <div class="mb-3">
             <label class="form-label">Nisab Emas/Perak</label>
             <div class="input-group">
-              <span class="input-group-text">Rp</span>
               <input
                 type="number"
                 class="form-control"
-                placeholder="Rp.0"
-                v-model="NisabEmasPerak"
+                :value="nisabComputed"
+                readonly
+              />
+              <span class="input-group-text">Gram</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zakat Tabungan -->
+        <div v-if="selectedZakatType === 'tabungan'" class="mb-3">
+          <div class="mb-3">
+            <label class="form-label"
+              >Nilai tabungan atau investasi yang dimiliki</label
+            >
+            <div class="input-group">
+              <span class="input-group-text">Rp.</span>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="0"
                 min="0"
+                v-model="NilaiTabungan"
+              />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Harga emas per gram saat ini </label>
+            <div class="input-group">
+              <span class="input-group-text">Rp.</span>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="0"
+                min="0"
+                v-model="HargaEmas"
               />
             </div>
           </div>
         </div>
 
-        <div v-if="selectedZakatType === 'uang'" class="mb-3">
-          <label class="form-label">Jumlah Uang dan Surat Berharga</label>
-          <input
-            type="number"
-            v-model="uang"
-            class="form-control"
-            placeholder="Rp. 0"
-            min="0"
-          />
-        </div>
-
+        <!-- Zakat Perdagangan -->
         <div v-if="selectedZakatType === 'perdagangan'" class="mb-3">
           <div class="mb-3">
             <label class="form-label">Modal yang Diputar selama 1 tahun</label>
@@ -173,6 +195,7 @@
           </div>
         </div>
 
+        <!-- Zakat Perusahaan -->
         <div v-if="selectedZakatType === 'perusahaan'" class="mb-3">
           <div class="mb-3">
             <label class="form-label">Keuntungan Bersih</label>
@@ -217,6 +240,7 @@
           </div>
         </div>
 
+        <!-- Zakat Pertanian -->
         <div v-if="selectedZakatType === 'pertanian'" class="mb-3">
           <div class="mb-3">
             <label for="zakatType" class="form-label d-block"
@@ -292,6 +316,7 @@
           </div>
         </div>
 
+        <!-- Zakat Peternakan -->
         <div v-if="selectedZakatType === 'peternakan'" class="mb-3">
           <label class="form-label">Jumlah Ternak</label>
           <input
@@ -303,17 +328,24 @@
           />
         </div>
 
+        <!-- Zakat Pertambangan -->
         <div v-if="selectedZakatType === 'pertambangan'" class="mb-3">
-          <label class="form-label">Nilai Hasil Tambang (Rp)</label>
-          <input
-            type="number"
-            v-model="nilaiTambang"
-            class="form-control"
-            placeholder="Rp. 0"
-            min="0"
-          />
+          <div class="mb-3">
+            <label class="form-label">Keuntungan yang diperoleh </label>
+            <div class="input-group">
+              <span class="input-group-text">Rp.</span>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="0"
+                min="0"
+                v-model="keuntungan"
+              />
+            </div>
+          </div>
         </div>
 
+        <!-- Zakat Pendapatan -->
         <div v-if="selectedZakatType === 'pendapatan'" class="mb-3">
           <div class="mb-3">
             <label class="form-label">Penghasilan Per Bulan</label>
@@ -358,6 +390,7 @@
           </div>
         </div>
 
+        <!-- Zakat Rikaz -->
         <div v-if="selectedZakatType === 'rikaz'" class="mb-3">
           <label class="form-label">Nilai Rikaz (Harta Terpendam) (Rp)</label>
           <input
@@ -442,7 +475,13 @@ export default {
       selectedPertanian: "",
       hargaJual: 0,
       hasilPanen: 0,
+      selectedLogamMulia: "emas",
     };
+  },
+  computed: {
+    nisabComputed() {
+      return this.selectedLogamMulia === "emas" ? 85 : 595;
+    },
   },
   methods: {
     calculateZakat() {
