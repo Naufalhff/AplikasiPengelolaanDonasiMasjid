@@ -318,14 +318,49 @@
 
         <!-- Zakat Peternakan -->
         <div v-if="selectedZakatType === 'peternakan'" class="mb-3">
-          <label class="form-label">Jumlah Ternak</label>
-          <input
-            type="number"
-            v-model="jumlahTernak"
-            class="form-control"
-            placeholder="Masukkan jumlah ternak"
-            min="0"
-          />
+          <div class="mb-3">
+            <label for="zakatType" class="form-label d-block"
+              >Pilih Jenis Peternakan</label
+            >
+            <select
+              v-model="selectedPeternakan"
+              class="form-select border rounded-3 p-2 w-100"
+              id="zakatType"
+            >
+              <option value="" selected disabled>Pilih Jenis Peternakan</option>
+              <option value="gabah">Sapi</option>
+              <option value="padi">Domba</option>
+              <option value="padi">Kerbau</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Jumlah hewan yang dimiliki</label>
+            <div class="input-group">
+              <input
+                type="number"
+                class="form-control"
+                placeholder="0"
+                v-model="JumlahHewan"
+                min="0"
+              />
+              <span class="input-group-text">Ekor</span>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Harga hewan yang dipilih per-ekor</label>
+            <div class="input-group">
+              <span class="input-group-text">Rp</span>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="Isi harga jual di daerahmu saat membayar zakat"
+                v-model="hargaJual"
+                min="0"
+              />
+            </div>
+          </div>
         </div>
 
         <!-- Zakat Pertambangan -->
@@ -461,7 +496,7 @@ import { Modal } from "bootstrap";
 export default {
   data() {
     return {
-      selectedZakatType: "perdagangan",
+      selectedZakatType: "emas",
       modal: 0,
       keuntungan: 0,
       piutangDagang: 0,
@@ -476,6 +511,7 @@ export default {
       hargaJual: 0,
       hasilPanen: 0,
       selectedLogamMulia: "emas",
+      selectedPeternakan: "",
     };
   },
   computed: {
