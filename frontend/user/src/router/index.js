@@ -108,12 +108,13 @@ const routes = [
     component: VerifyRegister,
     meta: { hideNavbar: true },
   },
-  // {
-  //   path: "/dashboard",
-  //   name: "Dashboard",
-  //   component: Dashboard,
-  //   meta: { hideNavbar: true },
-  // },
+  {
+    path: "/dashboard-page",
+    name: "DashboardPage",
+    component: DashboardPage,
+    meta: { hideNavbar: true },
+  },
+
   {
     path: "/activity-list",
     name: "ActivityList",
