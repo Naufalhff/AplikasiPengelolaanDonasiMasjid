@@ -36,9 +36,9 @@
       <div class="receipt">
         <p><strong>Bukti Transfer</strong></p>
         <img
-            :src="donation.receiptImage"
-            alt="Bukti Transfer"
-            class="transfer-receipt"
+          :src="donation.receiptImage"
+          alt="Bukti Transfer"
+          class="transfer-receipt"
         />
       </div>
     </div>
@@ -54,8 +54,8 @@
           Kembali
         </button>
         <button
-            @click="handleConfirmedAction"
-            :class="
+          @click="handleConfirmedAction"
+          :class="
             confirmAction === 'approve' ? 'confirm-button' : 'reject2-button'
           "
         >
@@ -95,25 +95,25 @@ export default {
   methods: {
     fetchDonationDetail(id_donasi) {
       axios
-          .get(`http://localhost:8000/api/ringkasan-donasi/${id_donasi}`)
-          .then((response) => {
-            this.donation = {
-              amount: response.data.jumlah_donasi,
-              donorInfo: {
-                fullName: response.data.nama_donatur,
-                phoneNumber: response.data.no_telepon_donatur,
-                address: response.data.alamat_donatur,
-                email: response.data.email_donatur,
-                activity: response.data.event.nama_kegiatan,
-                transactionDate: response.data.tanggal_donasi,
-                status: response.data.status_verifikasi,
-              },
-              receiptImage: response.data.bukti_pembayaran,
-            };
-          })
-          .catch((error) => {
-            console.error("Error fetching donation details:", error);
-          });
+        .get(`http://localhost:8000/api/ringkasan-donasi/${id_donasi}`)
+        .then((response) => {
+          this.donation = {
+            amount: response.data.jumlah_donasi,
+            donorInfo: {
+              fullName: response.data.nama_donatur,
+              phoneNumber: response.data.no_telepon_donatur,
+              address: response.data.alamat_donatur,
+              email: response.data.email_donatur,
+              activity: response.data.event.nama_kegiatan,
+              transactionDate: response.data.tanggal_donasi,
+              status: response.data.status_verifikasi,
+            },
+            receiptImage: response.data.bukti_pembayaran,
+          };
+        })
+        .catch((error) => {
+          console.error("Error fetching donation details:", error);
+        });
     },
     confirmReject() {
       this.confirmAction = "reject";
@@ -128,29 +128,39 @@ export default {
       const status = this.confirmAction === "approve" ? "VALID" : "INVALID";
 
       axios
+<<<<<<< HEAD:frontend/user/src/views/RingkasanDonasi.vue
           .put(`http://localhost:8000/api/verifikasi-donasi/${id_donasi}`, {
             status_verifikasi: status,
           })
           .then((response) => {
             console.log(response.data.message);
             this.donation.donorInfo.status = status;
+=======
+        .put(`http://localhost:8000/api/verifikasi-donasi/${id_donasi}`, {
+          status_verifikasi: status,
+        })
+        .then((response) => {
+          console.log(response.data.message);
+>>>>>>> dccb15ecdfa57703a259adcf85f2e9412a252628:frontend/user/src/views/admin/RingkasanDonasi.vue
 
-            if (status === "VALID") {
-              axios
-                  .post(`http://localhost:8000/api/send-donation-receipt/${id_donasi}`)
-                  .then((receiptResponse) => {
-                    console.log(receiptResponse.data.message);
-                  })
-                  .catch((receiptError) => {
-                    console.error("Error sending donation receipt:", receiptError);
-                  });
-            }
+          if (status === "VALID") {
+            axios
+              .post(
+                `http://localhost:8000/api/send-donation-receipt/${id_donasi}`
+              )
+              .then((receiptResponse) => {
+                console.log(receiptResponse.data.message);
+              })
+              .catch((receiptError) => {
+                console.error("Error sending donation receipt:", receiptError);
+              });
+          }
 
-            this.$router.push({ name: "Tables" });
-          })
-          .catch((error) => {
-            console.error("Error verifying donation:", error);
-          });
+          this.$router.push({ name: "Tables" });
+        })
+        .catch((error) => {
+          console.error("Error verifying donation:", error);
+        });
 
       this.showConfirmDialog = false;
     },

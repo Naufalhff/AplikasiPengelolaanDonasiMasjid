@@ -236,11 +236,11 @@
   </div>
 </template>
 <script>
-import ChartHolderCard from "./components/ChartHolderCard.vue";
+import ChartHolderCard from "../../components/ChartHolderCard.vue";
 import ReportsBarChart from "@/examples/Charts/ReportsBarChart.vue";
 import ReportsLineChart from "@/examples/Charts/ReportsLineChart.vue";
-import MiniStatisticsCard from "./components/MiniStatisticsCard.vue";
-import ProjectCard from "./components/ProjectCard.vue";
+import MiniStatisticsCard from "../../components/MiniStatisticsCard.vue";
+import ProjectCard from "../../components/ProjectCard.vue";
 import TimelineList from "@/examples/Cards/TimelineList.vue";
 import TimelineItem from "@/examples/Cards/TimelineItem.vue";
 import logoXD from "@/assets/img/small-logos/logo-xd.svg";

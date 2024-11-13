@@ -20,7 +20,9 @@
             {{ transaction.verificationStatus || 'Tidak Tersedia' }}
           </td>
           <td>
-            <button @click="viewDetails(transaction.id)" class="btn btn-detail">Lihat Detail</button>
+            <button @click="viewDetails(transaction.id)" class="btn btn-detail">
+              Lihat Detail
+            </button>
           </td>
         </tr>
       </tbody>
@@ -29,15 +31,16 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   data() {
     return {
-      transactions: []
+      transactions: [],
     };
   },
   created() {
+<<<<<<< HEAD:frontend/user/src/views/TransaksiDonasi.vue
     axios.get('http://localhost:8000/api/transaksi-donasi')
         .then(response => {
           this.transactions = response.data.map(donation => ({
@@ -50,6 +53,21 @@ export default {
         .catch(error => {
           console.error("Error fetching transactions:", error);
         });
+=======
+    axios
+      .get("http://localhost:8000/api/transaksi-donasi")
+      .then((response) => {
+        this.transactions = response.data.map((donation) => ({
+          id: donation.id_donasi,
+          name: donation.nama_donatur,
+          activity: donation.nama_kegiatan,
+          verificationStatus: donation.status_verifikasi,
+        }));
+      })
+      .catch((error) => {
+        console.error("Error fetching transactions:", error);
+      });
+>>>>>>> dccb15ecdfa57703a259adcf85f2e9412a252628:frontend/user/src/views/admin/TransaksiDonasi.vue
   },
   methods: {
     getStatusClass(status) {
@@ -59,9 +77,9 @@ export default {
       return "";
     },
     viewDetails(id) {
-      this.$router.push({ name: 'RingkasanDonasi', params: { id } });
-    }
-  }
+      this.$router.push({ name: "RingkasanDonasi", params: { id } });
+    },
+  },
 };
 </script>
 

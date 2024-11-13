@@ -17,7 +17,7 @@
         </sidenav-collapse>
       </li>
       <li class="nav-item">
-        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="activitylist" navText="daftar kegiatan">
+        <sidenav-collapse url="#" :aria-controls="''" v-bind:collapse="false" collapseRef="activity-list" navText="daftar kegiatan">
           <template v-slot:icon>
             <i class="material-icons-round opacity-10 fs-5">table_view</i>
           </template>
