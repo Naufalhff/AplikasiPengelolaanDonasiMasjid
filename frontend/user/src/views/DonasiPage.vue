@@ -67,7 +67,7 @@
           <div class="card-body d-flex flex-column">
             <h5 class="card-title">{{ program.nama_kegiatan }}</h5>
             <p class="card-text">
-              Terkumpul: Rp. {{ formatCurrency(program.anggaran_terkumpul) }}
+              Terkumpul: {{ formatCurrency(program.anggaran_terkumpul) }}
             </p>
             <div class="mt-auto text-end">
               <RouterLink

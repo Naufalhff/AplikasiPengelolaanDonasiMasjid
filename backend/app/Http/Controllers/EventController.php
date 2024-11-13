@@ -15,6 +15,12 @@ class EventController extends Controller
         return response()->json($events);
     }
 
+    public function getEventLimited()
+    {
+        $events = Event::take(3)->get();
+        return response()->json($events);
+    }
+
     public function getDataById($id)
     {
         $event = Event::find($id);
