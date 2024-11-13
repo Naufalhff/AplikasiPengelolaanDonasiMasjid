@@ -455,6 +455,7 @@
       tabindex="-1"
       aria-labelledby="zakatModalLabel"
       aria-hidden="true"
+      ref="zakatModal"
     >
       <div class="modal-dialog">
         <div class="modal-content">
@@ -496,22 +497,40 @@ import { Modal } from "bootstrap";
 export default {
   data() {
     return {
-      selectedZakatType: "emas",
+      selectedZakatType: "",
+      zakatResult: 0,
+      // Zakat emas & logam mulia
+      selectedLogamMulia: "emas",
+      BeratEmasPerak: 0,
+      HargaEmasPerak: 0,
+      // Zakat tabungan
+      NilaiTabungan: 0,
+      HargaEmas: 0,
+      // Zakat perdagangan
       modal: 0,
       keuntungan: 0,
       piutangDagang: 0,
       utangJatuhTempo: 0,
       kerugian: 0,
+      // Zakat perusahaan
       keuntunganBersih: 0,
-      TahunOperasional: 0,
       UtangLancar: 0,
+      TahunOperasional: 0,
+      // Zakat pertanian
       jenisPengairan: "",
-      zakatResult: 0,
-      selectedPertanian: "",
-      hargaJual: 0,
       hasilPanen: 0,
-      selectedLogamMulia: "emas",
+      hargaJual: 0,
+      selectedPertanian: "",
+      // Zakat peternakan
       selectedPeternakan: "",
+      JumlahHewan: 0,
+      hargaHewan: 0,
+      // Zakat pendapatan
+      PenghasilanPerBulan: 0,
+      PenghasilanLain: 0,
+      HutangCicilan: 0,
+      // Zakat rikaz
+      nilaiRikaz: 0,
     };
   },
   computed: {
@@ -522,70 +541,77 @@ export default {
   methods: {
     calculateZakat() {
       this.zakatResult = 0;
-      if (this.selectedZakatType === "emas") {
-        this.zakatResult = this.emas * 0.025;
-      } else if (this.selectedZakatType === "uang") {
-        this.zakatResult = this.uang * 0.025;
-      } else if (this.selectedZakatType === "perdagangan") {
-        const nilaiKekayaan =
-          this.modal +
-          this.keuntungan +
-          this.piutangDagang -
-          this.utangJatuhTempo -
-          this.kerugian;
-        this.zakatResult = nilaiKekayaan * 0.025;
-      } else if (this.selectedZakatType === "pertanian") {
-        if (this.hasilPanen > 0 && this.hargaJual > 0 && this.jenisPengairan) {
-          let zakat;
-          if (this.jenisPengairan === "tadahHujan") {
-            zakat = this.hasilPanen * this.hargaJual * 0.1;
-          } else if (this.jenisPengairan === "berbayar") {
-            zakat = this.hasilPanen * this.hargaJual * 0.05;
-          }
-          return zakat.toFixed(2);
+
+      switch (this.selectedZakatType) {
+        case "emas": {
+          const zakatEmas = this.BeratEmasPerak * this.HargaEmasPerak * 0.025;
+          this.zakatResult =
+            zakatEmas >= this.nisabComputed * this.HargaEmasPerak
+              ? zakatEmas
+              : 0;
+          break;
         }
-        return 0;
-      } else if (this.selectedZakatType === "peternakan") {
-        this.zakatResult = this.jumlahTernak * 0.025;
-      } else if (this.selectedZakatType === "pertambangan") {
-        this.zakatResult = this.nilaiTambang * 0.025;
-      } else if (this.selectedZakatType === "pendapatan") {
-        this.zakatResult = this.pendapatan * 0.025;
-      } else if (this.selectedZakatType === "rikaz") {
-        this.zakatResult = this.nilaiRikaz * 0.2;
-      } else if (this.selectedZakatType === "perusahaan") {
-        const kekayaanBersih = this.keuntunganBersih - this.UtangLancar;
-        if (this.TahunOperasional >= 1) {
-          this.zakatResult = kekayaanBersih * 0.025;
-        } else {
-          this.zakatResult = 0;
+        case "tabungan": {
+          const nisabTabungan = 85 * this.HargaEmas;
+          this.zakatResult =
+            this.NilaiTabungan >= nisabTabungan
+              ? this.NilaiTabungan * 0.025
+              : 0;
+          break;
+        }
+        case "perdagangan": {
+          const nilaiKekayaan =
+            this.modal +
+            this.keuntungan +
+            this.piutangDagang -
+            this.utangJatuhTempo -
+            this.kerugian;
+          this.zakatResult = nilaiKekayaan * 0.025;
+          break;
+        }
+        case "perusahaan": {
+          const kekayaanBersih = this.keuntunganBersih - this.UtangLancar;
+          this.zakatResult =
+            this.TahunOperasional >= 1 ? kekayaanBersih * 0.025 : 0;
+          break;
+        }
+        case "pertanian": {
+          const rate = this.jenisPengairan === "tadahHujan" ? 0.1 : 0.05;
+          this.zakatResult = this.hasilPanen * this.hargaJual * rate;
+          break;
+        }
+        case "peternakan": {
+          this.zakatResult = this.JumlahHewan * this.hargaHewan * 0.025;
+          break;
+        }
+        case "pertambangan": {
+          this.zakatResult = this.keuntungan * 0.025;
+          break;
+        }
+        case "pendapatan": {
+          const totalPendapatan =
+            this.PenghasilanPerBulan * 12 + this.PenghasilanLain;
+          const zakatPendapatan =
+            totalPendapatan >= 85 * this.HargaEmas
+              ? (totalPendapatan - this.HutangCicilan) * 0.025
+              : 0;
+          this.zakatResult = zakatPendapatan;
+          break;
+        }
+        case "rikaz": {
+          this.zakatResult = this.nilaiRikaz * 0.2;
+          break;
         }
       }
 
-      this.zakatResult = this.zakatResult.toLocaleString("id-ID", {
-        style: "currency",
-        currency: "IDR",
+      this.$nextTick(() => {
+        const zakatModal = new Modal(this.$refs.zakatModal);
+        zakatModal.show();
       });
-      // Show result in modal
-      const zakatModal = new Modal(document.getElementById("zakatModal"));
-      zakatModal.show();
     },
     resetForm() {
-      this.selectedZakatType = "";
       this.zakatResult = 0;
-      this.emas = 0;
-      this.uang = 0;
-      this.nilaiDagangan = 0;
-      this.hasilPanen = 0;
-      this.jumlahTernak = 0;
-      this.nilaiTambang = 0;
-      this.pendapatan = 0;
-      this.nilaiRikaz = 0;
-      this.modal = 0;
-      this.keuntungan = 0;
-      this.piutangDagang = 0;
-      this.utangJatuhTempo = 0;
-      this.kerugian = 0;
+      this.selectedZakatType = "";
     },
   },
 };
