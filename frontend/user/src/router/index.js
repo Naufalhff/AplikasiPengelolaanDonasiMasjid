@@ -22,9 +22,9 @@ import PembayaranPage from "../views/PembayaranPage.vue";
 import UploadBukti from "../views/UploadBukti.vue";
 import KalkulatorZakat from "../views/KalkulatorZakat.vue";
 import DetailZakat from "../views/DetailZakat.vue";
-import TransaksiDonasi from "../views/TransaksiDonasi.vue";
-import RingkasanDonasi from "../views/RingkasanDonasi.vue";
-import LaporanKeuangan from "../views/LaporanKeuangan.vue";
+import TransaksiDonasi from "../views/admin/TransaksiDonasi.vue";
+import RingkasanDonasi from "../views/admin/RingkasanDonasi.vue";
+import LaporanKeuangan from "../views/admin/LaporanKeuangan.vue";
 
 const routes = [
   {
@@ -117,8 +117,8 @@ const routes = [
     meta: { hideNavbar: true },
   },
   {
-    path: '/create-activity',
-    name: 'CreateActivity',
+    path: "/create-activity",
+    name: "CreateActivity",
     component: CreateActivity,
     meta: { hideNavbar: true },
   },
@@ -154,10 +154,10 @@ const routes = [
     component: RingkasanDonasi,
   },
   {
-    path: '/laporankeuangan',
+    path: "/laporankeuangan",
     name: "LaporanKeuangan",
     component: LaporanKeuangan,
-  }
+  },
 ];
 
 const router = createRouter({
