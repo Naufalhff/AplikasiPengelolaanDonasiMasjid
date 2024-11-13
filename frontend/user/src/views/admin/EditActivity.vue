@@ -42,34 +42,28 @@
               <div class="col-md-6 mb-3">
                 <label for="activityType" class="form-label">Jenis Kegiatan</label>
                 <select
-                    class="form-select form-select-lg"
-                    id="activityType"
-                    v-model="form.activityType"
-                    :class="{ 'is-invalid': errors.activityType }"
-                    >
-                    <option value="" disabled selected>Pilih jenis kegiatan</option>
-                    <option value="infaq">Infaq</option>
-                    <option value="sedekah">Sedekah</option>
-                    <option value="zakat">Zakat</option>
-                    <option value="kegiatan masjid">Kegiatan Masjid</option>
-                    </select>
-                <div v-if="errors.type" class="invalid-feedback">
-                  {{ errors.type }}
+                  class="form-select form-select-lg custom-select-lg"
+                  id="activityType"
+                  v-model="form.activityType"
+                  :class="{ 'is-invalid': errors.activityType }"
+                >
+                  <option value="" disabled selected>Pilih jenis kegiatan</option>
+                  <option value="infaq">Infaq</option>
+                  <option value="sedekah">Sedekah</option>
+                  <option value="zakat">Zakat</option>
+                  <option value="kegiatan masjid">Kegiatan Masjid</option>
+                </select>
+                <div v-if="errors.activityType" class="invalid-feedback">
+                  {{ errors.activityType }}
                 </div>
               </div>
             </div>
   
-            <div class="mb-3">
+             <!-- Summernote Editor for Description -->
+             <div class="mb-3">
               <label for="activityDescription" class="form-label">Deskripsi</label>
-              <textarea 
-                class="form-control form-control-lg" 
-                id="activityDescription" 
-                v-model="form.description" 
-                rows="4" 
-                placeholder="Masukkan Deskripsi"
-                :class="{ 'is-invalid': errors.description }"
-              ></textarea>
-              <div v-if="errors.description" class="invalid-feedback">
+              <div id="activityDescription" ref="summernoteEditor"></div>
+              <div v-if="errors.description" class="invalid-feedback d-block">
                 {{ errors.description }}
               </div>
             </div>
@@ -93,19 +87,19 @@
               </div>
   
               <div class="col-md-6 mb-3">
-                <label for="timeLimit" class="form-label">Tenggat Waktu (Hari)</label>
+                <label for="timeLimit" class="form-label">Tenggat Waktu</label>
                 <input 
-                  type="number" 
+                  type="date" 
                   class="form-control form-control-lg" 
                   id="timeLimit" 
                   v-model="form.timeLimit" 
-                  placeholder="Masukkan Tenggat Waktu"
                   :class="{ 'is-invalid': errors.timeLimit }"
                 >
                 <div v-if="errors.timeLimit" class="invalid-feedback">
                   {{ errors.timeLimit }}
                 </div>
               </div>
+
             </div>
   
             <!-- Submit and Cancel Buttons -->
@@ -121,6 +115,9 @@
    
 
 <script>
+import $ from 'jquery';
+import 'summernote/dist/summernote-bs4.min.js';
+
 export default {
   data() {
     return {
@@ -134,6 +131,19 @@ export default {
       },
       errors: {}
     };
+  },
+  mounted() {
+    // Initialize Summernote editor
+    $(this.$refs.summernoteEditor).summernote({
+      placeholder: 'Masukkan Deskripsi',
+      tabsize: 2,
+      height: 200,
+      callbacks: {
+        onChange: (contents) => {
+          this.form.description = contents; // Update description with summernote content
+        }
+      }
+    });
   },
   methods: {
     onImageChange(event) {
@@ -240,7 +250,19 @@ input[type="file"] {
   background-color: #f1f3f5;
   border-radius: 8px;
 }
+.custom-select-lg {
+  padding: 14px; /* Increase padding for a larger, more consistent look */
+  font-size: 1.1rem; /* Increase font size for better readability */
+  border-radius: 8px; /* Match border-radius with other form controls */
+  border: 1px solid #ced4da;
+  color: #495057;
+  background-color: #fff;
+}
 
+.custom-select-lg:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.2);
+}
 .is-invalid {
   border-color: #dc3545;
 }
