@@ -11,7 +11,7 @@ import ResetPassword from "@/views/ResetPassword.vue";
 import RegisterPage from "../views/RegisterPage.vue";
 import DonasiPage from "../views/DonasiPage.vue";
 import VerifyRegister from "@/views/VerifyRegister.vue";
-// import Dashboard from "../views//admin/Dashboard.vue";
+import DashboardPage from "../views//admin/DashboardPage.vue";
 import CreateActivity from "../views/admin/CreateActivity.vue";
 import EditActivity from "../views/admin/EditActivity.vue";
 import ActivityList from "@/views/admin/ActivityList.vue";
@@ -22,14 +22,9 @@ import PembayaranPage from "../views/PembayaranPage.vue";
 import UploadBukti from "../views/UploadBukti.vue";
 import KalkulatorZakat from "../views/KalkulatorZakat.vue";
 import DetailZakat from "../views/DetailZakat.vue";
-<<<<<<< HEAD
 import TransaksiDonasi from "../views/TransaksiDonasi.vue";
 import RingkasanDonasi from "../views/RingkasanDonasi.vue";
 import LaporanKeuangan from "../views/LaporanKeuangan.vue";
-=======
-import TransaksiDonasi from "../views/admin/TransaksiDonasi.vue";
-import RingkasanDonasi from "../views/admin/RingkasanDonasi.vue";
->>>>>>> dccb15ecdfa57703a259adcf85f2e9412a252628
 
 const routes = [
   {
