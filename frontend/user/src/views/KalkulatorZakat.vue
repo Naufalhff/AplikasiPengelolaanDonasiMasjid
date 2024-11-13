@@ -427,14 +427,19 @@
 
         <!-- Zakat Rikaz -->
         <div v-if="selectedZakatType === 'rikaz'" class="mb-3">
-          <label class="form-label">Nilai Rikaz (Harta Terpendam) (Rp)</label>
-          <input
-            type="number"
-            v-model="nilaiRikaz"
-            class="form-control"
-            placeholder="Rp. 0"
-            min="0"
-          />
+          <div class="mb-3">
+            <label class="form-label">Jumlah harta yang ditemukan</label>
+            <div class="input-group">
+              <span class="input-group-text">Rp.</span>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="0"
+                min="0"
+                v-model="JumlahHarta"
+              />
+            </div>
+          </div>
         </div>
 
         <!-- Calculate Button -->
@@ -530,7 +535,7 @@ export default {
       PenghasilanLain: 0,
       HutangCicilan: 0,
       // Zakat rikaz
-      nilaiRikaz: 0,
+      JumlahHarta: 0,
     };
   },
   computed: {
@@ -599,7 +604,7 @@ export default {
           break;
         }
         case "rikaz": {
-          this.zakatResult = this.nilaiRikaz * 0.2;
+          this.zakatResult = this.JumlahHarta * 0.2;
           break;
         }
       }
