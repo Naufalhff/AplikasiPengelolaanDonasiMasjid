@@ -471,7 +471,7 @@
           </div>
           <div class="modal-body">
             <p>Jumlah zakat yang harus dibayarkan:</p>
-            <h4 class="text-success">{{ zakatResult.toLocaleString() }}</h4>
+            <h4 class="text-success">Rp.{{ zakatResult.toLocaleString() }}</h4>
           </div>
           <div class="modal-footer">
             <button
@@ -595,11 +595,10 @@ export default {
         }
         case "pendapatan": {
           const totalPendapatan =
-            this.PenghasilanPerBulan * 12 + this.PenghasilanLain;
-          const zakatPendapatan =
-            totalPendapatan >= 85 * this.HargaEmas
-              ? (totalPendapatan - this.HutangCicilan) * 0.025
-              : 0;
+            this.PenghasilanPerBulan +
+            this.PenghasilanLain -
+            this.HutangCicilan;
+          const zakatPendapatan = totalPendapatan * 0.025;
           this.zakatResult = zakatPendapatan;
           break;
         }
