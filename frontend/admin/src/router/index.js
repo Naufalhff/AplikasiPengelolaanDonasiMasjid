@@ -4,6 +4,7 @@ import Tables from "../views/Tables.vue";
 import Billing from "../views/Billing.vue";
 import ActivityList from "../views/ActivityList.vue";
 import CreateActivity from "../views/CreateActivity.vue";
+import EditActivity from "../views/EditActivity.vue";
 import RTL from "../views/Rtl.vue";
 import Notifications from "../views/Notifications.vue";
 import RingkasanDonasi from "../views/RingkasanDonasi.vue";
@@ -39,7 +40,7 @@ const routes = [
     component: Billing,
   },
   {
-    path: "/activitylist",
+    path: "/activity-list",
     name: "ActivityList",
     component: ActivityList,
   },
@@ -47,6 +48,11 @@ const routes = [
     path: '/create-activity',
     name: 'CreateActivity',
     component: CreateActivity
+  },
+  {
+    path: "/edit-activity/:id",
+    name: "EditActivity",
+    component: EditActivity,
   },
   {
     path: "/rtl-page",

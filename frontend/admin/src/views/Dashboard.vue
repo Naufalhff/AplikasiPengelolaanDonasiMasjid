@@ -76,6 +76,9 @@
               <reports-line-chart
                 :chart="{
                   labels: [
+                    'Jan',
+                    'Feb',
+                    'Mar',
                     'Apr',
                     'May',
                     'Jun',
@@ -88,7 +91,7 @@
                   ],
                   datasets: {
                     label: 'Mobile apps',
-                    data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
+                    data: [120, 90, 200, 50, 40, 300, 320, 500, 350, 200, 230, 500],
                   },
                 }"
               />
