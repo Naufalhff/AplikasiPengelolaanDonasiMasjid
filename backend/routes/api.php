@@ -12,6 +12,7 @@ Route::post('/verify-otp', [UserController::class, 'verifyOTP']);
 
 Route::get('/daftar-kegiatan', [EventController::class, 'index']);
 Route::get('/donasi', [EventController::class, 'index']);
+Route::get('/donasiLimited', [EventController::class, 'getEventLimited']);
 Route::get('/donasi/{id}', [EventController::class, 'getDataById']);
 Route::post('/daftar-kegiatan/buat-kegiatan-baru', [EventController::class, 'store']);
 Route::put('/daftar-kegiatan/edit-kegiatan/{id_kegiatan}', [EventController::class, 'update']);
