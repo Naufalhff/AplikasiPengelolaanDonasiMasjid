@@ -25,6 +25,7 @@ import DetailZakat from "../views/DetailZakat.vue";
 import TransaksiDonasi from "../views/admin/TransaksiDonasi.vue";
 import RingkasanDonasi from "../views/admin/RingkasanDonasi.vue";
 import LaporanKeuangan from "../views/admin/LaporanKeuangan.vue";
+import SideNav from "../components/SideNav";
 
 const routes = [
   {
@@ -157,6 +158,12 @@ const routes = [
     path: "/laporankeuangan",
     name: "LaporanKeuangan",
     component: LaporanKeuangan,
+  },
+  {
+    path: "/sidenav",
+    name: "SideNav",
+    component: SideNav,
+    meta: { hideNavbar: true },
   },
 ];
 

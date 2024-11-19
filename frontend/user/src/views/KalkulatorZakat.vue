@@ -1,9 +1,9 @@
 <template>
   <div class="container mt-5 pt-5">
     <h2 class="text-center mb-4">Kalkulator Zakat Mal</h2>
-
     <div class="card shadow-sm">
       <div class="card-body">
+        <!-- Dropdown Pilihan Jenis Zakat -->
         <div class="mb-3">
           <label for="zakatType" class="form-label d-block"
             >Pilih Jenis Zakat</label
@@ -28,421 +28,21 @@
           </select>
         </div>
 
-        <!-- Zakat Emas -->
-        <div v-if="selectedZakatType === 'emas'" class="mb-3">
-          <div class="mb-3">
-            <label for="logamMuliaType" class="form-label d-block"
-              >Pilih Jenis Logam Mulia</label
-            >
-            <select
-              v-model="selectedLogamMulia"
-              class="form-select border rounded-3 p-2 w-100"
-              id="logamMuliaType"
-            >
-              <option value="" selected disabled>
-                Pilih Jenis Logam Mulia
-              </option>
-              <option value="emas">Emas</option>
-              <option value="perak">Perak</option>
-            </select>
+        <!-- Placeholder atau Komponen Jenis Zakat -->
+        <div>
+          <div v-if="!selectedZakatType" class="text-center mt-3">
+            <p class="text-muted">
+              Silakan pilih jenis zakat untuk memulai perhitungan.
+            </p>
           </div>
-
-          <div class="mb-3">
-            <label class="form-label">Berat Emas/Perak yang dimiliki</label>
-            <div class="input-group">
-              <input
-                type="number"
-                class="form-control"
-                placeholder="0"
-                v-model="BeratEmasPerak"
-                min="0"
-              />
-              <span class="input-group-text">Gram</span>
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Harga Emas/Perak saat ini</label>
-            <div class="input-group">
-              <span class="input-group-text">Rp</span>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="Rp.0"
-                v-model="HargaEmasPerak"
-                min="0"
-              />
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Nisab Emas/Perak</label>
-            <div class="input-group">
-              <input
-                type="number"
-                class="form-control"
-                :value="nisabComputed"
-                readonly
-              />
-              <span class="input-group-text">Gram</span>
-            </div>
-          </div>
+          <component
+            v-else-if="zakatComponent"
+            :is="zakatComponent"
+            v-model:data="zakatData"
+          ></component>
         </div>
 
-        <!-- Zakat Tabungan -->
-        <div v-if="selectedZakatType === 'tabungan'" class="mb-3">
-          <div class="mb-3">
-            <label class="form-label"
-              >Nilai tabungan atau investasi yang dimiliki</label
-            >
-            <div class="input-group">
-              <span class="input-group-text">Rp.</span>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="0"
-                min="0"
-                v-model="NilaiTabungan"
-              />
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Harga emas per gram saat ini </label>
-            <div class="input-group">
-              <span class="input-group-text">Rp.</span>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="0"
-                min="0"
-                v-model="HargaEmas"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Zakat Perdagangan -->
-        <div v-if="selectedZakatType === 'perdagangan'" class="mb-3">
-          <div class="mb-3">
-            <label class="form-label">Modal yang Diputar selama 1 tahun</label>
-            <div class="input-group">
-              <span class="input-group-text">Rp.</span>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="0"
-                min="0"
-                v-model="modal"
-              />
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Keuntungan selama 1 tahun</label>
-            <div class="input-group">
-              <span class="input-group-text">Rp.</span>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="0"
-                min="0"
-                v-model="keuntungan"
-              />
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Piutang Dagang</label>
-            <div class="input-group">
-              <span class="input-group-text">Rp.</span>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="0"
-                min="0"
-                v-model="piutangDagang"
-              />
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Utang jatuh tempo</label>
-            <div class="input-group">
-              <span class="input-group-text">Rp.</span>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="0"
-                min="0"
-                v-model="utangJatuhTempo"
-              />
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Kerugian selama 1 tahun</label>
-            <div class="input-group">
-              <span class="input-group-text">Rp.</span>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="0"
-                min="0"
-                v-model="kerugian"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Zakat Perusahaan -->
-        <div v-if="selectedZakatType === 'perusahaan'" class="mb-3">
-          <div class="mb-3">
-            <label class="form-label">Keuntungan Bersih</label>
-            <div class="input-group">
-              <span class="input-group-text">Rp.</span>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="0"
-                min="0"
-                v-model="keuntunganBersih"
-              />
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Utang Lancar</label>
-            <div class="input-group">
-              <span class="input-group-text">Rp.</span>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="0"
-                min="0"
-                v-model="UtangLancar"
-              />
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Tahun Operasional</label>
-            <div class="input-group">
-              <input
-                type="number"
-                class="form-control"
-                placeholder="0"
-                min="0"
-                v-model="TahunOperasional"
-              />
-              <span class="input-group-text">Tahun</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Zakat Pertanian -->
-        <div v-if="selectedZakatType === 'pertanian'" class="mb-3">
-          <div class="mb-3">
-            <label for="zakatType" class="form-label d-block"
-              >Pilih Jenis Pertanian</label
-            >
-            <select
-              v-model="selectedPertanian"
-              class="form-select border rounded-3 p-2 w-100"
-              id="zakatType"
-            >
-              <option value="" selected disabled>Pilih Jenis Pertanian</option>
-              <option value="gabah">Gabah</option>
-              <option value="padi">Padi</option>
-            </select>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Hasil Panen</label>
-            <div class="input-group">
-              <input
-                type="number"
-                class="form-control"
-                placeholder="Input hasil panen dalam satuan kg"
-                v-model="hasilPanen"
-                min="0"
-              />
-              <span class="input-group-text">kg</span>
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Harga jual komoditas (per Kg)</label>
-            <div class="input-group">
-              <span class="input-group-text">Rp</span>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="Isi harga jual di daerahmu saat membayar zakat"
-                v-model="hargaJual"
-                min="0"
-              />
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Pilih Jenis Pengairan</label>
-            <div>
-              <div class="form-check">
-                <input
-                  type="radio"
-                  class="form-check-input"
-                  id="tadahHujan"
-                  value="tadahHujan"
-                  v-model="jenisPengairan"
-                />
-                <label class="form-check-label" for="tadahHujan">
-                  Perairan Tadah Hujan
-                </label>
-              </div>
-              <div class="form-check">
-                <input
-                  type="radio"
-                  class="form-check-input"
-                  id="berbayar"
-                  value="berbayar"
-                  v-model="jenisPengairan"
-                />
-                <label class="form-check-label" for="berbayar">
-                  Perairan Berbayar
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Zakat Peternakan -->
-        <div v-if="selectedZakatType === 'peternakan'" class="mb-3">
-          <div class="mb-3">
-            <label for="zakatType" class="form-label d-block"
-              >Pilih Jenis Peternakan</label
-            >
-            <select
-              v-model="selectedPeternakan"
-              class="form-select border rounded-3 p-2 w-100"
-              id="zakatType"
-            >
-              <option value="" selected disabled>Pilih Jenis Peternakan</option>
-              <option value="gabah">Sapi</option>
-              <option value="padi">Domba</option>
-              <option value="padi">Kerbau</option>
-            </select>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Jumlah hewan yang dimiliki</label>
-            <div class="input-group">
-              <input
-                type="number"
-                class="form-control"
-                placeholder="0"
-                v-model="JumlahHewan"
-                min="0"
-              />
-              <span class="input-group-text">Ekor</span>
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Harga hewan yang dipilih per-ekor</label>
-            <div class="input-group">
-              <span class="input-group-text">Rp</span>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="Isi harga jual di daerahmu saat membayar zakat"
-                v-model="hargaJual"
-                min="0"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Zakat Pertambangan -->
-        <div v-if="selectedZakatType === 'pertambangan'" class="mb-3">
-          <div class="mb-3">
-            <label class="form-label">Keuntungan yang diperoleh </label>
-            <div class="input-group">
-              <span class="input-group-text">Rp.</span>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="0"
-                min="0"
-                v-model="keuntungan"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Zakat Pendapatan -->
-        <div v-if="selectedZakatType === 'pendapatan'" class="mb-3">
-          <div class="mb-3">
-            <label class="form-label">Penghasilan Per Bulan</label>
-            <div class="input-group">
-              <span class="input-group-text">Rp.</span>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="0"
-                min="0"
-                v-model="PenghasilanPerBulan"
-              />
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Penghasilan Lain</label>
-            <div class="input-group">
-              <span class="input-group-text">Rp.</span>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="0"
-                min="0"
-                v-model="PenghasilanLain"
-              />
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Hutang/Cicilan</label>
-            <div class="input-group">
-              <span class="input-group-text">Rp.</span>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="0"
-                min="0"
-                v-model="HutangCicilan"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Zakat Rikaz -->
-        <div v-if="selectedZakatType === 'rikaz'" class="mb-3">
-          <div class="mb-3">
-            <label class="form-label">Jumlah harta yang ditemukan</label>
-            <div class="input-group">
-              <span class="input-group-text">Rp.</span>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="0"
-                min="0"
-                v-model="JumlahHarta"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Calculate Button -->
+        <!-- Tombol Hitung Zakat -->
         <button
           v-if="selectedZakatType"
           class="btn btn-success w-100 mt-3"
@@ -453,7 +53,7 @@
       </div>
     </div>
 
-    <!-- Modal for Zakat Calculation Result -->
+    <!-- Modal untuk Hasil Perhitungan Zakat -->
     <div
       class="modal fade"
       id="zakatModal"
@@ -470,8 +70,11 @@
             </h5>
           </div>
           <div class="modal-body">
-            <p>Jumlah zakat yang harus dibayarkan:</p>
-            <h4 class="text-success">Rp.{{ zakatResult.toLocaleString() }}</h4>
+            <p v-if="alertMessage" class="text-danger">{{ alertMessage }}</p>
+            <p v-else>Jumlah zakat yang harus dibayarkan:</p>
+            <h4 v-if="!alertMessage" class="text-success">
+              Rp.{{ zakatResult.toLocaleString() }}
+            </h4>
           </div>
           <div class="modal-footer">
             <button
@@ -497,115 +100,200 @@
 </template>
 
 <script>
+import ZakatEmas from "../components/zakat-components/ZakatEmas.vue";
+import ZakatTabungan from "../components/zakat-components/ZakatTabungan.vue";
+import ZakatPerdagangan from "../components/zakat-components/ZakatPerdagangan.vue";
+import ZakatPerusahaan from "../components/zakat-components/ZakatPerusahaan.vue";
+import ZakatPertanian from "../components/zakat-components/ZakatPertanian.vue";
+import ZakatPeternakan from "../components/zakat-components/ZakatPeternakan.vue";
+import ZakatPertambangan from "../components/zakat-components/ZakatPertambangan.vue";
+import ZakatPendapatan from "../components/zakat-components/ZakatPendapatan.vue";
+import ZakatRikaz from "../components/zakat-components/ZakatRikaz.vue";
 import { Modal } from "bootstrap";
 
 export default {
   data() {
     return {
       selectedZakatType: "",
+      zakatData: {},
       zakatResult: 0,
-      // Zakat emas & logam mulia
-      selectedLogamMulia: "emas",
-      BeratEmasPerak: 0,
-      HargaEmasPerak: 0,
-      // Zakat tabungan
-      NilaiTabungan: 0,
-      HargaEmas: 0,
-      // Zakat perdagangan
-      modal: 0,
-      keuntungan: 0,
-      piutangDagang: 0,
-      utangJatuhTempo: 0,
-      kerugian: 0,
-      // Zakat perusahaan
-      keuntunganBersih: 0,
-      UtangLancar: 0,
-      TahunOperasional: 0,
-      // Zakat pertanian
-      jenisPengairan: "",
-      hasilPanen: 0,
-      hargaJual: 0,
-      selectedPertanian: "",
-      // Zakat peternakan
-      selectedPeternakan: "",
-      JumlahHewan: 0,
-      hargaHewan: 0,
-      // Zakat pendapatan
-      PenghasilanPerBulan: 0,
-      PenghasilanLain: 0,
-      HutangCicilan: 0,
-      // Zakat rikaz
-      JumlahHarta: 0,
+      alertMessage: "",
     };
   },
   computed: {
-    nisabComputed() {
-      return this.selectedLogamMulia === "emas" ? 85 : 595;
+    zakatComponent() {
+      const components = {
+        emas: ZakatEmas,
+        tabungan: ZakatTabungan,
+        perdagangan: ZakatPerdagangan,
+        perusahaan: ZakatPerusahaan,
+        pertanian: ZakatPertanian,
+        peternakan: ZakatPeternakan,
+        pertambangan: ZakatPertambangan,
+        pendapatan: ZakatPendapatan,
+        rikaz: ZakatRikaz,
+      };
+      return components[this.selectedZakatType] || null;
+    },
+  },
+  watch: {
+    selectedZakatType() {
+      this.zakatData = {};
+      this.alertMessage = "";
     },
   },
   methods: {
     calculateZakat() {
-      this.zakatResult = 0;
+      this.alertMessage = "";
 
       switch (this.selectedZakatType) {
         case "emas": {
-          const zakatEmas = this.BeratEmasPerak * this.HargaEmasPerak * 0.025;
-          this.zakatResult =
-            zakatEmas >= this.nisabComputed * this.HargaEmasPerak
-              ? zakatEmas
-              : 0;
+          const beratEmasPerak = this.zakatData.BeratEmasPerak || 0;
+          const hargaEmasPerak = this.zakatData.HargaEmasPerak || 0;
+          const nisab = this.zakatData.selectedLogamMulia === "emas" ? 85 : 595;
+
+          if (beratEmasPerak >= nisab) {
+            this.zakatResult = beratEmasPerak * hargaEmasPerak * 0.025;
+          } else {
+            this.zakatResult = 0;
+            this.alertMessage = "Belum wajib zakat";
+          }
           break;
         }
         case "tabungan": {
-          const nisabTabungan = 85 * this.HargaEmas;
-          this.zakatResult =
-            this.NilaiTabungan >= nisabTabungan
-              ? this.NilaiTabungan * 0.025
-              : 0;
+          const nilaiTabungan = this.zakatData.NilaiTabungan || 0;
+          const hargaEmas = this.zakatData.HargaEmas || 0;
+          const nisabTabungan = 85 * hargaEmas;
+
+          if (nilaiTabungan >= nisabTabungan) {
+            this.zakatResult = nilaiTabungan * 0.025;
+          } else {
+            this.zakatResult = 0;
+            this.alertMessage = "Belum wajib zakat";
+          }
           break;
         }
         case "perdagangan": {
-          const nilaiKekayaan =
-            this.modal +
-            this.keuntungan +
-            this.piutangDagang -
-            this.utangJatuhTempo -
-            this.kerugian;
-          this.zakatResult = nilaiKekayaan * 0.025;
+          const modal = this.zakatData.modal || 0;
+          const keuntungan = this.zakatData.keuntungan || 0;
+          const piutang = this.zakatData.piutangDagang || 0;
+          const utang = this.zakatData.utangJatuhTempo || 0;
+          const kerugian = this.zakatData.kerugian || 0;
+          const nilaiKekayaan = modal + keuntungan + piutang - utang - kerugian;
+          const nisabPerdagangan = 85 * this.zakatData.HargaEmas || 0;
+
+          if (nilaiKekayaan >= nisabPerdagangan) {
+            this.zakatResult = nilaiKekayaan * 0.025;
+          } else {
+            this.zakatResult = 0;
+            this.alertMessage = "Belum wajib zakat";
+          }
           break;
         }
         case "perusahaan": {
-          const kekayaanBersih = this.keuntunganBersih - this.UtangLancar;
-          this.zakatResult =
-            this.TahunOperasional >= 1 ? kekayaanBersih * 0.025 : 0;
+          const keuntunganBersih = this.zakatData.keuntunganBersih || 0;
+          const utangLancar = this.zakatData.UtangLancar || 0;
+          const tahunOperasional = this.zakatData.TahunOperasional || 0;
+          const kekayaanBersih = keuntunganBersih - utangLancar;
+          const nisabPerusahaan = 85 * this.zakatData.HargaEmas || 0;
+
+          if (tahunOperasional >= 1 && kekayaanBersih >= nisabPerusahaan) {
+            this.zakatResult = kekayaanBersih * 0.025;
+          } else {
+            this.zakatResult = 0;
+            this.alertMessage = "Belum wajib zakat";
+          }
           break;
         }
         case "pertanian": {
-          const rate = this.jenisPengairan === "tadahHujan" ? 0.1 : 0.05;
-          this.zakatResult = this.hasilPanen * this.hargaJual * rate;
+          const hasilPanen = this.zakatData.hasilPanen || 0;
+          const hargaJual = this.zakatData.hargaJual || 0;
+          const jenisPengairan = this.zakatData.jenisPengairan || "tadahHujan";
+          const jenisPertanian = this.zakatData.selectedPertanian || "gabah";
+          const nisab = jenisPertanian === "gabah" ? 1481 : 815;
+
+          if (hasilPanen >= nisab) {
+            const rate = jenisPengairan === "tadahHujan" ? 0.1 : 0.05;
+            this.zakatResult = hasilPanen * hargaJual * rate;
+          } else {
+            this.zakatResult = 0;
+            this.alertMessage = "Belum wajib zakat";
+          }
           break;
         }
         case "peternakan": {
-          this.zakatResult = this.JumlahHewan * this.hargaHewan * 0.025;
+          const jumlahHewan = this.zakatData.jumlahHewan || 0;
+          const jenisHewan = this.zakatData.jenisHewan || "domba";
+          const hargaHewan = this.zakatData.hargaHewan || 0;
+
+          let zakatResult = 0;
+          let nisab = 0;
+
+          if (jenisHewan === "domba") {
+            nisab = 40;
+            if (jumlahHewan >= nisab) {
+              zakatResult = Math.floor(jumlahHewan / nisab) * hargaHewan;
+            }
+          } else if (jenisHewan === "sapi") {
+            nisab = 30;
+            if (jumlahHewan >= nisab) {
+              zakatResult = Math.floor(jumlahHewan / nisab) * hargaHewan;
+            }
+          } else if (jenisHewan === "kerbau") {
+            nisab = 5;
+            if (jumlahHewan >= nisab) {
+              zakatResult = Math.floor(jumlahHewan / nisab) * hargaHewan;
+            }
+          }
+
+          if (zakatResult > 0) {
+            this.zakatResult = zakatResult;
+          } else {
+            this.zakatResult = 0;
+            this.alertMessage = "Belum wajib zakat";
+          }
           break;
         }
         case "pertambangan": {
-          this.zakatResult = this.keuntungan * 0.025;
+          const keuntunganPertambangan = this.zakatData.keuntungan || 0;
+          const nisabPertambangan = 85 * this.zakatData.HargaEmas || 0;
+
+          if (keuntunganPertambangan >= nisabPertambangan) {
+            this.zakatResult = keuntunganPertambangan * 0.025;
+          } else {
+            this.zakatResult = 0;
+            this.alertMessage = "Belum wajib zakat";
+          }
           break;
         }
         case "pendapatan": {
+          const penghasilanPerBulan = this.zakatData.PenghasilanPerBulan || 0;
+          const penghasilanLain = this.zakatData.PenghasilanLain || 0;
+          const hutangCicilan = this.zakatData.HutangCicilan || 0;
           const totalPendapatan =
-            this.PenghasilanPerBulan +
-            this.PenghasilanLain -
-            this.HutangCicilan;
-          const zakatPendapatan = totalPendapatan * 0.025;
-          this.zakatResult = zakatPendapatan;
+            penghasilanPerBulan + penghasilanLain - hutangCicilan;
+          const nisabPendapatan = 85 * this.zakatData.HargaEmas || 0;
+
+          if (totalPendapatan >= nisabPendapatan) {
+            this.zakatResult = totalPendapatan * 0.025;
+          } else {
+            this.zakatResult = 0;
+            this.alertMessage = "Belum wajib zakat";
+          }
           break;
         }
         case "rikaz": {
-          this.zakatResult = this.JumlahHarta * 0.2;
+          const jumlahHarta = this.zakatData.JumlahHarta || 0;
+          if (jumlahHarta > 0) {
+            this.zakatResult = jumlahHarta * 0.2;
+          } else {
+            this.zakatResult = 0;
+          }
           break;
         }
+        default:
+          this.zakatResult = 0;
+          this.alertMessage = "Jenis zakat tidak valid.";
       }
 
       this.$nextTick(() => {
@@ -616,6 +304,8 @@ export default {
     resetForm() {
       this.zakatResult = 0;
       this.selectedZakatType = "";
+      this.zakatData = {};
+      this.alertMessage = "";
     },
   },
 };
@@ -623,12 +313,22 @@ export default {
 
 <style scoped>
 .container {
-  max-width: 700px;
+  max-width: 800px;
 }
 .card {
   border-radius: 10px;
 }
-.btn-success {
+.card-body {
+  padding: 2rem;
+}
+h2 {
   font-weight: bold;
+  color: #4caf50;
+}
+.text-muted {
+  font-size: 1.1rem;
+}
+.text-danger {
+  color: red;
 }
 </style>
