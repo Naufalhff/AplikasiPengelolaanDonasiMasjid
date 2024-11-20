@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Event;
+use App\Models\Kegiatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -11,24 +11,24 @@ class EventController extends Controller
 
     public function index()
     {
-        $events = Event::all();
+        $events = Kegiatan::all();
         return response()->json($events);
     }
 
     public function getEventLimited()
     {
-        $events = Event::take(3)->get();
+        $events = Kegiatan::take(3)->get();
         return response()->json($events);
     }
 
     public function getDataById($id)
     {
-        $event = Event::find($id);
-    
+        $event = Kegiatan::find($id);
+
         if ($event) {
             return response()->json($event);
         }
-    
+
         return response()->json(['message' => 'Event not found'], 404);
     }
 
@@ -47,7 +47,7 @@ class EventController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        $event = Event::create([
+        $event = Kegiatan::create([
             'foto_kegiatan' => $request->foto_kegiatan,
             'nama_kegiatan' => $request->nama_kegiatan,
             'jenis_kegiatan' => $request->jenis_kegiatan,
@@ -62,7 +62,7 @@ class EventController extends Controller
 
     public function update(Request $request, $id_kegiatan)
     {
-        $event = Event::find($id_kegiatan);
+        $event = Kegiatan::find($id_kegiatan);
 
         if (!$event) {
             return response()->json(['message' => 'Event not found'], 404);
@@ -95,7 +95,7 @@ class EventController extends Controller
 
     public function destroy($id_kegiatan)
     {
-        $event = Event::find($id_kegiatan);
+        $event = Kegiatan::find($id_kegiatan);
 
         if (!$event) {
             return response()->json(['message' => 'Event not found'], 404);

@@ -35,10 +35,10 @@
             </h4>
             <img :src="image" class="img-fluid mb-3" alt="Donation Campaign" />
             <p class="card-text">
-              Terkumpul: Rp. {{ formatCurrency(program.anggaran_terkumpul) }}
+              Terkumpul: {{ formatCurrency(program.anggaran_terkumpul) }}
             </p>
             <p class="card-text">
-              Target: Rp. {{ formatCurrency(program.anggaran_kegiatan) }}
+              Target: {{ formatCurrency(program.anggaran_donasi) }}
             </p>
             <div class="progress mb-2">
               <div
@@ -116,9 +116,9 @@ export default {
     },
     // Hitung progress persentase
     progress() {
-      if (this.program.anggaran_kegiatan > 0) {
+      if (this.program.anggaran_donasi > 0) {
         return (
-          (this.program.anggaran_terkumpul / this.program.anggaran_kegiatan) *
+          (this.program.anggaran_terkumpul / this.program.anggaran_donasi) *
           100
         );
       }

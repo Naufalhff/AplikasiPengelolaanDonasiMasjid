@@ -25,7 +25,7 @@
           <li><strong>Kegiatan</strong></li>
           <li>{{ donation.donorInfo.activity }}</li>
           <li><strong>Tanggal Transaksi</strong></li>
-          <li>{{ donation.donorInfo.transactionDate }}</li>
+          <p>{{ formatDate(donation.donorInfo.transactionDate) }}</p>
           <li><strong>Status</strong></li>
           <li :class="getStatusClass(donation.donorInfo.status)">
             {{ donation.donorInfo.status }}
@@ -93,6 +93,11 @@ export default {
     },
   },
   methods: {
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return date.toLocaleDateString('id-ID', options);
+    },
     fetchDonationDetail(id_donasi) {
       axios
         .get(`http://localhost:8000/api/ringkasan-donasi/${id_donasi}`)
@@ -109,7 +114,7 @@ export default {
               transactionDate: response.data.tanggal_donasi,
               status: response.data.status_verifikasi,
             },
-            receiptImage: response.data.bukti_pembayaran,
+            receiptImage: `http://localhost:8000/storage/${response.data.bukti_pembayaran}`,
           };
         })
         .catch((error) => {
@@ -197,13 +202,13 @@ p {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 }
 
 .payment-method {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 }
 
 ul {
