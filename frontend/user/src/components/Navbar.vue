@@ -33,6 +33,11 @@
             <router-link class="nav-link" to="/donasi">Donasi</router-link>
           </li>
           <li class="nav-item">
+            <router-link class="nav-link" to="/kalkulatorzakat"
+              >Kalkulator Zakat</router-link
+            >
+          </li>
+          <li class="nav-item">
             <router-link to="/login">
               <button class="btn btn-login ms-3">Login</button>
             </router-link>
