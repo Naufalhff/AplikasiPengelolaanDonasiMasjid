@@ -94,9 +94,10 @@ export default {
         });
         console.log("Login berhasil:", response.data);
 
-        const UserRoleid = response.data.user.id_role;
+        const UserRole = response.data.user.peran;
+        console.log(UserRole);
 
-        if (UserRoleid === 4) {
+        if (UserRole === 'Donatur') {
           this.$router.push("/home");
         } else {
           this.$router.push("/transaksidonasi");

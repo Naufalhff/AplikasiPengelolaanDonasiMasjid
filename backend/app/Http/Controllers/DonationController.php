@@ -24,6 +24,12 @@ class DonationController extends Controller
         return response()->json($donationDetails, 200);
     }
 
+    public function getDonasi()
+    {
+        $donasi = Donasi::all();
+        return response()->json($donasi);
+    }
+
     public function verifyDonation(Request $request, $id_donasi)
     {
         $donation = Donasi::find($id_donasi);

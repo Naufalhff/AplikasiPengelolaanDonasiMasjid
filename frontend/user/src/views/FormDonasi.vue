@@ -237,7 +237,6 @@ export default {
         path: "/detaildonasi/nominal/formdonasi/pembayaran",
         query: {
           id: this.data.id_kegiatan,
-
           name: name,
           phone: phone,
           address: address,

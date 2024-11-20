@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Donation;
+use App\Models\Donasi;
 
 class FileUploadController extends Controller
 {
@@ -30,19 +30,17 @@ class FileUploadController extends Controller
         }
 
         try {
-            // Menggunakan Storage untuk menyimpan file
-            $path = $request->file('file')->store('bukti_pembayaran', 'public'); // Simpan ke disk 'public'
+            $path = $request->file('file')->store('bukti_pembayaran', 'public');
 
             // Simpan data ke database
-            Donation::insert([
-                'id_user' => 1,
+            Donasi::insert([
                 'id_kegiatan' => $request->id,
+                'metode_pembayaran' => $request->payment,
                 'nama_donatur' => $request->name,
                 'alamat_donatur' => $request->address,
                 'no_telepon_donatur' => $request->phone,
                 'email_donatur' => $request->email,
                 'jumlah_donasi' => $request->amount,
-                'metode_pembayaran' => $request->payment,
                 'bukti_pembayaran' => $path,
                 'status_verifikasi' => 'PENDING',
                 'tanggal_donasi' => now(),

@@ -4,26 +4,19 @@
     <div class="statistics-card p-4 mb-4">
       <div class="row">
         <!-- Total Donations -->
-        <div class="col-lg-4 mb-3">
+        <div class="col-lg-6 mb-3">
           <div class="card shadow-sm p-4 stat-card">
             <h5>Total Donasi</h5>
-            <h4 class="text-dark">Rp.7.000.000</h4>
+            <h4 class="text-dark">Rp. {{ this.totalDonasi() }}</h4>
           </div>
         </div>
         <!-- Total Transactions -->
-        <div class="col-lg-4 mb-3">
+        <div class="col-lg-6 mb-3">
           <div class="card shadow-sm p-4 stat-card">
             <h5>Total Transaksi</h5>
-            <h4 class="text-dark">70</h4>
+            <h4 class="text-dark">{{ this.data.length }}</h4>
           </div>
         </div>
-        <!-- Current Balance -->
-        <!-- <div class="col-lg-4 mb-3">
-          <div class="card shadow-sm p-4 stat-card">
-            <h5>Saldo Saat Ini</h5>
-            <h4 class="text-dark">Rp.7.000.000</h4>
-          </div> -->
-        <!-- </div> -->
       </div>
     </div>
 
@@ -32,9 +25,9 @@
       <div class="row">
         <div class="col-md-3">
           <select class="form-control" v-model="selectedDonationType">
-            <option value="">Semua Jenis Donasi</option>
-            <option value="Infaq">Infaq</option>
-            <option value="Zakat">Zakat</option>
+            <option value="">Metode Pembayaran</option>
+            <option value="BSI">BSI</option>
+            <option value="QRIS">QRIS</option>
           </select>
         </div>
         <div class="col-md-3">
@@ -62,18 +55,18 @@
           <tr>
             <th>Nomor</th>
             <th>Nama</th>
-            <th>Jenis Donasi</th>
+            <th>Metode Pembayaran</th>
             <th>Tanggal Donasi</th>
             <th>Jumlah</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(donasi, index) in paginatedDonations" :key="index">
+          <tr v-for="(data, index) in paginatedDonations" :key="index">
             <td>{{ (index + 1) + (currentPage - 1) * DataperPage }}</td>
-            <td>{{ donasi.nama }}</td>
-            <td>{{ donasi.jenisDonasi }}</td>
-            <td>{{ donasi.tanggal }}</td>
-            <td>{{ donasi.jumlah }}</td>
+            <td>{{ data.nama_donatur }}</td>
+            <td>{{ data.metode_pembayaran }}</td>
+            <td>{{ data.tanggal_donasi }}</td>
+            <td>Rp. {{ data.jumlah_donasi }}</td>
           </tr>
         </tbody>
       </table>
@@ -95,6 +88,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: "LaporanKeuangan",
   data() {
@@ -117,6 +112,7 @@ export default {
         { nama: "Rizky", jenisDonasi: "Infaq", tanggal: "05-06-2025", jumlah: "Rp.1.000.000" },
         { nama: "Ariq", jenisDonasi: "Infaq", tanggal: "06-07-2027", jumlah: "Rp.1.000.000" },
       ],
+      data: [],
       years: Array.from({ length: 2080 - 2024 + 1 }, (_, i) => 2024 + i),
       months: [
         "Januari", "Februari", "Maret", "April", "Mei", "Juni",
@@ -128,10 +124,10 @@ export default {
   },
   computed: {
     filteredDonations() {
-      return this.donasiList.filter((donasi) => {
-        const [, month, year] = donasi.tanggal.split("-").map(Number);
+      return this.data.filter((donasi) => {
+        const [year, month] = donasi.tanggal_donasi.split("-").map(Number);
         return (
-          (!this.selectedDonationType || donasi.jenisDonasi === this.selectedDonationType) &&
+          (!this.selectedDonationType || donasi.metode_pembayaran === this.selectedDonationType) &&
           (!this.selectedYear || year === Number(this.selectedYear)) &&
           (!this.selectedMonth || month === Number(this.selectedMonth))
         );
@@ -145,6 +141,36 @@ export default {
       return this.filteredDonations.slice(start, start + this.DataperPage);
     },
   },
+  methods: {
+    fetchData(){
+      axios
+        .get('http://localhost:8000/api/getDonasi')
+        .then ((response) => {
+          this.data = response.data.map((donasi) => {
+            return {
+              nama_donatur: donasi.nama_donatur,
+              metode_pembayaran: donasi.metode_pembayaran,
+              jumlah_donasi: donasi.jumlah_donasi,
+              tanggal_donasi: new Date(donasi.tanggal_donasi).toISOString().split('T')[0],
+            }
+          });
+          console.log(this.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+    },
+    totalDonasi(){
+      let total = 0;
+      for (let i = 0; i < this.data.length; i++){
+        total += parseFloat(this.data[i].jumlah_donasi) || 0;
+      }
+      return total;
+    }
+  },
+  mounted(){
+    this.fetchData();
+  }
 };
 </script>
 

@@ -13,11 +13,11 @@
               <h5 class="card-title">{{ donation.nama_kegiatan }}</h5>
               <span class="badge badge-pill category-badge">{{ donation.jenis_kegiatan }}</span>
               <p class="card-text">Terkumpul: 
-                <span class="text-success font-weight-bold">Rp. {{ formatCurrency(donation.anggaran_terkumpul) }}</span>
+                <span class="text-success font-weight-bold">{{ formatCurrency(donation.anggaran_terkumpul) }}</span>
               </p>
               <div class="progress mb-3">
                 <div class="progress-bar bg-success" role="progressbar" 
-                     :style="{width: ((donation.anggaran_donasi / donation.anggaran_kegiatan) * 100) + '%'}"
+                     :style="{width: ((donation.anggaran_terkumpul / donation.anggaran_donasi) * 100) + '%'}"
                      aria-valuenow="((donation.anggaran_donasi / donation.anggaran_kegiatan) * 100)" aria-valuemin="0" aria-valuemax="100"></div>
               </div>
             </div>

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Donation;
-use App\Models\Event;
+use App\Models\Pengguna;
+use App\Models\Donasi;
+use App\Models\Kegiatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
@@ -25,8 +25,8 @@ class UserController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            return response()->json(['message' => 'Login berhasil', 'user' => $user], 200);
+            $pengguna = Auth::user();
+            return response()->json(['message' => 'Login berhasil', 'user' => $pengguna], 200);
         } else {
             return response()->json(['message' => 'Email atau Password salah'], 401);
         }

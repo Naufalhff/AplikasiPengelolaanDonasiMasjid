@@ -100,9 +100,7 @@ export default {
     progress() {
       if (this.program.anggaran_donasi > 0) {
         return (
-          (this.program.anggaran_terkumpul / this.program.anggaran_donasi) *
-          100
-        );
+          (this.program.anggaran_terkumpul / this.program.anggaran_donasi) * 100);
       }
       return 0;
     },

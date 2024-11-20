@@ -24,3 +24,5 @@ Route::put('/verifikasi-donasi/{id_donasi}', [DonationController::class, 'verify
 Route::post('/send-donation-receipt/{id_donasi}', [UserController::class, 'sendDonationReceipt']);
 
 Route::post('/upload', [FileUploadController::class, 'upload']);
+
+Route::get('/getDonasi', [DonationController::class, 'getDonasi']);
