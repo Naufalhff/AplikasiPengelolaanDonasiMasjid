@@ -14,7 +14,7 @@ return new class extends Migration
                 ->constrained('kegiatan', 'id_kegiatan')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->enum('metode_pembayaran', ['CASH', 'BSI', 'QRIS']);
+            $table->enum('metode_pembayaran', ['BSI', 'QRIS']);
             $table->string('nama_donatur', 75);
             $table->string('alamat_donatur', 255);
             $table->string('no_telepon_donatur', 15);

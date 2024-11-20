@@ -12,7 +12,7 @@ class SeederDonasi extends Seeder
         $donasiData = [
             [
                 'id_kegiatan' => 1,
-                'metode_pembayaran' => 'CASH',
+                'metode_pembayaran' => 'BSI',
                 'nama_donatur' => 'Ahmad Fahri',
                 'alamat_donatur' => 'Jl. Merdeka No. 12, Jakarta',
                 'no_telepon_donatur' => '081234567890',
@@ -51,7 +51,7 @@ class SeederDonasi extends Seeder
             ],
             [
                 'id_kegiatan' => 2,
-                'metode_pembayaran' => 'CASH',
+                'metode_pembayaran' => 'BSI',
                 'nama_donatur' => 'Rina Marlina',
                 'alamat_donatur' => 'Jl. Bunga Melati No. 23, Medan',
                 'no_telepon_donatur' => '081345678912',
@@ -90,7 +90,7 @@ class SeederDonasi extends Seeder
             ],
             [
                 'id_kegiatan' => 4,
-                'metode_pembayaran' => 'CASH',
+                'metode_pembayaran' => 'QRIS',
                 'nama_donatur' => 'Fajar Nugraha',
                 'alamat_donatur' => 'Jl. Rawa Indah No. 34, Semarang',
                 'no_telepon_donatur' => '081456789035',
@@ -129,7 +129,7 @@ class SeederDonasi extends Seeder
             ],
             [
                 'id_kegiatan' => 5,
-                'metode_pembayaran' => 'CASH',
+                'metode_pembayaran' => 'QRIS',
                 'nama_donatur' => 'Ridwan Kamil',
                 'alamat_donatur' => 'Jl. Gatot Subroto No. 99, Palembang',
                 'no_telepon_donatur' => '081567890348',
