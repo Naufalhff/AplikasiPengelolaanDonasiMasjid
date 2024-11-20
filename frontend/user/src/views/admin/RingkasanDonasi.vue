@@ -13,7 +13,7 @@
         </div>
 
         <p><strong>Info Donatur</strong></p>
-        <ul v-if="donation.donorInfo"> 
+        <ul v-if="donation.donorInfo">
           <li><strong>Nama Lengkap</strong></li>
           <li>{{ donation.donorInfo.fullName }}</li>
           <li><strong>No Telepon</strong></li>

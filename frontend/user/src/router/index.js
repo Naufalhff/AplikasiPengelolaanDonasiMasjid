@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // Import your components
+import DefaultLayout from "@/Layout/DefaultLayout.vue";
 import HomePage from "../views/HomePage.vue";
 import AboutPage from "../views/AboutPage.vue";
 import EventsPage from "../views/EventPage.vue";
@@ -11,7 +12,7 @@ import ResetPassword from "@/views/ResetPassword.vue";
 import RegisterPage from "../views/RegisterPage.vue";
 import DonasiPage from "../views/DonasiPage.vue";
 import VerifyRegister from "@/views/VerifyRegister.vue";
-// import Dashboard from "../views//admin/Dashboard.vue";
+import DashboardPage from "../views//admin/DashboardPage.vue";
 import CreateActivity from "../views/admin/CreateActivity.vue";
 import EditActivity from "../views/admin/EditActivity.vue";
 import ActivityList from "@/views/admin/ActivityList.vue";
@@ -29,6 +30,55 @@ import LaporanKeuangan from "../views/admin/LaporanKeuangan.vue";
 const routes = [
   {
     path: "/",
+    component: DefaultLayout,
+    children: [
+      {
+        path: "/dashboard-page",
+        name: "DashboardPage",
+        component: DashboardPage,
+        meta: { hideNavbar: true },
+      },
+    
+      {
+        path: "/activity-list",
+        name: "ActivityList",
+        component: ActivityList,
+        meta: { hideNavbar: true },
+      },
+      {
+        path: "/create-activity",
+        name: "CreateActivity",
+        component: CreateActivity,
+        meta: { hideNavbar: true },
+      },
+      {
+        path: "/edit-activity/:id",
+        name: "EditActivity",
+        component: EditActivity,
+        meta: { hideNavbar: true },
+      },
+      {
+        path: "/transaksidonasi",
+        name: "TransaksiDonasi",
+        component: TransaksiDonasi,
+        meta: { hideNavbar: true },
+      },
+      {
+        path: "/ringkasan-donasi/:id",
+        name: "RingkasanDonasi",
+        component: RingkasanDonasi,
+        meta: { hideNavbar: true },
+      },
+      {
+        path: "/laporankeuangan",
+        name: "LaporanKeuangan",
+        component: LaporanKeuangan,
+        meta: { hideNavbar: true },
+      },
+    ]
+  },
+  {
+    path: "",
     component: HomePage,
   },
   {
@@ -103,30 +153,6 @@ const routes = [
     component: VerifyRegister,
     meta: { hideNavbar: true },
   },
-  // {
-  //   path: "/dashboard",
-  //   name: "Dashboard",
-  //   component: Dashboard,
-  //   meta: { hideNavbar: true },
-  // },
-  {
-    path: "/activity-list",
-    name: "ActivityList",
-    component: ActivityList,
-    meta: { hideNavbar: true },
-  },
-  {
-    path: '/create-activity',
-    name: 'CreateActivity',
-    component: CreateActivity,
-    meta: { hideNavbar: true },
-  },
-  {
-    path: "/edit-activity/:id",
-    name: "EditActivity",
-    component: EditActivity,
-    meta: { hideNavbar: true },
-  },
   {
     path: "/detaildonasi/nominal/formdonasi/pembayaran/uploadbukti",
     name: "UploadBukti",
@@ -142,21 +168,7 @@ const routes = [
     name: "DetailZakat",
     component: DetailZakat,
   },
-  {
-    path: "/transaksidonasi",
-    name: "TransaksiDonasi",
-    component: TransaksiDonasi,
-  },
-  {
-    path: "/ringkasan-donasi/:id",
-    name: "RingkasanDonasi",
-    component: RingkasanDonasi,
-  },
-  {
-    path: '/laporankeuangan',
-    name: "LaporanKeuangan",
-    component: LaporanKeuangan,
-  }
+  
 ];
 
 const router = createRouter({

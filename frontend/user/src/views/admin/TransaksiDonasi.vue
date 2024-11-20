@@ -17,7 +17,7 @@
           <td>{{ transaction.nama }}</td>
           <td>{{ transaction.activity }}</td>
           <td :class="getStatusClass(transaction.verificationStatus)">
-            {{ transaction.verificationStatus || 'Tidak Tersedia' }}
+            {{ transaction.verificationStatus || "Tidak Tersedia" }}
           </td>
           <td>
             <button @click="viewDetails(transaction.id)" class="btn btn-detail">

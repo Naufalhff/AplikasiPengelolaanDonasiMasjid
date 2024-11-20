@@ -6,23 +6,20 @@
         Berikut beberapa kegiatan penggalangan dana yang sedang berjalan di masjid kami.
       </p>
       <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-4 mb-4" v-for="(donation, index) in donations" :key="index">
+        <div class="col-md-6 col-lg-4 mb-4" v-for="donation in donations" :key="donation.id_kegiatan">
           <div class="card donation-card shadow-sm h-100">
-            <img :src="donation.image" class="card-img-top" :alt="donation.title">
+            <img :src="image" class="card-img-top" :alt="donation.nama_kegiatan">
             <div class="card-body">
-              <h5 class="card-title">{{ donation.title }}</h5>
-              <span class="badge badge-pill category-badge">{{ donation.category }}</span>
+              <h5 class="card-title">{{ donation.nama_kegiatan }}</h5>
+              <span class="badge badge-pill category-badge">{{ donation.jenis_kegiatan }}</span>
               <p class="card-text">Terkumpul: 
-                <span class="text-success font-weight-bold">{{ donation.amount }}</span>
+                <span class="text-success font-weight-bold">{{ donation.anggaran_terkumpul }}</span>
               </p>
               <div class="progress mb-3">
                 <div class="progress-bar bg-success" role="progressbar" 
-                     :style="{width: donation.progress + '%'}" 
-                     aria-valuenow="donation.progress" aria-valuemin="0" aria-valuemax="100"></div>
+                     :style="{width: ((donation.anggaran_terkumpul / donation.anggaran_kegiatan) * 100) + '%'}" 
+                     aria-valuenow="((donation.anggaran_terkumpul / donation.anggaran_kegiatan) * 100)" aria-valuemin="0" aria-valuemax="100"></div>
               </div>
-              <p class="card-text">Donatur: 
-                <span class="text-success font-weight-bold">{{ donation.donors }}</span>
-              </p>
             </div>
           </div>
         </div>
@@ -35,45 +32,31 @@
 </template>
 
 <script>
+import axios from "../axios";
+
 export default {
   name: "DonationsSection",
   data() {
     return {
-      donations: [
-        {
-          image: require('../assets/images/mesjid.jpg'),
-          title: "Infaq",
-          amount: "Rp. 1,229,652,858",
-          progress: 80,
-          donors: "12607",
-          category: "infaq"
-        },
-        {
-          image: require('../assets/images/mesjid.jpg'),
-          title: "Sedekah Subuh",
-          amount: "Rp. 473,258,314",
-          progress: 50,
-          donors: "18766",
-          category: "Sedekah"
-        },
-        {
-          image: require('../assets/images/mesjid.jpg'),
-          title: "Zakat Penghasilan",
-          amount: "Rp. 1,823,658,676",
-          progress: 90,
-          donors: "3418",
-          category: "Zakat"
-        },
-        // {
-        //   image: require('../assets/images/mesjid.jpg'),
-        //   title: "Zakat Emas dan Perak",
-        //   amount: "Rp. 214,966,292",
-        //   progress: 30,
-        //   donors: "108",
-        //   category: "Zakat"
-        // }
-      ]
+      image: require("../assets/images/infaq.jpeg"),
+      donations: []
     };
+  },
+  methods: {
+    fetchData(){
+      axios
+        .get('http://localhost:8000/api/donasiLimited')
+        .then((response) => {
+          this.donations = response.data;
+          console.log(response.data)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    }
+  },
+  mounted(){
+    this.fetchData();
   }
 };
 </script>
