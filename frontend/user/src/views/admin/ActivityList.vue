@@ -1,65 +1,65 @@
 <template>
-  <div class="container py-4">
-    <div class="d-flex justify-content-end mb-3">
-      <RouterLink to="/create-activity">
-        <button class="btn btn-success mx-2">Buat Kegiatan Baru</button>
-      </RouterLink>
-      <button
-        class="btn btn-warning mx-2"
-        @click="toggleDeleteMode"
-      >
-        {{ deleteMode ? 'Batal' : 'Hapus Kegiatan' }}
-      </button>
-      <button
-        v-if="deleteMode && selectedActivities.length > 0"
-        class="btn btn-danger"
-        @click="confirmBulkDelete"
-      >
-        Hapus Terpilih
-      </button>
-    </div>
+      <div class="container py-4">
+        <div class="d-flex justify-content-end mb-3">
+          <RouterLink to="/create-activity">
+            <button class="btn btn-success mx-2">Buat Kegiatan Baru</button>
+          </RouterLink>
+          <button
+            class="btn btn-warning mx-2"
+            @click="toggleDeleteMode"
+          >
+            {{ deleteMode ? 'Batal' : 'Hapus Kegiatan' }}
+          </button>
+          <button
+            v-if="deleteMode && selectedActivities.length > 0"
+            class="btn btn-danger"
+            @click="confirmBulkDelete"
+          >
+            Hapus Terpilih
+          </button>
+        </div>
 
-    <!-- Card Grid Section with Conditional Delete Icon in Delete Mode -->
-    <div class="row">
-      <div class="col-md-4 col-sm-6 mb-3" v-for="activity in paginatedActivities" :key="activity.id">
-        <div class="card h-100 shadow-sm position-relative card-small" @click="deleteMode ? null : editActivity(activity.id)">
-          <img :src="activity.image" class="card-img-top" alt="Activity Image">
-          <div class="card-body">
-            <h6 class="card-title">{{ activity.title }}</h6>
-            <p class="card-text"><strong>Terkumpul:</strong> {{ activity.collected }}</p>
-            <p class="card-text"><strong>Donatur:</strong> {{ activity.donors }}</p>
-          </div>
+        <!-- Card Grid Section with Conditional Delete Icon in Delete Mode -->
+        <div class="row">
+          <div class="col-md-4 col-sm-6 mb-3" v-for="activity in paginatedActivities" :key="activity.id">
+            <div class="card h-100 shadow-sm position-relative card-small" @click="deleteMode ? null : editActivity(activity.id)">
+              <img :src="activity.image" class="card-img-top" alt="Activity Image">
+              <div class="card-body">
+                <h6 class="card-title">{{ activity.title }}</h6>
+                <p class="card-text"><strong>Terkumpul:</strong> {{ activity.collected }}</p>
+                <p class="card-text"><strong>Donatur:</strong> {{ activity.donors }}</p>
+              </div>
 
-          <!-- Delete Checkbox, visible only in Delete Mode -->
-          <div v-if="deleteMode" class="delete-checkbox position-absolute top-0 start-0 m-2">
-            <input 
-              type="checkbox" 
-              :value="activity.id" 
-              v-model="selectedActivities"
-              @click.stop
-            />
+              <!-- Delete Checkbox, visible only in Delete Mode -->
+              <div v-if="deleteMode" class="delete-checkbox position-absolute top-0 start-0 m-2">
+                <input 
+                  type="checkbox" 
+                  :value="activity.id" 
+                  v-model="selectedActivities"
+                  @click.stop
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Pagination Controls -->
-    <div class="pagination-controls d-flex justify-content-center align-items-center mt-4">
-      <button 
-        class="btn btn-outline-primary mx-1"
-        :disabled="currentPage === 1"
-        @click="currentPage--">
-        Previous
-      </button>
-      <span class="mx-2">Page {{ currentPage }} of {{ totalPages }}</span>
-      <button 
-        class="btn btn-outline-primary mx-1"
-        :disabled="currentPage === totalPages"
-        @click="currentPage++">
-        Next
-      </button>
-    </div>
-  </div>
+        <!-- Pagination Controls -->
+        <div class="pagination-controls d-flex justify-content-center align-items-center mt-4">
+          <button 
+            class="btn btn-outline-primary mx-1"
+            :disabled="currentPage === 1"
+            @click="currentPage--">
+            Previous
+          </button>
+          <span class="mx-2">Page {{ currentPage }} of {{ totalPages }}</span>
+          <button 
+            class="btn btn-outline-primary mx-1"
+            :disabled="currentPage === totalPages"
+            @click="currentPage++">
+            Next
+          </button>
+        </div>
+      </div>
 </template>
 
 <script>

@@ -129,12 +129,12 @@ export default {
       const status = this.confirmAction === "approve" ? "VALID" : "INVALID";
 
       axios
-        .put(`http://localhost:8000/api/verifikasi-donasi/${id_donasi}`, {
-          status_verifikasi: status,
-        })
-        .then((response) => {
-          console.log(response.data.message);
-          this.donation.donorInfo.status = status;
+          .put(`http://localhost:8000/api/verifikasi-donasi/${id_donasi}`, {
+            status_verifikasi: status,
+          })
+          .then((response) => {
+            console.log(response.data.message);
+            this.donation.donorInfo.status = status;
 
           if (status === "VALID") {
             axios
