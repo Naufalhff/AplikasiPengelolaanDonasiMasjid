@@ -51,24 +51,8 @@
               ></div>
             </div>
 
-            <!-- Kondisi untuk ZAKAT dan ZAKAT_MAL -->
-            <div v-if="isZakatCategory" class="d-flex mt-3">
-              <RouterLink :to="{ path: '/kalkulatorzakat' }">
-                <button class="btn btn-success mr-3">Kalkulator Zakat</button>
-              </RouterLink>
-
-              <RouterLink
-                :to="{
-                  path: '/detaildonasi/nominal',
-                  query: { id: program.id_kegiatan },
-                }"
-              >
-                <button class="btn btn-success">Donasi Sekarang</button>
-              </RouterLink>
-            </div>
-
-            <!-- Kondisi untuk kategori lain, hanya menampilkan Donasi Sekarang di tengah -->
-            <div v-else class="d-flex mt-3 justify-content-center">
+            <!-- Tombol Donasi Sekarang -->
+            <div class="d-flex mt-3 justify-content-center">
               <RouterLink
                 :to="{
                   path: '/detaildonasi/nominal',
@@ -107,14 +91,12 @@ export default {
   },
 
   computed: {
-    // Tambahkan computed property untuk mengecek apakah kategori adalah ZAKAT atau ZAKAT_MAL
     isZakatCategory() {
       return (
         this.selectedCategory === "ZAKAT" ||
         this.selectedCategory === "ZAKAT MAL"
       );
     },
-    // Hitung progress persentase
     progress() {
       if (this.program.anggaran_donasi > 0) {
         return (

@@ -1,10 +1,20 @@
 <template>
   <div class="container mt-5 pt-5">
-    <h2 class="text-center mb-4">Kalkulator Zakat Mal</h2>
     <div class="card shadow-sm">
       <div class="card-body">
         <!-- Dropdown Pilihan Jenis Zakat -->
         <div class="mb-3">
+          <h2 class="text-center mb-4">Ayo Hitung Zakat Mal Anda Disini!</h2>
+          <p>
+            Kalkulator Zakat Mal dirancang untuk memudahkan umat Muslim dalam
+            menghitung jumlah zakat mal yang wajib dibayar berdasarkan jenis
+            harta yang dimiliki. Zakat mal sendiri merupakan zakat yang
+            dikenakan atas harta benda yang telah mencapai nisab dan dimiliki
+            selama satu tahun. Kalkulator ini dapat digunakan untuk menghitung
+            zakat dari berbagai jenis harta yang berbeda, termasuk emas, perak,
+            tabungan, perdagangan, perusahaan, pertanian, peternakan,
+            pertambangan, dan pendapatan.
+          </p>
           <label for="zakatType" class="form-label d-block"
             >Pilih Jenis Zakat</label
           >
@@ -53,14 +63,13 @@
       </div>
     </div>
 
-    <!-- Modal untuk Hasil Perhitungan Zakat -->
+    <!-- Modal Hasil Perhitungan Zakat -->
     <div
       class="modal fade"
       id="zakatModal"
       tabindex="-1"
       aria-labelledby="zakatModalLabel"
       aria-hidden="true"
-      ref="zakatModal"
     >
       <div class="modal-dialog">
         <div class="modal-content">
@@ -70,27 +79,26 @@
             </h5>
           </div>
           <div class="modal-body">
+            <p>Jumlah zakat yang harus dibayarkan:</p>
+            <h4 class="text-success">Rp.{{ zakatResult.toLocaleString() }}</h4>
             <p v-if="alertMessage" class="text-danger">{{ alertMessage }}</p>
-            <p v-else>Jumlah zakat yang harus dibayarkan:</p>
-            <h4 v-if="!alertMessage" class="text-success">
-              Rp.{{ zakatResult.toLocaleString() }}
-            </h4>
+            <!-- Alert message below the amount -->
           </div>
           <div class="modal-footer">
             <button
               type="button"
               class="btn btn-secondary"
               data-bs-dismiss="modal"
-              @click="resetForm"
+              @click="recalculate"
             >
               Hitung Kembali
             </button>
             <button
               type="button"
               class="btn btn-primary"
-              data-bs-dismiss="modal"
+              @click="copyToClipboard"
             >
-              Tunaikan Zakat
+              Salin
             </button>
           </div>
         </div>
@@ -118,6 +126,7 @@ export default {
       zakatData: {},
       zakatResult: 0,
       alertMessage: "",
+      zakatModal: null,
     };
   },
   computed: {
@@ -141,6 +150,10 @@ export default {
       this.zakatData = {};
       this.alertMessage = "";
     },
+  },
+  mounted() {
+    // Inisialisasi modal saat komponen dimuat
+    this.zakatModal = new Modal(document.getElementById("zakatModal"));
   },
   methods: {
     calculateZakat() {
@@ -295,17 +308,32 @@ export default {
           this.zakatResult = 0;
           this.alertMessage = "Jenis zakat tidak valid.";
       }
-
-      this.$nextTick(() => {
-        const zakatModal = new Modal(this.$refs.zakatModal);
-        zakatModal.show();
-      });
+      const zakatModal = new Modal(document.getElementById("zakatModal"));
+      zakatModal.show();
     },
-    resetForm() {
-      this.zakatResult = 0;
-      this.selectedZakatType = "";
-      this.zakatData = {};
-      this.alertMessage = "";
+    recalculate() {
+      if (this.zakatModal) {
+        this.zakatModal.hide();
+      }
+    },
+    copyToClipboard() {
+      const amount = this.zakatResult;
+
+      if (amount <= 0) {
+        this.alertMessage = "Jumlah zakat tidak valid.";
+        return;
+      }
+
+      navigator.clipboard
+        .writeText(amount.toLocaleString())
+        .then(() => {
+          console.log("Nominal zakat berhasil disalin ke clipboard");
+          this.alertMessage = "Nominal zakat berhasil disalin!";
+        })
+        .catch((err) => {
+          console.error("Gagal menyalin nominal zakat", err);
+          this.alertMessage = "Gagal menyalin nominal zakat.";
+        });
     },
   },
 };

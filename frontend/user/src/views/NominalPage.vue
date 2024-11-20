@@ -70,19 +70,27 @@ export default {
         this.errorMessage = "Minimal donasi Rp.1000";
       } else {
         this.errorMessage = " ";
-        this.$router.push({ path: "/detaildonasi/nominal/formdonasi", query: { id: this.program.id_kegiatan, amount: amount } });
+        this.$router.push({
+          path: "/detaildonasi/nominal/formdonasi",
+          query: { id: this.program.id_kegiatan, amount: amount },
+        });
       }
     },
     fetchData() {
-      const id = this.$route.query.id
-      axios.get(`http://localhost:8000/api/donasi/${id}`)
-      .then(response => {this.program = response.data})
-      .catch(error => {console.error(error)});
-    }
+      const id = this.$route.query.id;
+      axios
+        .get(`http://localhost:8000/api/donasi/${id}`)
+        .then((response) => {
+          this.program = response.data;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
   },
-  mounted(){
-    this.fetchData()
-  }
+  mounted() {
+    this.fetchData();
+  },
 };
 </script>
 
