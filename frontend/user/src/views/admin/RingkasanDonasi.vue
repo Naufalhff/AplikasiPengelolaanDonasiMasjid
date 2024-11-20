@@ -128,20 +128,12 @@ export default {
       const status = this.confirmAction === "approve" ? "VALID" : "INVALID";
 
       axios
-<<<<<<< HEAD:frontend/user/src/views/RingkasanDonasi.vue
           .put(`http://localhost:8000/api/verifikasi-donasi/${id_donasi}`, {
             status_verifikasi: status,
           })
           .then((response) => {
             console.log(response.data.message);
             this.donation.donorInfo.status = status;
-=======
-        .put(`http://localhost:8000/api/verifikasi-donasi/${id_donasi}`, {
-          status_verifikasi: status,
-        })
-        .then((response) => {
-          console.log(response.data.message);
->>>>>>> dccb15ecdfa57703a259adcf85f2e9412a252628:frontend/user/src/views/admin/RingkasanDonasi.vue
 
           if (status === "VALID") {
             axios

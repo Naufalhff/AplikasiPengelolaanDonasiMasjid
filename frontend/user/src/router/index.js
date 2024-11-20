@@ -22,14 +22,9 @@ import PembayaranPage from "../views/PembayaranPage.vue";
 import UploadBukti from "../views/UploadBukti.vue";
 import KalkulatorZakat from "../views/KalkulatorZakat.vue";
 import DetailZakat from "../views/DetailZakat.vue";
-<<<<<<< HEAD
-import TransaksiDonasi from "../views/TransaksiDonasi.vue";
-import RingkasanDonasi from "../views/RingkasanDonasi.vue";
-import LaporanKeuangan from "../views/LaporanKeuangan.vue";
-=======
 import TransaksiDonasi from "../views/admin/TransaksiDonasi.vue";
 import RingkasanDonasi from "../views/admin/RingkasanDonasi.vue";
->>>>>>> dccb15ecdfa57703a259adcf85f2e9412a252628
+import LaporanKeuangan from "../views/admin/LaporanKeuangan.vue";
 
 const routes = [
   {
