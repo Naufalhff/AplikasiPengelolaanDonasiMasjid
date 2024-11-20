@@ -7,10 +7,10 @@
         <p>{{ donation.amount }}</p>
 
         <div class="payment-method">
-          <p>
-            <strong>Metode Pembayaran</strong>
-          </p>
+          <p><strong>Metode Pembayaran</strong></p>
+          <p>{{ donation.donorInfo.paymentMethod }}</p>
         </div>
+
 
         <p><strong>Info Donatur</strong></p>
         <ul v-if="donation.donorInfo">
@@ -100,11 +100,12 @@ export default {
           this.donation = {
             amount: response.data.jumlah_donasi,
             donorInfo: {
+              paymentMethod: response.data.metode_pembayaran,
               fullName: response.data.nama_donatur,
               phoneNumber: response.data.no_telepon_donatur,
               address: response.data.alamat_donatur,
               email: response.data.email_donatur,
-              activity: response.data.event.nama_kegiatan,
+              activity: response.data.nama_kegiatan,
               transactionDate: response.data.tanggal_donasi,
               status: response.data.status_verifikasi,
             },
@@ -128,12 +129,12 @@ export default {
       const status = this.confirmAction === "approve" ? "VALID" : "INVALID";
 
       axios
-        .put(`http://localhost:8000/api/verifikasi-donasi/${id_donasi}`, {
-          status_verifikasi: status,
-        })
-        .then((response) => {
-          console.log(response.data.message);
-          this.donation.donorInfo.status = status;
+          .put(`http://localhost:8000/api/verifikasi-donasi/${id_donasi}`, {
+            status_verifikasi: status,
+          })
+          .then((response) => {
+            console.log(response.data.message);
+            this.donation.donorInfo.status = status;
 
           if (status === "VALID") {
             axios
@@ -201,9 +202,8 @@ p {
 
 .payment-method {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 10px;
-  margin-top: 10px;
 }
 
 ul {
