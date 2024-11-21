@@ -60,6 +60,9 @@
         >
           Hitung Zakat Saya
         </button>
+        <div v-if="alertMessage" class="alert alert-danger mt-2" role="alert">
+          {{ alertMessage }}
+        </div>
       </div>
     </div>
 
@@ -82,7 +85,6 @@
             <p>Jumlah zakat yang harus dibayarkan:</p>
             <h4 class="text-success">Rp.{{ zakatResult.toLocaleString() }}</h4>
             <p v-if="alertMessage" class="text-danger">{{ alertMessage }}</p>
-            <!-- Alert message below the amount -->
           </div>
           <div class="modal-footer">
             <button
@@ -152,12 +154,62 @@ export default {
     },
   },
   mounted() {
-    // Inisialisasi modal saat komponen dimuat
     this.zakatModal = new Modal(document.getElementById("zakatModal"));
   },
   methods: {
     calculateZakat() {
       this.alertMessage = "";
+
+      if (this.selectedZakatType === "emas") {
+        if (!this.zakatData.BeratEmasPerak || !this.zakatData.HargaEmasPerak) {
+          this.alertMessage = "Silakan isi berat dan harga emas/perak.";
+          return;
+        }
+      } else if (this.selectedZakatType === "tabungan") {
+        if (!this.zakatData.NilaiTabungan || !this.zakatData.HargaEmas) {
+          this.alertMessage = "Silakan isi nilai tabungan dan harga emas.";
+          return;
+        }
+      } else if (this.selectedZakatType === "perdagangan") {
+        if (!this.zakatData.modal || !this.zakatData.keuntungan) {
+          this.alertMessage = "Silakan isi modal dan keuntungan.";
+          return;
+        }
+      } else if (this.selectedZakatType === "perusahaan") {
+        if (
+          !this.zakatData.keuntunganBersih ||
+          !this.zakatData.TahunOperasional
+        ) {
+          this.alertMessage =
+            "Silakan isi keuntungan bersih dan tahun operational.";
+          return;
+        }
+      } else if (this.selectedZakatType === "pertanian") {
+        if (!this.zakatData.hasilPanen || !this.zakatData.hargaJual) {
+          this.alertMessage = "Silakan isi hasil panen dan harga jual.";
+          return;
+        }
+      } else if (this.selectedZakatType === "peternakan") {
+        if (!this.zakatData.jumlahHewan || !this.zakatData.hargaHewan) {
+          this.alertMessage = "Silakan isi jumlah hewan dan harga hewan.";
+          return;
+        }
+      } else if (this.selectedZakatType === "pertambangan") {
+        if (!this.zakatData.keuntungan) {
+          this.alertMessage = "Silakan isi keuntungan.";
+          return;
+        }
+      } else if (this.selectedZakatType === "pendapatan") {
+        if (!this.zakatData.PenghasilanPerBulan) {
+          this.alertMessage = "Silakan isi penghasilan per bulan.";
+          return;
+        }
+      } else if (this.selectedZakatType === "rikaz") {
+        if (!this.zakatData.JumlahHarta) {
+          this.alertMessage = "Silakan isi jumlah harta.";
+          return;
+        }
+      }
 
       switch (this.selectedZakatType) {
         case "emas": {
@@ -308,8 +360,7 @@ export default {
           this.zakatResult = 0;
           this.alertMessage = "Jenis zakat tidak valid.";
       }
-      const zakatModal = new Modal(document.getElementById("zakatModal"));
-      zakatModal.show();
+      this.zakatModal.show();
     },
     recalculate() {
       if (this.zakatModal) {
@@ -325,7 +376,7 @@ export default {
       }
 
       navigator.clipboard
-        .writeText(amount.toLocaleString())
+        .writeText(amount.toString()) // Mengubah ke string tanpa format
         .then(() => {
           console.log("Nominal zakat berhasil disalin ke clipboard");
           this.alertMessage = "Nominal zakat berhasil disalin!";

@@ -29,7 +29,7 @@
     </div>
 
     <div class="mb-3">
-      <label class="form-label">Piutang Dagang</label>
+      <label class="form-label">Piutang Dagang (Optional)</label>
       <div class="input-group">
         <span class="input-group-text">Rp.</span>
         <input
@@ -43,7 +43,7 @@
     </div>
 
     <div class="mb-3">
-      <label class="form-label">Utang jatuh tempo</label>
+      <label class="form-label">Utang jatuh tempo (Optional)</label>
       <div class="input-group">
         <span class="input-group-text">Rp.</span>
         <input
@@ -57,7 +57,7 @@
     </div>
 
     <div class="mb-3">
-      <label class="form-label">Kerugian selama 1 tahun</label>
+      <label class="form-label">Kerugian selama 1 tahun (Optional)</label>
       <div class="input-group">
         <span class="input-group-text">Rp.</span>
         <input
@@ -69,6 +69,22 @@
         />
       </div>
     </div>
+    <p class="description">
+      Zakat perdagangan dikenakan atas aset usaha yang telah mencapai nisab,
+      yaitu setara <b>85 gram emas</b>, dan telah berjalan selama satu tahun
+      (haul). Tarif zakat yang dikenakan adalah sebesar <b>2.5%</b> dari total
+      aset bersih usaha. Perhitungan aset bersih usaha dilakukan dengan rumus:
+      <br />
+      <b>
+        Aset Bersih = Modal + Keuntungan + Piutang Dagang - (Kerugian + Utang
+        Jatuh Tempo)
+      </b>
+      <br />
+      Jika aset bersih mencapai atau melebihi nisab, maka zakat wajib
+      dikeluarkan dengan rumus:
+      <br />
+      <b>Zakat = Aset Bersih × 2.5%</b>.
+    </p>
   </div>
 </template>
 

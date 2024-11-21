@@ -29,6 +29,12 @@
         />
       </div>
     </div>
+    <p class="description">
+      Zakat tabungan dikenakan jika nilai tabungan atau investasi Anda telah
+      mencapai nisab, yaitu senilai <b>85 gram emas</b>. Tarif zakat yang harus
+      dikeluarkan adalah <b>2.5%</b> dari total nilai tabungan Anda. Rumus
+      perhitungan zakat tabungan adalah: <b>Zakat = Nilai Tabungan × 2.5%</b>.
+    </p>
   </div>
 </template>
 

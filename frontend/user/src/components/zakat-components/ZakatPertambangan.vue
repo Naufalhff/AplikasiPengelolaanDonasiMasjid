@@ -13,6 +13,22 @@
         />
       </div>
     </div>
+    <p class="description">
+      Zakat pertambangan adalah zakat yang wajib dikeluarkan atas hasil tambang
+      yang diperoleh, seperti emas, perak, batu bara, minyak, atau mineral
+      lainnya, apabila telah mencapai nisab dan haul. Nisab zakat pertambangan
+      untuk emas adalah <b>85 gram emas</b> atau <b>595 gram perak</b>.
+    </p>
+    <p class="description">
+      Besaran zakat pertambangan adalah <b>2,5%</b> dari total hasil tambang
+      yang diperoleh, apabila hasil tersebut melebihi nisab dan telah mencapai
+      haul (satu tahun).
+    </p>
+    <p class="description">
+      Zakat ini wajib dikeluarkan setiap tahun apabila hasil tambang yang
+      dimiliki mencapai nisab dan haul, karena berkaitan dengan harta yang telah
+      mencapai batas minimum dan telah dimiliki selama satu tahun.
+    </p>
   </div>
 </template>
 
