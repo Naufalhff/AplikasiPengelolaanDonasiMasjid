@@ -376,7 +376,7 @@ export default {
       }
 
       navigator.clipboard
-        .writeText(amount.toString()) // Mengubah ke string tanpa format
+        .writeText(amount.toString())
         .then(() => {
           console.log("Nominal zakat berhasil disalin ke clipboard");
           this.alertMessage = "Nominal zakat berhasil disalin!";

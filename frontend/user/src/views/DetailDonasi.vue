@@ -3,7 +3,13 @@
     <div class="row">
       <div class="col-md-8">
         <div class="card">
-          <img :src="image" class="card-img-top" alt="Donation Box" />
+          <div class="d-flex justify-content-center mt-3 mx-3">
+            <img
+              :src="image"
+              class="card-img-top img-fluid w-100 rounded"
+              alt="Donation Box"
+            />
+          </div>
           <div class="card-body">
             <h2 class="card-title">
               {{ program.nama_kegiatan }}
@@ -31,9 +37,13 @@
         <div class="card mb-4">
           <div class="card-body text-center">
             <h4 class="card-text mb-3 small-title">
-              Bantu Donasi Ini Terwujud
+              {{ program.nama_kegiatan }}
             </h4>
-            <img :src="image" class="img-fluid mb-3" alt="Donation Campaign" />
+            <img
+              :src="image"
+              class="img-fluid mb-3 rounded"
+              alt="Donation Campaign"
+            />
             <p class="card-text">
               Terkumpul: {{ formatCurrency(program.anggaran_terkumpul) }}
             </p>
@@ -59,7 +69,9 @@
                   query: { id: program.id_kegiatan },
                 }"
               >
-                <button class="btn btn-success">Donasi Sekarang</button>
+                <button class="btn btn-success btn-block">
+                  Donasi Sekarang
+                </button>
               </RouterLink>
             </div>
           </div>
@@ -100,7 +112,8 @@ export default {
     progress() {
       if (this.program.anggaran_donasi > 0) {
         return (
-          (this.program.anggaran_terkumpul / this.program.anggaran_donasi) * 100);
+          (this.program.anggaran_terkumpul / this.program.anggaran_donasi) * 100
+        );
       }
       return 0;
     },
