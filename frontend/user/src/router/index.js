@@ -36,46 +36,45 @@ const routes = [
         path: "/dashboard-page",
         name: "DashboardPage",
         component: DashboardPage,
-        meta: { hideNavbar: true },
+        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Administrator"] },
       },
-    
       {
         path: "/activity-list",
         name: "ActivityList",
         component: ActivityList,
-        meta: { hideNavbar: true },
+        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Pengurus Masjid", "Administrator"] },
       },
       {
         path: "/create-activity",
         name: "CreateActivity",
         component: CreateActivity,
-        meta: { hideNavbar: true },
+        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Pengurus Masjid"] },
       },
       {
         path: "/edit-activity/:id",
         name: "EditActivity",
         component: EditActivity,
-        meta: { hideNavbar: true },
+        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Pengurus Masjid"] },
       },
       {
         path: "/transaksidonasi",
         name: "TransaksiDonasi",
         component: TransaksiDonasi,
-        meta: { hideNavbar: true },
+        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Bendahara", "Administrator"] },
       },
       {
         path: "/ringkasan-donasi/:id",
         name: "RingkasanDonasi",
         component: RingkasanDonasi,
-        meta: { hideNavbar: true },
+        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Bendahara"] },
       },
       {
         path: "/laporankeuangan",
         name: "LaporanKeuangan",
         component: LaporanKeuangan,
-        meta: { hideNavbar: true },
+        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Bendahara", "Administrator"] },
       },
-    ]
+    ],
   },
   {
     path: "",
@@ -174,6 +173,27 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const isLogin = sessionStorage.getItem("isLogin") === "true";
+  const loginAs = sessionStorage.getItem("loginAs");
+
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!isLogin) {
+      next({ path: "/login" });
+    } else if (
+      to.meta.allowedRoles &&
+      !to.meta.allowedRoles.includes(loginAs)
+    ) {
+      next(false);
+      alert("Forbidden")
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;

@@ -44,6 +44,8 @@ export default {
       transactions: [], // Data semua transaksi
       currentPage: 1, // Halaman yang sedang aktif
       itemsPerPage: 10, // Jumlah item per halaman
+      key: "Proyek-3-Mantap",
+      role: "",
     };
   },
   computed: {
@@ -57,17 +59,19 @@ export default {
     },
   },
   created() {
-    axios.get('http://localhost:8000/api/transaksi-donasi')
-      .then(response => {
-        this.transactions = response.data.map(donation => ({
-          id: donation.id_donasi,
-          nama: donation.nama_donatur,
-          activity: donation.nama_kegiatan,
-          verificationStatus: donation.status_verifikasi
-        }));
-      })
-      .catch(error => {
-        console.error("Error fetching transactions:", error);
+    this.role = sessionStorage.getItem("role");
+    console.log(this.role)
+      axios.get('http://localhost:8000/api/transaksi-donasi')
+        .then(response => {
+          this.transactions = response.data.map(donation => ({
+            id: donation.id_donasi,
+            nama: donation.nama_donatur,
+            activity: donation.nama_kegiatan,
+            verificationStatus: donation.status_verifikasi
+          }));
+        })
+        .catch(error => {
+          console.error("Error fetching transactions:", error);
       });
   },
   methods: {

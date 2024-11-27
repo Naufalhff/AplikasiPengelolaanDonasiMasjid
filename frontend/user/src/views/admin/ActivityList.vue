@@ -6,7 +6,7 @@
           </RouterLink>
           <button
             class="btn btn-warning mx-2"
-            @click="toggleDeleteMode"
+            @click="handleDeleteMode"
           >
             {{ deleteMode ? 'Batal' : 'Hapus Kegiatan' }}
           </button>
@@ -95,6 +95,14 @@ export default {
   methods: {
     editActivity(id) {
       this.$router.push({ name: 'EditActivity', params: { id } });
+    },
+    handleDeleteMode(){
+      const userRole = sessionStorage.getItem("role");
+      if (userRole !== "Bendahara") {
+        alert("Forbidden");
+        return;
+      }
+      this.toggleDeleteMode();
     },
     toggleDeleteMode() {
       this.deleteMode = !this.deleteMode;

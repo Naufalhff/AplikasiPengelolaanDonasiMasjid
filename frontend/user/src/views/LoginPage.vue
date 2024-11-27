@@ -77,12 +77,13 @@
 <script>
 import axios from "../axios";
 
-export default {
+export default { 
   data() {
     return {
       email: "",
       password: "",
       errorMessage: "",
+      key: "Proyek-3-Mantap",
     };
   },
   methods: {
@@ -92,18 +93,24 @@ export default {
           email: this.email,
           password: this.password,
         });
-        console.log("Login berhasil:", response.data);
-
+        console.log("Login berhasil");
         const UserRole = response.data.user.peran;
-        console.log(UserRole);
-
+        sessionStorage.setItem("isLogin", "true");
+        sessionStorage.setItem("loginAs", UserRole);
+        console.log(sessionStorage.getItem("loginAs"))
         if (UserRole === 'Donatur') {
           this.$router.push("/home");
         } else {
-          this.$router.push("/transaksidonasi");
+          sessionStorage.setItem("role", UserRole);
+          if (UserRole === 'Pengurus Masjid'){
+            this.$router.push("/activity-list");
+          } else if (UserRole === 'Bendahara'){
+            this.$router.push('/transaksidonasi')
+          } else if (UserRole === 'Administrator'){
+            this.$router.push("/dashboard-page")
+          }
         }
-        // Simpan token ke localStorage atau Vuex
-        // localStorage.setItem('token', response.data.token);
+
       } catch (error) {
         if (error.response && error.response.status === 401) {
           this.errorMessage = "Email atau password salah.";
