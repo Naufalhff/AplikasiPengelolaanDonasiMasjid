@@ -78,9 +78,9 @@
                         <span
                           class="badge"
                           :class="{
-                            'bg-warning text-white': donation.status === 'Pending',
-                            'bg-success text-white': donation.status === 'Valid',
-                            'bg-danger text-white': donation.status === 'Invalid',
+                            'bg-warning text-white': donation.status === 'PENDING',
+                            'bg-success text-white': donation.status === 'VALID',
+                            'bg-danger text-white': donation.status === 'INVALID',
                           }"
                         >
                           {{ donation.status }}
@@ -105,7 +105,6 @@
 </template>
 
 <script>
-
 import {
   Chart,
   LineController,
@@ -117,6 +116,8 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+
+import axios from 'axios';
 
 Chart.register(
   LineController,
@@ -136,84 +137,163 @@ export default {
       summaryCards: [
       {
         title: "Total Donasi",
-        value: "Rp. 563.745.274",
+        value: "Rp. 0,00",
         description: "Total donasi berhasil terkumpul",
         icon: "fa fa-donate",
         color: "#f06292",
       },
       {
         title: "Jumlah Donasi",
-        value: "57.084",
+        value: "0",
         description: "Total Donasi yang Diterima",
         icon: "fa fa-hand-holding-usd",
         color: "#29b6f6",
       },
       {
         title: "Jumlah Donatur",
-        value: "2.345",
+        value: "0",
         description: "Jumlah Donatur Aktif",
         icon: "fa fa-user-friends",
         color: "#fbc02d",
       },
       {
         title: "Total Kegiatan",
-        value: "18",
+        value: "0",
         description: "Jumlah Kegiatan yang Berjalan",
         icon: "fa fa-calendar-alt",
         color: "#66bb6a",
       },
     ],
       donations: [
-        { id: 1, name: "Tono", activity: "Kurban", amount: "Rp 500.000", date: "2024-11-18", status: "Pending" },
-        { id: 2, name: "Andi", activity: "Banjir", amount: "Rp 1.000.000", date: "2024-11-19", status: "Valid" },
-        { id: 3, name: "Siti", activity: "Pendidikan", amount: "Rp 750.000", date: "2024-11-20", status: "Invalid" },
+        { id: 1, name: "Unknown", activity: "Unknown", amount: "Rp 0,00", date: "0000-00-00", status: "Pending" },
+        { id: 2, name: "Unknown", activity: "Unknown", amount: "Rp 0,00", date: "0000-00-00", status: "Pending" },
+        { id: 3, name: "Unknown", activity: "Unknown", amount: "Rp 0,00", date: "0000-00-00", status: "Pending" },
       ],
     };
   },
   mounted() {
     this.initCharts();
+    this.fetchTotalDonations();
+    this.fetchCountDonations();
+    this.fetchCountDonatur();
+    this.fetchCountEvent();
+    this.fetchRecentDonations();
   },
   methods: {
     initCharts() {
-      const ctx1 = document.getElementById("incomeChart").getContext("2d");
-      new Chart(ctx1, {
-        type: "line",
-        data: {
-          labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-          datasets: [
-            {
-              label: "Income",
-              data: [100, 200, 400, 300, 500, 400, 600, 500, 700],
-              borderColor: "#4caf50",
-              backgroundColor: "rgba(76, 175, 80, 0.2)",
-              fill: true,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-        },
-      });
+      axios
+          .get("http://localhost:8000/api/informasi-statistik")
+          .then((response) => {
+            const data = response.data;
 
-      const ctx2 = document.getElementById("expenseChart").getContext("2d");
-      new Chart(ctx2, {
-        type: "line",
-        data: {
-          labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-          datasets: [
-            {
-              label: "Expenses",
-              data: [150, 250, 300, 400, 350, 450, 400, 550, 600],
-              borderColor: "#f44336",
-              backgroundColor: "rgba(244, 67, 54, 0.2)",
-              fill: true,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-        },
-      });
+            const donasiLabels = data.donasi_per_bulan.map((item) => item.bulan);
+            const donasiData = data.donasi_per_bulan.map((item) => item.total_donasi);
+
+            const pengeluaranLabels = data.pengeluaran_per_bulan.map((item) => item.bulan);
+            const pengeluaranData = data.pengeluaran_per_bulan.map((item) => item.total_pengeluaran);
+
+            const ctx1 = document.getElementById("incomeChart").getContext("2d");
+            new Chart(ctx1, {
+              type: "line",
+              data: {
+                labels: donasiLabels,
+                datasets: [
+                  {
+                    label: "Donasi",
+                    data: donasiData,
+                    borderColor: "#4caf50",
+                    backgroundColor: "rgba(76, 175, 80, 0.2)",
+                    fill: true,
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+              },
+            });
+
+            const ctx2 = document.getElementById("expenseChart").getContext("2d");
+            new Chart(ctx2, {
+              type: "line",
+              data: {
+                labels: pengeluaranLabels,
+                datasets: [
+                  {
+                    label: "Pengeluaran",
+                    data: pengeluaranData,
+                    borderColor: "#f44336",
+                    backgroundColor: "rgba(244, 67, 54, 0.2)",
+                    fill: true,
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+              },
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching statistics data:", error);
+          });
+    },
+    formatCurrency(value) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      }).format(value);
+    },
+    fetchTotalDonations() {
+      axios.get('http://localhost:8000/api/total-donasi')
+          .then(response => {
+            const total = response.data.total_donations;
+            this.summaryCards[0].value = this.formatCurrency(total);
+          })
+          .catch(error => {
+            console.error("There was an error fetching total donations:", error);
+          });
+    },
+    fetchCountDonations() {
+      axios.get('http://localhost:8000/api/jumlah-donasi')
+          .then(response => {
+            this.summaryCards[1].value = response.data.counts;
+          })
+          .catch(error => {
+            console.error("There was an error fetching count donations:", error);
+          });
+    },
+    fetchCountDonatur() {
+      axios.get('http://localhost:8000/api/jumlah-donatur')
+          .then(response => {
+            this.summaryCards[2].value = response.data.donatur;
+          })
+          .catch(error => {
+            console.error("There was an error fetching count donatur:", error);
+          });
+    },
+    fetchCountEvent() {
+      axios.get('http://localhost:8000/api/jumlah-kegiatan')
+          .then(response => {
+            this.summaryCards[3].value = response.data.kegiatan;
+          })
+          .catch(error => {
+            console.error("There was an error fetching count donatur:", error);
+          });
+    },
+    fetchRecentDonations() {
+      axios.get('http://localhost:8000/api/donasi-terakhir')
+          .then(response => {
+            this.donations = response.data.map(donation => ({
+              id: donation.id_donasi,
+              name: donation.nama_donatur || 'Unknown',
+              activity: donation.nama_kegiatan || 'Unknown',
+              amount: this.formatCurrency(donation.jumlah_donasi || 0),
+              date: donation.tanggal_donasi || '0000-00-00',
+              status: donation.status_verifikasi || 'Pending',
+            }));
+          })
+          .catch(error => {
+            console.error("Error fetching recent donations:", error);
+          });
     },
   },
 };
