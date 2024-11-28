@@ -27,6 +27,7 @@ export default {
       menus: [
         { text: "Dashboard", link: "/dashboard-page", role: "Administrator" },
         { text: "Transaksi Donasi", link: "/transaksidonasi", role: "Bendahara" },
+        { text: "Transaksi Pengeluaran", link: "/pilih-kegiatan", role: "Bendahara"},
         { text: "Daftar Kegiatan", link: "/activity-list", role: "Pengurus Masjid" },
         { text: "Laporan Keuangan", link: "/laporankeuangan", role: "Bendahara" },
       ],

@@ -26,6 +26,10 @@ import DetailZakat from "../views/DetailZakat.vue";
 import TransaksiDonasi from "../views/admin/TransaksiDonasi.vue";
 import RingkasanDonasi from "../views/admin/RingkasanDonasi.vue";
 import LaporanKeuangan from "../views/admin/LaporanKeuangan.vue";
+import PilihKegiatan from "@/views/admin/PilihKegiatan.vue";
+import RiwayatPengeluaran from "@/views/admin/RiwayatPengeluaran.vue";
+import RingkasanPengeluaran from "@/views/admin/RingkasanPengeluaran.vue";
+import BuatPengeluaran from "@/views/admin/BuatPengeluaran.vue";
 
 const routes = [
   {
@@ -73,6 +77,30 @@ const routes = [
         name: "LaporanKeuangan",
         component: LaporanKeuangan,
         meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Bendahara", "Administrator"] },
+      },
+      {
+        path: "/pilih-kegiatan",
+        name: "PilihKegiatan",
+        component: PilihKegiatan,
+        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Bendahara", "Administrator"] },
+      },
+      {
+        path: "/riwayat-pengeluaran/:id",
+        name: "RiwayatPengeluaran",
+        component: RiwayatPengeluaran,
+        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Bendahara"] },
+      },
+      {
+        path: "/ringkasan-pengeluaran/:id",
+        name: "RingkasanPengeluaran",
+        component: RingkasanPengeluaran,
+        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Bendahara"] },
+      },
+      {
+        path: "/buat-pengeluaran/:id",
+        name: "BuatPengeluaran",
+        component: BuatPengeluaran,
+        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Bendahara"] },
       },
     ],
   },
@@ -167,7 +195,6 @@ const routes = [
     name: "DetailZakat",
     component: DetailZakat,
   },
-  
 ];
 
 const router = createRouter({

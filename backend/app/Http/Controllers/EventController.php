@@ -8,10 +8,9 @@ use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
 {
-
     public function index()
     {
-        $events = Kegiatan::all();
+        $events = Kegiatan::orderBy('id_kegiatan', 'asc')->get();
         return response()->json($events);
     }
 
@@ -30,6 +29,18 @@ class EventController extends Controller
         }
 
         return response()->json(['message' => 'Event not found'], 404);
+    }
+
+    public function updateAmount($id, Request $request)
+    {
+        $event = Kegiatan::findOrFail($id);
+        $event->anggaran_pengeluaran += $request->anggaran_terkumpul;
+        $event->save();
+
+        return response()->json([
+            'message' => 'Anggaran terkumpul berhasil diperbarui.',
+            'data' => $event
+        ], 200);
     }
 
     public function store(Request $request)

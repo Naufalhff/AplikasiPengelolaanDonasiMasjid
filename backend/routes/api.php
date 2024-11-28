@@ -4,6 +4,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExpenseController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [UserController::class, 'login']);
@@ -15,6 +16,7 @@ Route::get('/daftar-kegiatan', [EventController::class, 'index']);
 Route::get('/donasi', [EventController::class, 'index']);
 Route::get('/donasiLimited', [EventController::class, 'getEventLimited']);
 Route::get('/donasi/{id}', [EventController::class, 'getDataById']);
+Route::patch('/update-anggaran-terkumpul/{id}', [EventController::class, 'updateAmount']);
 Route::post('/daftar-kegiatan/buat-kegiatan-baru', [EventController::class, 'store']);
 Route::put('/daftar-kegiatan/edit-kegiatan/{id_kegiatan}', [EventController::class, 'update']);
 Route::delete('/daftar-kegiatan/hapus-kegiatan/{id_kegiatan}', [EventController::class, 'destroy']);
@@ -34,6 +36,11 @@ Route::get('/jumlah-donasi', [DashboardController::class, 'countDonation']);
 Route::get('/jumlah-kegiatan', [DashboardController::class, 'countEvent']);
 Route::get('/jumlah-donatur', [DashboardController::class, 'countDonatur']);
 
+Route::get('/riwayat-transaksi/{id_kegiatan}', [ExpenseController::class, 'showExpense']);
+Route::get('/detail-pengeluaran/{id_pengeluaran}', [ExpenseController::class, 'expenseDetails']);
+Route::delete('/hapus-pengeluaran/{id_pengeluaran}', [ExpenseController::class, 'deleteExpense']);
+
 Route::post('/upload', [FileUploadController::class, 'upload']);
+Route::post('/tambah-pengeluaran', [FileUploadController::class, 'addExpense']);
 
 Route::get('/getDonasi', [DonationController::class, 'getDonasi']);
