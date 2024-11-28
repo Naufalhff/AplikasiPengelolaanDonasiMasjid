@@ -7,7 +7,7 @@
         <div class="col-lg-6 mb-3">
           <div class="card shadow-sm p-4 stat-card">
             <h5>Total Donasi</h5>
-            <h4 class="text-dark">Rp. {{ this.totalDonasi() }}</h4>
+            <h4 class="text-dark">Rp. {{ this.totalDonasi() }}.00</h4>
           </div>
         </div>
         <!-- Total Transactions -->

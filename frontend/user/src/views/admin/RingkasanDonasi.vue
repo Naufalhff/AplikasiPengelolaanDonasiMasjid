@@ -6,7 +6,7 @@
         <p><strong>Nominal donasi</strong></p>
         <p>{{ donation.amount }}</p>
 
-        <div class="payment-method">
+        <div class="payment-method" v-if="donation.donorInfo">
           <p><strong>Metode Pembayaran</strong></p>
           <p>{{ donation.donorInfo.paymentMethod }}</p>
         </div>
