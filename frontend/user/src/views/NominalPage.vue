@@ -2,7 +2,11 @@
   <div class="container mt-5 p-5">
     <div class="card p-4">
       <div class="text-center">
-        <img :src="donation.image" alt="Donasi" class="img-thumbnail mb-3" />
+        <img
+          :src="donation.image"
+          alt="Donasi"
+          class="img-thumbnail mb-3 rounded"
+        />
         <h5>{{ program.nama_kegiatan }}</h5>
         <p>{{ program.deskripsi_kegiatan }}</p>
       </div>
@@ -104,6 +108,7 @@ export default {
   width: 100%;
   max-width: 200px;
   height: auto;
+  padding: 0;
 }
 .alert {
   margin-top: 20px;

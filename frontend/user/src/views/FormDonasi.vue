@@ -8,7 +8,11 @@
   <div class="container mt-5">
     <div class="card p-4">
       <div class="text-center">
-        <img :src="donation.image" alt="Donasi" class="img-thumbnail mb-3" />
+        <img
+          :src="donation.image"
+          alt="Donasi"
+          class="img-thumbnail mb-3 rounded"
+        />
         <h5>{{ data.nama_kegiatan }}</h5>
         <p>{{ data.deskripsi_kegiatan }}</p>
       </div>
@@ -90,8 +94,7 @@
               />
             </div>
             <p class="mt-3">
-              Dengan melanjutkan donasi, saya setuju
-              <a href="#" class="text-primary">Syarat & Ketentuan</a>
+              Dengan melanjutkan donasi, saya setuju Syarat & Ketentuan
             </p>
             <div
               v-if="errorMessage"
