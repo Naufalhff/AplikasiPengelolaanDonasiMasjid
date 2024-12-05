@@ -6,18 +6,20 @@
 
     <!-- router-view untuk menampilkan komponen sesuai rute -->
     <router-view></router-view>
+    <FooterPage />
   </div>
 </template>
 
 <script>
 import NavBar from "./components/Navbar.vue";
 import SideNav from "./components/SideNav.vue";
+import FooterPage from "./components/FooterPage.vue";
 
 export default {
   components: {
     NavBar,
     SideNav,
+    FooterPage,
   },
 };
 </script>
-  

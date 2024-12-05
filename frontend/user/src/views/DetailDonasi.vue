@@ -20,7 +20,7 @@
             </p>
           </div>
         </div>
-        <div class="mt-3">
+        <div class="mt-3 mb-4">
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Deskripsi</h5>
