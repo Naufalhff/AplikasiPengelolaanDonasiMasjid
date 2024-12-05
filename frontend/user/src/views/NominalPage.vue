@@ -10,28 +10,29 @@
         <h5>{{ program.nama_kegiatan }}</h5>
         <p>{{ program.deskripsi_kegiatan }}</p>
       </div>
-      <div class="mb-3">
+      <div class="mb-4">
         <h6>Nominal</h6>
         <div class="d-flex flex-wrap">
           <button
             v-for="(amount, index) in presetAmounts"
             :key="index"
-            class="btn me-2 mb-2 mr-3 border border-secondary"
+            class="btn me-2 mt-2 mb-2 mr-2 ml-2 border border-secondary"
             :class="{ 'btn-success': selectedAmount === amount }"
             @click="selectAmount(amount)"
           >
-            Rp{{ amount.toLocaleString() }}
+            {{ formatCurrency(amount) }}
           </button>
         </div>
         <div class="mt-3">
           <label for="customAmount">Nominal Lainnya</label>
           <input
-            type="number"
+            type="text"
             class="form-control"
             id="customAmount"
-            v-model.number="customAmount"
+            v-model="formattedAmount"
             placeholder="Minimal donasi Rp 1.000"
             min="1000"
+            @input="formatCustomAmount"
           />
         </div>
         <div v-if="errorMessage" class="alert alert-danger mt-2" role="alert">
@@ -60,13 +61,22 @@ export default {
       },
       errorMessage: "",
       program: [],
+      formattedAmount: "",
     };
   },
   methods: {
     selectAmount(amount) {
       this.selectedAmount = amount;
       this.customAmount = amount;
+      this.formattedAmount = this.formatCurrency(amount);
       this.errorMessage = "";
+    },
+    formatCustomAmount() {
+      let value = this.formattedAmount.replace(/[^0-9]/g, "");
+      if (value) {
+        this.formattedAmount = Number(value).toLocaleString("id-ID");
+        this.customAmount = value;
+      }
     },
     submitDonation() {
       const amount = this.selectedAmount || this.customAmount;
@@ -91,6 +101,12 @@ export default {
           console.error(error);
         });
     },
+    formatCurrency(value) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      }).format(value);
+    },
   },
   mounted() {
     this.fetchData();
@@ -100,7 +116,7 @@ export default {
 
 <style scoped>
 .card {
-  max-width: 500px;
+  max-width: 590px;
   margin: auto;
 }
 

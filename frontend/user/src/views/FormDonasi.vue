@@ -18,7 +18,7 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span>Nominal donasi Anda</span>
           <span class="font-weight-bold">
-            Rp{{ selectedAmount.toLocaleString() }}
+            {{ formatCurrency(selectedAmount) }}
           </span>
         </div>
         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -134,7 +134,7 @@
             <i class="fas fa-check-circle fa-5x text-success"></i>
             <h5 class="mb-3 mt-2">Konfirmasi Donasi</h5>
             <p>
-              Donasi Anda senilai Rp{{ selectedAmount.toLocaleString() }} akan
+              Donasi Anda senilai {{ formatCurrency(selectedAmount) }} akan
               disalurkan
             </p>
             <div class="d-flex justify-content-center mt-4">
@@ -217,6 +217,12 @@ export default {
         this.donor.email &&
         this.donor.paymentMethod
       );
+    },
+    formatCurrency(value) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      }).format(value);
     },
     fetchData() {
       const id = this.$route.query.id;
