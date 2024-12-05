@@ -32,9 +32,9 @@
   
   /* Style untuk Side Navigation */
   .sidenav {
-    width: 250px; /* Ukuran tetap */
-    min-width: 250px; /* Mencegah menyusut */
-    max-width: 250px; /* Mencegah membesar */
+    width: 220px; /* Ukuran tetap */
+    min-width: 220px; /* Mencegah menyusut */
+    max-width: 220px; /* Mencegah membesar */
     background-color: #343a40; /* Warna gelap */
     color: white; /* Warna teks */
     padding: 20px;
