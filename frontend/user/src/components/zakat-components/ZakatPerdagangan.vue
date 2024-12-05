@@ -69,6 +69,19 @@
         />
       </div>
     </div>
+    <div class="mb-3">
+      <label class="form-label">Harga emas per gram saat ini</label>
+      <div class="input-group">
+        <span class="input-group-text">Rp.</span>
+        <input
+          type="number"
+          class="form-control"
+          placeholder="0"
+          min="0"
+          v-model="localData.HargaEmas"
+        />
+      </div>
+    </div>
     <p class="description">
       Zakat perdagangan dikenakan atas aset usaha yang telah mencapai nisab,
       yaitu setara <b>85 gram emas</b>, dan telah berjalan selama satu tahun
@@ -99,6 +112,7 @@ export default {
         piutangDagang: this.data.piutangDagang || 0,
         utangJatuhTempo: this.data.utangJatuhTempo || 0,
         kerugian: this.data.kerugian || 0,
+        HargaEmas: this.data.HargaEmas || 0,
       },
     };
   },

@@ -41,6 +41,19 @@
         <span class="input-group-text">Tahun</span>
       </div>
     </div>
+    <div class="mb-3">
+      <label class="form-label">Harga emas per gram saat ini</label>
+      <div class="input-group">
+        <span class="input-group-text">Rp.</span>
+        <input
+          type="number"
+          class="form-control"
+          placeholder="0"
+          min="0"
+          v-model="localData.HargaEmas"
+        />
+      </div>
+    </div>
     <p class="description">
       Zakat perusahaan adalah kewajiban zakat yang dikenakan kepada sebuah
       entitas bisnis atau perusahaan yang memiliki keuntungan bersih selama satu
@@ -68,6 +81,7 @@ export default {
         keuntunganBersih: this.data.keuntunganBersih || 0,
         UtangLancar: this.data.UtangLancar || 0,
         TahunOperasional: this.data.TahunOperasional || 0,
+        HargaEmas: this.data.HargaEmas || 0,
       },
     };
   },

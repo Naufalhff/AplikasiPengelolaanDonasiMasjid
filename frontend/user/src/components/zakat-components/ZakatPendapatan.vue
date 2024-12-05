@@ -41,6 +41,19 @@
         />
       </div>
     </div>
+    <div class="mb-3">
+      <label class="form-label">Harga emas per gram saat ini</label>
+      <div class="input-group">
+        <span class="input-group-text">Rp.</span>
+        <input
+          type="number"
+          class="form-control"
+          placeholder="0"
+          min="0"
+          v-model="localData.HargaEmas"
+        />
+      </div>
+    </div>
     <p class="description">
       Zakat penghasilan adalah zakat yang wajib dikeluarkan dari penghasilan
       atau pendapatan seseorang jika telah mencapai nisab. Nisab zakat
@@ -81,6 +94,7 @@ export default {
         PenghasilanPerBulan: this.data.PenghasilanPerBulan || 0,
         PenghasilanLain: this.data.PenghasilanLain || 0,
         HutangCicilan: this.data.HutangCicilan || 0,
+        HargaEmas: this.data.HargaEmas || 0,
       },
     };
   },

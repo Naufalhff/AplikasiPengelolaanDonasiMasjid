@@ -171,17 +171,23 @@ export default {
           return;
         }
       } else if (this.selectedZakatType === "perdagangan") {
-        if (!this.zakatData.modal || !this.zakatData.keuntungan) {
-          this.alertMessage = "Silakan isi modal dan keuntungan.";
+        if (
+          !this.zakatData.modal ||
+          !this.zakatData.keuntungan ||
+          !this.zakatData.HargaEmas
+        ) {
+          this.alertMessage =
+            "Silakan isi modal, keuntungan dan harga emas saat ini.";
           return;
         }
       } else if (this.selectedZakatType === "perusahaan") {
         if (
           !this.zakatData.keuntunganBersih ||
-          !this.zakatData.TahunOperasional
+          !this.zakatData.TahunOperasional ||
+          !this.zakatData.HargaEmas
         ) {
           this.alertMessage =
-            "Silakan isi keuntungan bersih dan tahun operational.";
+            "Silakan isi keuntungan bersih, tahun operational dan harga emas saat ini.";
           return;
         }
       } else if (this.selectedZakatType === "pertanian") {
@@ -195,13 +201,14 @@ export default {
           return;
         }
       } else if (this.selectedZakatType === "pertambangan") {
-        if (!this.zakatData.keuntungan) {
-          this.alertMessage = "Silakan isi keuntungan.";
+        if (!this.zakatData.keuntungan || !this.zakatData.HargaEmas) {
+          this.alertMessage = "Silakan isi keuntungan dan harga emas saat ini.";
           return;
         }
       } else if (this.selectedZakatType === "pendapatan") {
-        if (!this.zakatData.PenghasilanPerBulan) {
-          this.alertMessage = "Silakan isi penghasilan per bulan.";
+        if (!this.zakatData.PenghasilanPerBulan || !this.zakatData.HargaEmas) {
+          this.alertMessage =
+            "Silakan isi penghasilan per bulan dan Harga emas saat ini.";
           return;
         }
       } else if (this.selectedZakatType === "rikaz") {
