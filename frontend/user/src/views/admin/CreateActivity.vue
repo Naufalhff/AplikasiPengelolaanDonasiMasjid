@@ -1,123 +1,155 @@
 <template>
-    <div class="container-fluid py-4">
-      <div class="row justify-content-center">
-        <div class="col-xl-8 col-lg-10 col-md-12">
-          <!-- Form Title -->
-          <h2 class="mb-5 text-center">Buat Kegiatan Baru</h2>
-  
-          <!-- Form -->
-          <form @submit.prevent="validateForm" novalidate>
-            <!-- Upload Image Section -->
-            <div class="mb-4">
-              <label for="activityImage" class="form-label">Upload Gambar</label>
+  <div class="container-fluid py-4">
+    <div class="row justify-content-center">
+      <div class="col-xl-8 col-lg-10 col-md-12">
+        <!-- Form Title -->
+        <h2 class="mb-5 text-center">Buat Kegiatan Baru</h2>
+
+        <!-- Form -->
+        <form @submit.prevent="validateForm" novalidate>
+          <!-- Upload Image Section -->
+          <div class="mb-4">
+            <label for="activityImage" class="form-label">Upload Thumbnail</label>
+            <input 
+              type="file" 
+              class="form-control form-control-lg" 
+              id="activityImage" 
+              @change="onImageChange"
+              :class="{ 'is-invalid': errors.image }"
+            >
+            <div v-if="form.image" class="my-3">
+              <img :src="form.image" alt="Preview" class="img-thumbnail" />
+            </div>
+            <div v-if="errors.image" class="invalid-feedback">
+              {{ errors.image }}
+            </div>
+          </div>
+
+          <!-- Form Fields -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="activityName" class="form-label">Nama Kegiatan</label>
               <input 
-                type="file" 
+                type="text" 
                 class="form-control form-control-lg" 
-                id="activityImage" 
-                @change="onImageChange"
-                :class="{ 'is-invalid': errors.image }"
+                id="activityName" 
+                v-model="form.name" 
+                placeholder="Masukkan Nama Kegiatan"
+                :class="{ 'is-invalid': errors.name }"
               >
-              <div v-if="errors.image" class="invalid-feedback">
-                {{ errors.image }}
-              </div>
-            </div>
-  
-            <!-- Form Fields -->
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="activityName" class="form-label">Nama Kegiatan</label>
-                <input 
-                  type="text" 
-                  class="form-control form-control-lg" 
-                  id="activityName" 
-                  v-model="form.name" 
-                  placeholder="Masukkan Nama Kegiatan"
-                  :class="{ 'is-invalid': errors.name }"
-                >
-                <div v-if="errors.name" class="invalid-feedback">
-                  {{ errors.name }}
-                </div>
-              </div>
-  
-              <div class="col-md-6 mb-3">
-                <label for="activityType" class="form-label">Jenis Kegiatan</label>
-                <select
-                  class="form-select form-select-lg custom-select-lg"
-                  id="activityType"
-                  v-model="form.activityType"
-                  :class="{ 'is-invalid': errors.activityType }"
-                >
-                  <option value="" disabled selected>Pilih jenis kegiatan</option>
-                  <option value="infaq">Infaq</option>
-                  <option value="sedekah">Sedekah</option>
-                  <option value="zakat">Zakat</option>
-                  <option value="kegiatan masjid">Kegiatan Masjid</option>
-                </select>
-                <div v-if="errors.activityType" class="invalid-feedback">
-                  {{ errors.activityType }}
-                </div>
-              </div>
-            </div>
-  
-             <!-- Summernote Editor for Description -->
-            <div class="mb-3">
-              <label for="activityDescription" class="form-label">Deskripsi</label>
-              <div id="activityDescription" ref="summernoteEditor"></div>
-              <div v-if="errors.description" class="invalid-feedback d-block">
-                {{ errors.description }}
+              <div v-if="errors.name" class="invalid-feedback">
+                {{ errors.name }}
               </div>
             </div>
 
-  
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="targetAmount" class="form-label">Target Terkumpul</label>
-                <div class="input-group input-group-lg">
-                  <input 
-                    type="number" 
-                    class="form-control" 
-                    id="targetAmount" 
-                    v-model="form.targetAmount" 
-                    placeholder="Masukkan Target Terkumpul"
-                    :class="{ 'is-invalid': errors.targetAmount }"
-                  >
-                </div>
-                <div v-if="errors.targetAmount" class="invalid-feedback d-block">
-                  {{ errors.targetAmount }}
-                </div>
+            <div class="col-md-6 mb-3">
+              <label for="activityType" class="form-label">Jenis Kegiatan</label>
+              <select
+                class="form-select form-select-lg custom-select-lg"
+                id="activityType"
+                v-model="form.type"
+                :class="{ 'is-invalid': errors.type }"
+              >
+                <option value="" disabled selected>Pilih jenis kegiatan</option>
+                <option value="sumbangan">Sumbangan</option>
+                <option value="zakat">Zakat</option>
+                <option value="zakat mal">Zakat Mal</option>
+              </select>
+              <div v-if="errors.type" class="invalid-feedback">
+                {{ errors.type }}
               </div>
-  
-              <div class="col-md-6 mb-3">
-                <label for="timeLimit" class="form-label">Tenggat Waktu</label>
+            </div>
+          </div>
+
+          <!-- Description Section -->
+          <div class="mb-3">
+            <label for="activityDescription" class="form-label">Deskripsi</label>
+            <div id="activityDescription" ref="summernoteEditor"></div>
+            <div v-if="errors.description" class="invalid-feedback d-block">
+              {{ errors.description }}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="targetAmount" class="form-label">Target Terkumpul</label>
+              <div class="input-group input-group-lg">
                 <input 
-                  type="date" 
-                  class="form-control form-control-lg" 
-                  id="timeLimit" 
-                  v-model="form.timeLimit" 
-                  :class="{ 'is-invalid': errors.timeLimit }"
+                  type="number" 
+                  class="form-control" 
+                  id="targetAmount" 
+                  v-model="form.targetAmount" 
+                  placeholder="Masukkan Target Terkumpul"
+                  :class="{ 'is-invalid': errors.targetAmount }"
                 >
-                <div v-if="errors.timeLimit" class="invalid-feedback">
-                  {{ errors.timeLimit }}
-                </div>
+              </div>
+              <div v-if="errors.targetAmount" class="invalid-feedback d-block">
+                {{ errors.targetAmount }}
               </div>
             </div>
-  
-            <!-- Submit and Cancel Buttons -->
-            <div class="d-flex justify-content-between mt-4">
-              <button @click="cancel" class="btn btn-outline-secondary btn-lg">Batalkan</button>
-              <button type="submit" class="btn btn-success btn-lg">Buat Kegiatan</button>
+
+            <div class="col-md-6 mb-3">
+              <label for="timeLimit" class="form-label">Tenggat Waktu</label>
+              <input 
+                type="date" 
+                class="form-control form-control-lg" 
+                id="timeLimit" 
+                v-model="form.timeLimit" 
+                :class="{ 'is-invalid': errors.timeLimit }"
+              >
+              <div v-if="errors.timeLimit" class="invalid-feedback">
+                {{ errors.timeLimit }}
+              </div>
             </div>
-          </form>
-        </div>
+          </div>
+
+          <!-- Payment Details -->
+          <div class="mb-4">
+            <label for="accountNumber" class="form-label">Nomor Rekening</label>
+            <input 
+              type="text" 
+              class="form-control form-control-lg" 
+              id="accountNumber" 
+              v-model="form.accountNumber" 
+              placeholder="Masukkan Nomor Rekening"
+              :class="{ 'is-invalid': errors.accountNumber }"
+            >
+            <div v-if="errors.accountNumber" class="invalid-feedback">
+              {{ errors.accountNumber }}
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label for="qrisImage" class="form-label">Upload QR Code</label>
+            <input 
+              type="file" 
+              class="form-control form-control-lg" 
+              id="qrisImage" 
+              @change="onQRISImageChange"
+              :class="{ 'is-invalid': errors.qrisImage }"
+            >
+            <div v-if="errors.qrisImage" class="invalid-feedback">
+              {{ errors.qrisImage }}
+            </div>
+            <div v-if="form.qrisImage" class="mt-3">
+              <img :src="form.qrisImage" alt="QR Code Preview" class="img-thumbnail" />
+            </div>
+          </div>
+
+          <!-- Submit and Cancel Buttons -->
+          <div class="d-flex justify-content-between mt-4">
+            <button @click="cancel" class="btn btn-outline-secondary btn-lg">Batalkan</button>
+            <button type="submit" class="btn btn-success btn-lg">Buat Kegiatan</button>
+          </div>
+        </form>
       </div>
     </div>
-  </template>
-   
+  </div>
+</template>
 
 <script>
 import $ from 'jquery';
 import 'summernote/dist/summernote-bs4.min.js';
-
 
 export default {
   data() {
@@ -128,20 +160,21 @@ export default {
         type: '',
         description: '',
         targetAmount: '',
-        timeLimit: ''
+        timeLimit: '',
+        accountNumber: '',
+        qrisImage: null,
       },
       errors: {}
     };
   },
   mounted() {
-    // Initialize Summernote editor
     $(this.$refs.summernoteEditor).summernote({
       placeholder: 'Masukkan Deskripsi',
       tabsize: 2,
       height: 200,
       callbacks: {
         onChange: (contents) => {
-          this.form.description = contents; // Update description with summernote content
+          this.form.description = contents;
         }
       }
     });
@@ -151,6 +184,12 @@ export default {
       const file = event.target.files[0];
       if (file) {
         this.form.image = URL.createObjectURL(file);
+      }
+    },
+    onQRISImageChange(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.form.qrisImage = URL.createObjectURL(file);
       }
     },
     validateForm() {
@@ -180,30 +219,27 @@ export default {
 
       if (!this.form.timeLimit) {
         this.errors.timeLimit = 'Tenggat waktu harus diisi.';
-      } else if (isNaN(this.form.timeLimit) || this.form.timeLimit <= 0) {
-        this.errors.timeLimit = 'Tenggat waktu harus berupa angka positif.';
       }
 
-      // If no errors, submit the form (or perform desired action)
+      if (!this.form.accountNumber) {
+        this.errors.accountNumber = 'Nomor rekening harus diisi.';
+      }
+
+      if (!this.form.qrisImage) {
+        this.errors.qrisImage = 'QR Code harus diunggah.';
+      }
+
       if (Object.keys(this.errors).length === 0) {
         this.submitForm();
       }
     },
     submitForm() {
-      // Handle form submission here (e.g., send data to an API or save locally)
       alert('Form berhasil disubmit!');
-      // Reset form after submission
-      this.form = {
-        image: null,
-        name: '',
-        type: '',
-        description: '',
-        targetAmount: '',
-        timeLimit: ''
-      };
     },
     cancel() {
-      this.$router.push({ name: 'ActivityList' });
+      if (confirm('Apakah Anda yakin ingin membatalkan?')) {
+        this.$router.push({ name: 'ActivityList' });
+      }
     }
   }
 };
