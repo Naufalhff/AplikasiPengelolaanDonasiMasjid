@@ -1,4 +1,8 @@
 <template>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
   <div class="container-fluid login-container">
     <div class="row h-100">
       <!-- Left Section -->
@@ -36,19 +40,33 @@
                 id="email"
                 v-model="email"
                 class="form-control"
+                placeholder="email@example.com"
                 required
               />
             </div>
 
             <div class="mb-3">
               <label for="password" class="form-label">Password</label>
-              <input
-                type="password"
-                id="password"
-                v-model="password"
-                class="form-control"
-                required
-              />
+              <div class="input-group">
+                <input
+                  :type="showPassword ? 'text' : 'password'"
+                  id="password"
+                  v-model="password"
+                  class="form-control"
+                  required
+                  placeholder="Password"
+                />
+                <div class="input-group-append">
+                  <span
+                    class="input-group-text"
+                    @click="togglePasswordVisibility"
+                  >
+                    <i
+                      :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+                    ></i>
+                  </span>
+                </div>
+              </div>
             </div>
 
             <div class="mb-3 text-end">
@@ -77,16 +95,20 @@
 <script>
 import axios from "../axios";
 
-export default { 
+export default {
   data() {
     return {
       email: "",
       password: "",
       errorMessage: "",
       key: "Proyek-3-Mantap",
+      showPassword: false,
     };
   },
   methods: {
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
+    },
     async submitForm() {
       try {
         const response = await axios.post("/login", {
@@ -97,20 +119,19 @@ export default {
         const UserRole = response.data.user.peran;
         sessionStorage.setItem("isLogin", "true");
         sessionStorage.setItem("loginAs", UserRole);
-        console.log(sessionStorage.getItem("loginAs"))
-        if (UserRole === 'Donatur') {
+        console.log(sessionStorage.getItem("loginAs"));
+        if (UserRole === "Donatur") {
           this.$router.push("/home");
         } else {
           sessionStorage.setItem("role", UserRole);
-          if (UserRole === 'Pengurus Masjid'){
+          if (UserRole === "Pengurus Masjid") {
             this.$router.push("/activity-list");
-          } else if (UserRole === 'Bendahara'){
-            this.$router.push('/transaksidonasi')
-          } else if (UserRole === 'Administrator'){
-            this.$router.push("/dashboard-page")
+          } else if (UserRole === "Bendahara") {
+            this.$router.push("/transaksidonasi");
+          } else if (UserRole === "Administrator") {
+            this.$router.push("/dashboard-page");
           }
         }
-
       } catch (error) {
         if (error.response && error.response.status === 401) {
           this.errorMessage = "Email atau password salah.";
@@ -163,5 +184,10 @@ h2 {
 
 .alert {
   font-size: 14px;
+}
+.input-group-text {
+  cursor: pointer;
+  background-color: #fff;
+  border: 1px solid #ced4da;
 }
 </style>
