@@ -40,67 +40,122 @@ const routes = [
         path: "/dashboard-page",
         name: "DashboardPage",
         component: DashboardPage,
-        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Administrator"] },
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Administrator"],
+        },
       },
       {
         path: "/activity-list",
         name: "ActivityList",
         component: ActivityList,
-        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Pengurus Masjid", "Administrator"] },
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Pengurus Masjid", "Administrator"],
+        },
       },
       {
         path: "/create-activity",
         name: "CreateActivity",
         component: CreateActivity,
-        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Pengurus Masjid"] },
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Pengurus Masjid"],
+        },
       },
       {
         path: "/edit-activity/:id",
         name: "EditActivity",
         component: EditActivity,
-        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Pengurus Masjid"] },
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Pengurus Masjid"],
+        },
       },
       {
         path: "/transaksidonasi",
         name: "TransaksiDonasi",
         component: TransaksiDonasi,
-        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Bendahara", "Administrator"] },
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Bendahara", "Administrator"],
+        },
       },
       {
         path: "/ringkasan-donasi/:id",
         name: "RingkasanDonasi",
         component: RingkasanDonasi,
-        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Bendahara"] },
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Bendahara"],
+        },
       },
       {
         path: "/laporankeuangan",
         name: "LaporanKeuangan",
         component: LaporanKeuangan,
-        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Bendahara", "Administrator"] },
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Bendahara", "Administrator"],
+        },
       },
       {
         path: "/pilih-kegiatan",
         name: "PilihKegiatan",
         component: PilihKegiatan,
-        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Bendahara", "Administrator"] },
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Bendahara", "Administrator"],
+        },
       },
       {
         path: "/riwayat-pengeluaran/:id",
         name: "RiwayatPengeluaran",
         component: RiwayatPengeluaran,
-        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Bendahara"] },
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Bendahara"],
+        },
       },
       {
         path: "/ringkasan-pengeluaran/:id",
         name: "RingkasanPengeluaran",
         component: RingkasanPengeluaran,
-        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Bendahara"] },
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Bendahara"],
+        },
       },
       {
         path: "/buat-pengeluaran/:id",
         name: "BuatPengeluaran",
         component: BuatPengeluaran,
-        meta: { requiresAuth: true, hideNavbar: true, allowedRoles: ["Bendahara"] },
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Bendahara"],
+        },
       },
     ],
   },
@@ -123,31 +178,31 @@ const routes = [
   {
     path: "/login",
     component: LoginPage,
-    meta: { hideNavbar: true },
+    meta: { hideNavbar: true, hideFooter: true },
   },
   {
     path: "/forgot-password",
     name: "ForgotPassword",
     component: ForgotPassword,
-    meta: { hideNavbar: true },
+    meta: { hideNavbar: true, hideFooter: true },
   },
   {
     path: "/verify-code",
     name: "VerifyCode",
     component: VerifyCode,
-    meta: { hideNavbar: true },
+    meta: { hideNavbar: true, hideFooter: true },
   },
   {
     path: "/reset-password",
     name: "ResetPassword",
     component: ResetPassword,
-    meta: { hideNavbar: true },
+    meta: { hideNavbar: true, hideFooter: true },
   },
   {
     path: "/register",
     name: "RegisterPage",
     component: RegisterPage,
-    meta: { hideNavbar: true },
+    meta: { hideNavbar: true, hideFooter: true },
   },
   {
     path: "/donasi",
@@ -178,7 +233,7 @@ const routes = [
     path: "/verify-register",
     name: "VerifyRegister",
     component: VerifyRegister,
-    meta: { hideNavbar: true },
+    meta: { hideNavbar: true, hideFooter: true },
   },
   {
     path: "/detaildonasi/nominal/formdonasi/pembayaran/uploadbukti",
@@ -214,7 +269,7 @@ router.beforeEach((to, from, next) => {
       !to.meta.allowedRoles.includes(loginAs)
     ) {
       next(false);
-      alert("Forbidden")
+      alert("Forbidden");
     } else {
       next();
     }

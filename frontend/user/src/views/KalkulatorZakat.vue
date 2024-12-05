@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-5 pt-5">
+  <div class="container mt-5 pt-5 mb-4">
     <div class="card shadow-sm">
       <div class="card-body">
         <!-- Dropdown Pilihan Jenis Zakat -->
@@ -201,8 +201,8 @@ export default {
           return;
         }
       } else if (this.selectedZakatType === "pertambangan") {
-        if (!this.zakatData.keuntungan || !this.zakatData.HargaEmas) {
-          this.alertMessage = "Silakan isi keuntungan dan harga emas saat ini.";
+        if (!this.zakatData.keuntungan) {
+          this.alertMessage = "Silakan isi keuntungan.";
           return;
         }
       } else if (this.selectedZakatType === "pendapatan") {

@@ -6,7 +6,7 @@
 
     <!-- router-view untuk menampilkan komponen sesuai rute -->
     <router-view></router-view>
-    <FooterPage />
+    <FooterPage v-if="!$route.meta.hideFooter" />
   </div>
 </template>
 

@@ -36,7 +36,7 @@
         </div>
       </div>
       <!-- Footer Links -->
-      <div class="mb-2 text-center">
+      <div class="mt-2 text-center">
         <p>© DKM Luqmanul Hakim</p>
       </div>
     </div>
