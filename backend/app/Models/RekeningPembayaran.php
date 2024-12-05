@@ -5,17 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MetodePembayaran extends Model
+class RekeningPembayaran extends Model
 {
-    protected $table = 'metode_pembayaran';
-    protected $primaryKey = 'id_metode';
-    public $timestamps = false;
+    use HasFactory;
 
+    protected $table = 'rekening_pembayaran';
+    protected $primaryKey = 'id_rekening';
     protected $fillable = [
         'id_kegiatan',
-        'metode',
-        'detail'
+        'jenis_rekening',
+        'informasi_rekening',
     ];
+    public $timestamps = false;
 
     public function kegiatan()
     {
