@@ -5,8 +5,8 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
   </head>
-  <div class="container mt-5 pt-5">
-    <div class="card shadow-sm">
+  <div class="container mt-5 pt-5 mb-5">
+    <div class="card shadow-sm mb-5">
       <div class="card-body text-center">
         <!-- Donation Information Section -->
         <div class="d-flex align-items-center mb-3">

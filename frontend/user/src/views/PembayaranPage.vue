@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-5 pt-3">
+  <div class="container mt-5 pt-5 mb-3">
     <div class="card shadow-sm">
       <div class="card-body">
         <div class="d-flex align-items-center mb-3">
@@ -20,7 +20,9 @@
         <h6 class="font-weight-bold">Selesaikan Pembayaran Anda</h6>
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Total Donasi</span>
-          <span class="font-weight-bold">Rp{{ selectedAmount }}</span>
+          <span class="font-weight-bold">{{
+            formatCurrency(selectedAmount)
+          }}</span>
         </div>
 
         <!-- Account Number for BSI -->
@@ -156,7 +158,7 @@ export default {
       },
       data: {},
       selectedAmount: this.$route.query.amount || 0,
-      metodePembayaran: this.$route.query.payment || "BSI", // default to "BSI"
+      metodePembayaran: this.$route.query.payment || "BSI",
       rekening: "",
       qrisImage: require("../assets/images/qris.jpg"),
     };
@@ -186,6 +188,12 @@ export default {
           console.error("Error fetching data:", error);
         });
     },
+    formatCurrency(value) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      }).format(value);
+    },
     setRekening() {
       if (this.metodePembayaran === "BSI") {
         this.rekening = "1234567890"; // Replace with actual BSI account number
@@ -196,8 +204,7 @@ export default {
       }
     },
     copyAccountNumber() {
-      navigator.clipboard.writeText(this.rekening); // dynamic rekening number
-      alert("Nomor rekening berhasil disalin!");
+      navigator.clipboard.writeText(this.rekening);
     },
     completePayment() {
       this.$router.push({
