@@ -37,10 +37,13 @@
               >Kalkulator Zakat</router-link
             >
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="!isLoggedInAsDonatur">
             <router-link to="/login">
               <button class="btn btn-login ms-3">Login</button>
             </router-link>
+          </li>
+          <li class="nav-item" v-else>
+            <button class="btn btn-logout ms-3" @click="logout">Logout</button>
           </li>
         </ul>
       </div>
@@ -55,6 +58,14 @@ export default {
     return {
       isHomePage: false,
     };
+  },
+  computed: {
+    isLoggedInAsDonatur() {
+      return (
+        sessionStorage.getItem("isLogin") === "true" &&
+        sessionStorage.getItem("loginAs") === "Donatur"
+      );
+    },
   },
   mounted() {
     this.checkRoute();
@@ -73,6 +84,11 @@ export default {
       } else if (this.isHomePage) {
         navbar.classList.remove("scrolled");
       }
+    },
+    logout() {
+      sessionStorage.removeItem("isLogin");
+      sessionStorage.removeItem("loginAs");
+      this.$router.push("/login");
     },
   },
 };
@@ -157,6 +173,21 @@ export default {
   padding: 0.5rem 1.5rem;
   font-weight: bold;
   transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-logout {
+  background-color: #dc3545;
+  border-radius: 20px;
+  padding: 0.5rem 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-logout:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Hover effect on button */

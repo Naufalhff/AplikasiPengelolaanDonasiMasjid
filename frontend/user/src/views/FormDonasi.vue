@@ -1,10 +1,4 @@
 <template>
-  <head>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-  </head>
   <div class="container mt-5">
     <div class="card p-4">
       <div class="text-center">
@@ -23,9 +17,9 @@
         </div>
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span>Nominal donasi Anda</span>
-          <span class="font-weight-bold"
-            >Rp{{ selectedAmount.toLocaleString() }}</span
-          >
+          <span class="font-weight-bold">
+            Rp{{ selectedAmount.toLocaleString() }}
+          </span>
         </div>
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h6>Metode Pembayaran</h6>
@@ -42,12 +36,14 @@
         <hr />
         <div class="mb-3">
           <h6>Info Donatur</h6>
-          <p>
-            <a href="#" @click.prevent="login" class="text-primary"
-              >Masuk Akun</a
-            >
-            atau lengkapi data dibawah ini
-          </p>
+          <div v-if="isLoggedIn">
+            <p>
+              Anda sudah login sebagai <strong>{{ donor.fullName }}</strong>
+            </p>
+          </div>
+          <div v-else>
+            <p>lengkapi data di bawah ini</p>
+          </div>
           <form @submit.prevent="confirmDonation">
             <div class="form-group">
               <label for="fullName">Nama Lengkap</label>
@@ -57,6 +53,7 @@
                 id="fullName"
                 v-model="donor.fullName"
                 placeholder="Nama Lengkap"
+                :disabled="donor.anonymous || isLoggedIn"
                 required
               />
             </div>
@@ -93,6 +90,17 @@
                 required
               />
             </div>
+            <div class="form-group">
+              <label class="d-flex align-items-center ml-4">
+                Sembunyikan nama saya (Anonim)
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  v-model="donor.anonymous"
+                  @change="setAnonymous"
+                />
+              </label>
+            </div>
             <p class="mt-3">
               Dengan melanjutkan donasi, saya setuju Syarat & Ketentuan
             </p>
@@ -110,7 +118,7 @@
         </div>
       </div>
     </div>
-
+    <!-- Modal -->
     <div
       class="modal fade"
       id="donationModal"
@@ -170,6 +178,7 @@ export default {
         phoneNumber: "",
         address: "",
         email: "",
+        anonymous: false,
         paymentMethod: "",
       },
       donationModal: null,
@@ -248,6 +257,9 @@ export default {
           payment: this.donor.paymentMethod,
         },
       });
+    },
+    setAnonymous() {
+      this.donor.fullName = this.donor.anonymous ? "Hamba Allah" : "";
     },
   },
 };
