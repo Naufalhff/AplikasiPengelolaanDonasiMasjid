@@ -3,42 +3,55 @@
     <h2>Riwayat Pengeluaran</h2>
     <table class="donation-table">
       <thead>
-      <tr>
-        <th>ID Pengeluaran</th>
-        <th>Nama Transaksi</th>
-        <th>Anggaran</th>
-        <th>Waktu</th>
-        <th>Pilih Proses</th>
-      </tr>
+        <tr>
+          <th>ID Pengeluaran</th>
+          <th>Nama Transaksi</th>
+          <th>Anggaran</th>
+          <th>Waktu</th>
+          <th>Pilih Proses</th>
+        </tr>
       </thead>
       <tbody>
-      <tr v-for="(transaction, index) in currentPageTransactions" :key="index">
-        <td>{{ transaction.id }}</td>
-        <td>{{ transaction.name }}</td>
-        <td>{{ formatCurrency(transaction.budget) }}</td>
-        <td>{{ transaction.time }}</td>
-        <td>
-          <div class="action-buttons">
-            <button @click="viewDetails(transaction.id)" class="btn btn-detail">
-              Lihat Detail
-            </button>
-            <button @click="openConfirmationModal(transaction.id)" class="btn-cancel-transaction">
-              Batalkan Transaksi
-            </button>
-          </div>
-        </td>
-      </tr>
+        <tr
+          v-for="(transaction, index) in currentPageTransactions"
+          :key="index"
+        >
+          <td>{{ transaction.id }}</td>
+          <td>{{ transaction.name }}</td>
+          <td>{{ formatCurrency(transaction.budget) }}</td>
+          <td>{{ transaction.time }}</td>
+          <td>
+            <div class="action-buttons">
+              <button
+                @click="viewDetails(transaction.id)"
+                class="btn btn-detail"
+              >
+                Lihat Detail
+              </button>
+              <button
+                @click="openConfirmationModal(transaction.id)"
+                class="btn-cancel-transaction"
+              >
+                Batalkan Transaksi
+              </button>
+            </div>
+          </td>
+        </tr>
       </tbody>
     </table>
 
     <div class="pagination-container">
-      <button @click="addTransaction" class="btn btn-add-transaction">
+      <button @click="addTransaction" class="btn btn-add-transaction mt-3">
         <i class="fas fa-plus"></i> Tambah Pengeluaran
       </button>
       <div class="pagination">
-        <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
+        <button @click="prevPage" :disabled="currentPage === 1">
+          Previous
+        </button>
         <span>Page {{ currentPage }} of {{ totalPages }}</span>
-        <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
+        <button @click="nextPage" :disabled="currentPage === totalPages">
+          Next
+        </button>
       </div>
     </div>
 
@@ -48,12 +61,9 @@
         <button @click="confirmCancelTransaction" class="confirm-button">
           Setuju
         </button>
-        <button @click="closeModal" class="cancel-button">
-          Kembali
-        </button>
+        <button @click="closeModal" class="cancel-button">Kembali</button>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -86,18 +96,19 @@ export default {
     const id_kegiatan = this.$route.params.id;
     this.role = sessionStorage.getItem("role");
 
-    axios.get(`http://localhost:8000/api/riwayat-transaksi/${id_kegiatan}`)
-        .then(response => {
-          this.transactions = response.data.map(expense => ({
-            id: expense.id_pengeluaran,
-            name: expense.nama_transaksi,
-            budget: expense.total_pengeluaran,
-            time: expense.tanggal_transaksi
-          }));
-        })
-        .catch(error => {
-          console.error("Error fetching expenses:", error);
-        });
+    axios
+      .get(`http://localhost:8000/api/riwayat-transaksi/${id_kegiatan}`)
+      .then((response) => {
+        this.transactions = response.data.map((expense) => ({
+          id: expense.id_pengeluaran,
+          name: expense.nama_transaksi,
+          budget: expense.total_pengeluaran,
+          time: expense.tanggal_transaksi,
+        }));
+      })
+      .catch((error) => {
+        console.error("Error fetching expenses:", error);
+      });
   },
   methods: {
     viewDetails(id) {
@@ -107,7 +118,7 @@ export default {
       const id = this.$route.params.id;
       this.$router.push({
         name: "BuatPengeluaran",
-        params: { id: id }
+        params: { id: id },
       });
     },
     openConfirmationModal(id) {
@@ -124,15 +135,17 @@ export default {
     },
     cancelTransaction(id) {
       axios
-          .delete(`http://localhost:8000/api/hapus-pengeluaran/${id}`)
-          .then(() => {
-            alert("Transaksi berhasil dibatalkan");
-            this.transactions = this.transactions.filter(transaction => transaction.id !== id);
-          })
-          .catch(error => {
-            console.error("Error canceling transaction:", error);
-            alert("Terjadi kesalahan saat membatalkan transaksi");
-          });
+        .delete(`http://localhost:8000/api/hapus-pengeluaran/${id}`)
+        .then(() => {
+          alert("Transaksi berhasil dibatalkan");
+          this.transactions = this.transactions.filter(
+            (transaction) => transaction.id !== id
+          );
+        })
+        .catch((error) => {
+          console.error("Error canceling transaction:", error);
+          alert("Terjadi kesalahan saat membatalkan transaksi");
+        });
     },
     nextPage() {
       if (this.currentPage < this.totalPages) {

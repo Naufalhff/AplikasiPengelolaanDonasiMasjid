@@ -20,7 +20,7 @@ class SeederKegiatan extends Seeder
                 'anggaran_pengeluaran' => 2500000.00,
                 'tanggal_dibuat' => now(),
                 'tanggal_dirubah' => null,
-                'tenggat_waktu' => now()->addDays(30), // Set tenggat_waktu to 30 days from now
+                'tenggat_waktu' => now()->addDays(30),
             ],
             [
                 'foto_kegiatan' => 'sumbangan_bencana.jpg',
