@@ -4,7 +4,7 @@
       <div class="card-body">
         <div class="d-flex align-items-center mb-3">
           <img
-            :src="donation.image"
+            :src="'http://localhost:8000/storage/' + data.foto_kegiatan"
             alt="Donasi"
             class="rounded"
             width="100"
@@ -29,7 +29,7 @@
         <div class="mb-3" v-if="metodePembayaran === 'BSI'">
           <p class="mb-0">Nomor Rekening:</p>
           <div class="d-flex justify-content-between align-items-center">
-            <h4>{{ rekening }}</h4>
+            <h4 v-if="payment.bsi && payment.bsi.length > 0">{{ payment.bsi[0].informasi_rekening }}</h4>
             <button
               class="btn btn-outline-secondary btn-sm"
               @click="copyAccountNumber"
@@ -114,8 +114,8 @@
             <!-- QRIS Instructions -->
             <div class="tab-pane fade show active" id="QRIS" role="tabpanel">
               <p class="mb-0">Scan kode QRIS di bawah ini untuk membayar:</p>
-              <img
-                :src="qrisImage"
+              <img v-if="payment.qris && payment.qris.length > 0"
+                :src="'http://localhost:8000/storage/' + payment.qris[0].informasi_rekening"
                 alt="QRIS"
                 class="img-fluid mx-auto"
                 style="max-width: 200px"
@@ -157,6 +157,7 @@ export default {
         image: require("../assets/images/infaq.jpeg"),
       },
       data: {},
+      payment: {},
       selectedAmount: this.$route.query.amount || 0,
       metodePembayaran: this.$route.query.payment || "BSI",
       rekening: "",
@@ -179,14 +180,19 @@ export default {
   methods: {
     fetchData() {
       const id = this.$route.query.id;
-      axios
-        .get(`http://localhost:8000/api/donasi/${id}`)
-        .then((response) => {
-          this.data = response.data;
+
+      Promise.all([
+        axios.get(`http://localhost:8000/api/donasi/${id}`),
+        axios.get(`http://localhost:8000/api/getPaymentById/${id}`)
+      ])
+        .then(([donasiResponse, paymentResponse]) => {
+          this.data = donasiResponse.data;
+          this.payment = paymentResponse.data;
+          console.log(this.payment.qris[0].informasi_rekening)
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
-        });
+      });
     },
     formatCurrency(value) {
       return new Intl.NumberFormat("id-ID", {

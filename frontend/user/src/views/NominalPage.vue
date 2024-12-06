@@ -3,7 +3,7 @@
     <div class="card p-4">
       <div class="text-center">
         <img
-          :src="donation.image"
+          :src="'http://localhost:8000/storage/' + program.foto_kegiatan"
           alt="Donasi"
           class="img-thumbnail mb-3 rounded"
         />
@@ -57,7 +57,6 @@ export default {
       donation: {
         title: "Test",
         description: "Halo",
-        image: require("../assets/images/infaq.jpeg"),
       },
       errorMessage: "",
       program: [],
