@@ -23,7 +23,7 @@
         <div class="row">
           <div class="col-md-4 col-sm-6 mb-3" v-for="activity in paginatedActivities" :key="activity.id">
             <div class="card h-100 shadow-sm position-relative card-small" @click="deleteMode ? null : editActivity(activity.id)">
-              <img :src="activity.image" class="card-img-top" alt="Activity Image">
+              <img :src="'http://localhost:8000/storage/' + activity.image" class="card-img-top" alt="Activity Image">
               <div class="card-body">
                 <h6 class="card-title">{{ activity.title }}</h6>
                 <p class="card-text"><strong>Terkumpul:</strong> {{ formatCurrency(activity.collected) }}</p>
@@ -97,7 +97,7 @@ export default {
               id: program.id_kegiatan,
               title: program.nama_kegiatan,
               collected: program.anggaran_terkumpul,
-              image: program.image || require('@/assets/images/infaq.jpeg'),
+              image: program.foto_kegiatan,
               donors: 0 // Initialize with 0
             }));
 

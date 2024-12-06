@@ -5,6 +5,7 @@ use App\Http\Controllers\DonationController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [UserController::class, 'login']);
@@ -44,4 +45,5 @@ Route::delete('/hapus-pengeluaran/{id_pengeluaran}', [ExpenseController::class, 
 Route::post('/upload', [FileUploadController::class, 'upload']);
 Route::post('/tambah-pengeluaran', [FileUploadController::class, 'addExpense']);
 
-Route::get('/getDonasi', [DonationController::class, 'getDonasi']);
+Route::get('/getDonasi', [DonationController::class, 'getDonasi']); 
+Route::get('/getPaymentById/{id}', [PaymentController::class, 'getDataById']);

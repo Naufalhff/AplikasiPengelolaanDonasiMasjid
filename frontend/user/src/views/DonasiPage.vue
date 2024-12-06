@@ -59,7 +59,7 @@
       >
         <div class="card h-100">
           <img
-            :src="image"
+            :src="'http://localhost:8000/storage/' + program.foto_kegiatan"
             class="card-img-top rounded"
             :alt="program.nama_kegiatan"
             style="height: 180px; object-fit: cover"

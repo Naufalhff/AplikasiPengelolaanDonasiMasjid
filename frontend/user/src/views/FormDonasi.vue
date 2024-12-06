@@ -3,7 +3,7 @@
     <div class="card p-4">
       <div class="text-center">
         <img
-          :src="donation.image"
+          :src="'http://localhost:8000/storage/' + data.foto_kegiatan"
           alt="Donasi"
           class="img-thumbnail mb-3 rounded"
         />
@@ -170,9 +170,6 @@ export default {
   data() {
     return {
       selectedAmount: this.$route.query.amount || 0,
-      donation: {
-        image: require("../assets/images/infaq.jpeg"),
-      },
       donor: {
         fullName: "",
         phoneNumber: "",

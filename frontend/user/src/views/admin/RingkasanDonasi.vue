@@ -123,7 +123,7 @@ export default {
           };
         })
         .catch((error) => {
-          console.error("Error fetching donation details:", error);
+          console.error("Error fetching donation details:", error); 
         });
     },
     confirmReject() {

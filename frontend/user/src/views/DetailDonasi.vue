@@ -5,7 +5,7 @@
         <div class="card">
           <div class="d-flex justify-content-center mt-3 mx-3">
             <img
-              :src="image"
+              :src="'http://localhost:8000/storage/' + program.foto_kegiatan"
               class="card-img-top img-fluid w-100 rounded"
               alt="Donation Box"
             />
@@ -40,7 +40,7 @@
               {{ program.nama_kegiatan }}
             </h4>
             <img
-              :src="image"
+              :src="'http://localhost:8000/storage/' + program.foto_kegiatan"
               class="img-fluid mb-3 rounded"
               alt="Donation Campaign"
             />
@@ -95,7 +95,6 @@ export default {
         target_amount: 0,
         days_left: 0,
       },
-      image: require("../assets/images/infaq.jpeg"),
       quote: '"Sedekah dapat menghapus dosa sebagaimana air memadamkan api."',
       hadith: "Hadist Riwayat Tirmidzi",
       program: [],
