@@ -97,15 +97,19 @@
           <div class="modal-body text-center p-4">
             <i class="fas fa-check-circle fa-5x text-success"></i>
             <h5 class="mb-3 mt-3">Bukti Pembayaran Berhasil Dikirim!</h5>
-            <p>
-              Terima kasih, pembayaran Anda akan diverifikasi oleh admin. Mohon
-              tunggu maksimal 24 jam. Bukti pembayaran akan dikirimkan ke email
-              Anda!
+            <p class="text-justify">
+              Terima kasih atas pembayaran Anda. Bukti pembayaran sedang dalam
+              proses verifikasi oleh admin dan akan selesai dalam waktu maksimal
+              24 jam. Hasil verifikasi akan dikirimkan melalui email yang telah
+              Anda daftarkan.
+              <br /><br />
+              Jika Anda belum menerima konfirmasi setelah 24 jam, silakan
+              hubungi admin melalui WhatsApp yang terdapat di website ini.
             </p>
             <div class="d-flex justify-content-center mt-4">
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-success btn-block"
                 @click="redirectToDonationPage"
               >
                 Oke
