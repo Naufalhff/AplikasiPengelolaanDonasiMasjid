@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('anggaran_donasi', 15, 2);
             $table->decimal('anggaran_terkumpul', 15, 2);
             $table->decimal('anggaran_pengeluaran', 15, 2);
+            $table->date('tenggat_waktu');
             $table->timestamp('tanggal_dibuat')->useCurrent();
             $table->timestamp('tanggal_dirubah')->nullable()->useCurrentOnUpdate();
         });

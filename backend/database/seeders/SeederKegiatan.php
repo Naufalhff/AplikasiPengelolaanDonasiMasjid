@@ -20,6 +20,7 @@ class SeederKegiatan extends Seeder
                 'anggaran_pengeluaran' => 2500000.00,
                 'tanggal_dibuat' => now(),
                 'tanggal_dirubah' => null,
+                'tenggat_waktu' => now()->addDays(30), // Set tenggat_waktu to 30 days from now
             ],
             [
                 'foto_kegiatan' => 'sumbangan_bencana.jpg',
@@ -31,6 +32,7 @@ class SeederKegiatan extends Seeder
                 'anggaran_pengeluaran' => 4000000.00,
                 'tanggal_dibuat' => now(),
                 'tanggal_dirubah' => null,
+                'tenggat_waktu' => now()->addDays(30),
             ],
             [
                 'foto_kegiatan' => 'zakat_mal.jpg',
@@ -42,6 +44,7 @@ class SeederKegiatan extends Seeder
                 'anggaran_pengeluaran' => 3000000.00,
                 'tanggal_dibuat' => now(),
                 'tanggal_dirubah' => null,
+                'tenggat_waktu' => now()->addDays(30),
             ],
             [
                 'foto_kegiatan' => 'bantuan_sosial.jpg',
@@ -53,6 +56,7 @@ class SeederKegiatan extends Seeder
                 'anggaran_pengeluaran' => 2000000.00,
                 'tanggal_dibuat' => now(),
                 'tanggal_dirubah' => null,
+                'tenggat_waktu' => now()->addDays(30),
             ],
             [
                 'foto_kegiatan' => 'pembangunan_mesjid.jpg',
@@ -64,6 +68,7 @@ class SeederKegiatan extends Seeder
                 'anggaran_pengeluaran' => 5000000.00,
                 'tanggal_dibuat' => now(),
                 'tanggal_dirubah' => null,
+                'tenggat_waktu' => now()->addDays(30),
             ],
             [
                 'foto_kegiatan' => 'zakat_emas.jpg',
@@ -75,6 +80,7 @@ class SeederKegiatan extends Seeder
                 'anggaran_pengeluaran' => 3000000.00,
                 'tanggal_dibuat' => now(),
                 'tanggal_dirubah' => null,
+                'tenggat_waktu' => now()->addDays(30),
             ],
             [
                 'foto_kegiatan' => 'penggalangan_dana.jpg',
@@ -86,6 +92,7 @@ class SeederKegiatan extends Seeder
                 'anggaran_pengeluaran' => 2500000.00,
                 'tanggal_dibuat' => now(),
                 'tanggal_dirubah' => null,
+                'tenggat_waktu' => now()->addDays(30),
             ],
             [
                 'foto_kegiatan' => 'renovasi_sekolah.jpg',
@@ -97,6 +104,7 @@ class SeederKegiatan extends Seeder
                 'anggaran_pengeluaran' => 4500000.00,
                 'tanggal_dibuat' => now(),
                 'tanggal_dirubah' => null,
+                'tenggat_waktu' => now()->addDays(30),
             ],
             [
                 'foto_kegiatan' => 'zakat_fitrah3.jpg',
@@ -108,6 +116,7 @@ class SeederKegiatan extends Seeder
                 'anggaran_pengeluaran' => 6000000.00,
                 'tanggal_dibuat' => now(),
                 'tanggal_dirubah' => null,
+                'tenggat_waktu' => now()->addDays(30),
             ],
             [
                 'foto_kegiatan' => 'zakat_fitrah3.jpg',
@@ -119,6 +128,7 @@ class SeederKegiatan extends Seeder
                 'anggaran_pengeluaran' => 6000000.00,
                 'tanggal_dibuat' => now(),
                 'tanggal_dirubah' => null,
+                'tenggat_waktu' => now()->addDays(30),
             ],
             [
                 'foto_kegiatan' => 'zakat_fitrah3.jpg',
@@ -130,6 +140,7 @@ class SeederKegiatan extends Seeder
                 'anggaran_pengeluaran' => 6000000.00,
                 'tanggal_dibuat' => now(),
                 'tanggal_dirubah' => null,
+                'tenggat_waktu' => now()->addDays(30),
             ],
             [
                 'foto_kegiatan' => 'zakat_fitrah3.jpg',
@@ -141,6 +152,7 @@ class SeederKegiatan extends Seeder
                 'anggaran_pengeluaran' => 6000000.00,
                 'tanggal_dibuat' => now(),
                 'tanggal_dirubah' => null,
+                'tenggat_waktu' => now()->addDays(30),
             ],
             [
                 'foto_kegiatan' => 'zakat_fitrah3.jpg',
@@ -152,6 +164,7 @@ class SeederKegiatan extends Seeder
                 'anggaran_pengeluaran' => 6000000.00,
                 'tanggal_dibuat' => now(),
                 'tanggal_dirubah' => null,
+                'tenggat_waktu' => now()->addDays(30),
             ],
             [
                 'foto_kegiatan' => 'zakat_fitrah3.jpg',
@@ -163,6 +176,7 @@ class SeederKegiatan extends Seeder
                 'anggaran_pengeluaran' => 6000000.00,
                 'tanggal_dibuat' => now(),
                 'tanggal_dirubah' => null,
+                'tenggat_waktu' => now()->addDays(30),
             ],
             [
                 'foto_kegiatan' => 'zakat_fitrah3.jpg',
@@ -174,6 +188,7 @@ class SeederKegiatan extends Seeder
                 'anggaran_pengeluaran' => 6000000.00,
                 'tanggal_dibuat' => now(),
                 'tanggal_dirubah' => null,
+                'tenggat_waktu' => now()->addDays(30),
             ],
             [
                 'foto_kegiatan' => 'zakat_fitrah3.jpg',
@@ -185,6 +200,7 @@ class SeederKegiatan extends Seeder
                 'anggaran_pengeluaran' => 6000000.00,
                 'tanggal_dibuat' => now(),
                 'tanggal_dirubah' => null,
+                'tenggat_waktu' => now()->addDays(30),
             ],
             [
                 'foto_kegiatan' => 'bakti_sosial.jpg',
@@ -196,6 +212,7 @@ class SeederKegiatan extends Seeder
                 'anggaran_pengeluaran' => 1500000.00,
                 'tanggal_dibuat' => now(),
                 'tanggal_dirubah' => null,
+                'tenggat_waktu' => now()->addDays(30),
             ],
         ];
 

@@ -21,7 +21,8 @@ class Kegiatan extends Model
         'deskripsi_kegiatan',
         'anggaran_donasi',
         'anggaran_terkumpul',
-        'anggaran_pengeluaran'
+        'anggaran_pengeluaran',
+        'tenggat_waktu',
     ];
 
     protected $casts = [
@@ -29,6 +30,7 @@ class Kegiatan extends Model
         'tanggal_dirubah' => 'datetime',
         'anggaran_donasi' => 'decimal:2',
         'anggaran_terkumpul' => 'decimal:2',
-        'anggaran_pengeluaran' => 'decimal:2'
+        'anggaran_pengeluaran' => 'decimal:2',
+        'tenggat_waktu' => 'datetime',
     ];
 }

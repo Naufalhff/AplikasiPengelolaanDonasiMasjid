@@ -10,18 +10,15 @@
           <!-- Upload Image Section -->
           <div class="mb-4">
             <label for="activityImage" class="form-label">Upload Thumbnail</label>
-            <input 
-              type="file" 
-              class="form-control form-control-lg" 
-              id="activityImage" 
-              @change="onImageChange"
-              :class="{ 'is-invalid': errors.image }"
+            <input
+                type="file"
+                class="form-control form-control-lg"
+                id="activityImage"
+                @change="onImageChange"
+                :class="{ 'is-invalid': errors.image }"
             >
-            <div v-if="form.image" class="my-3">
-              <img :src="form.image" alt="Preview" class="img-thumbnail" />
-            </div>
-            <div v-if="errors.image" class="invalid-feedback">
-              {{ errors.image }}
+            <div v-if="imagePreview">
+              <img :src="imagePreview" alt="Preview Image" style="max-width: 300px; max-height: 300px;">
             </div>
           </div>
 
@@ -29,58 +26,53 @@
           <div class="row">
             <div class="col-md-6 mb-3">
               <label for="activityName" class="form-label">Nama Kegiatan</label>
-              <input 
-                type="text" 
-                class="form-control form-control-lg" 
-                id="activityName" 
-                v-model="form.name" 
-                placeholder="Masukkan Nama Kegiatan"
-                :class="{ 'is-invalid': errors.name }"
+              <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  id="activityName"
+                  v-model="form.name"
+                  placeholder="Masukkan Nama Kegiatan"
               >
-              <div v-if="errors.name" class="invalid-feedback">
-                {{ errors.name }}
-              </div>
             </div>
 
             <div class="col-md-6 mb-3">
               <label for="activityType" class="form-label">Jenis Kegiatan</label>
               <select
-                class="form-select form-select-lg custom-select-lg"
-                id="activityType"
-                v-model="form.type"
-                :class="{ 'is-invalid': errors.type }"
+                  class="form-select form-select-lg custom-select-lg"
+                  id="activityType"
+                  v-model="form.type"
               >
                 <option value="" disabled selected>Pilih jenis kegiatan</option>
                 <option value="sumbangan">Sumbangan</option>
                 <option value="zakat">Zakat</option>
                 <option value="zakat mal">Zakat Mal</option>
               </select>
-              <div v-if="errors.type" class="invalid-feedback">
-                {{ errors.type }}
-              </div>
             </div>
           </div>
 
           <!-- Description Section -->
           <div class="mb-3">
             <label for="activityDescription" class="form-label">Deskripsi</label>
-            <div id="activityDescription" ref="summernoteEditor"></div>
-            <div v-if="errors.description" class="invalid-feedback d-block">
-              {{ errors.description }}
-            </div>
+            <textarea
+                class="form-control form-control-lg"
+                id="activityDescription"
+                v-model="form.description"
+                placeholder="Masukkan Deskripsi"
+                rows="5"
+            ></textarea>
           </div>
 
           <div class="row">
             <div class="col-md-6 mb-3">
               <label for="targetAmount" class="form-label">Target Terkumpul</label>
               <div class="input-group input-group-lg">
-                <input 
-                  type="number" 
-                  class="form-control" 
-                  id="targetAmount" 
-                  v-model="form.targetAmount" 
-                  placeholder="Masukkan Target Terkumpul"
-                  :class="{ 'is-invalid': errors.targetAmount }"
+                <input
+                    type="number"
+                    class="form-control"
+                    id="targetAmount"
+                    v-model="form.targetAmount"
+                    placeholder="Masukkan Target Terkumpul"
+                    :class="{ 'is-invalid': errors.targetAmount }"
                 >
               </div>
               <div v-if="errors.targetAmount" class="invalid-feedback d-block">
@@ -90,56 +82,48 @@
 
             <div class="col-md-6 mb-3">
               <label for="timeLimit" class="form-label">Tenggat Waktu</label>
-              <input 
-                type="date" 
-                class="form-control form-control-lg" 
-                id="timeLimit" 
-                v-model="form.timeLimit" 
-                :class="{ 'is-invalid': errors.timeLimit }"
+              <input
+                  type="date"
+                  class="form-control form-control-lg"
+                  id="timeLimit"
+                  v-model="form.timeLimit"
               >
-              <div v-if="errors.timeLimit" class="invalid-feedback">
-                {{ errors.timeLimit }}
-              </div>
             </div>
           </div>
 
           <!-- Payment Details -->
           <div class="mb-4">
             <label for="accountNumber" class="form-label">Nomor Rekening</label>
-            <input 
-              type="text" 
-              class="form-control form-control-lg" 
-              id="accountNumber" 
-              v-model="form.accountNumber" 
-              placeholder="Masukkan Nomor Rekening"
-              :class="{ 'is-invalid': errors.accountNumber }"
+            <input
+                type="text"
+                class="form-control form-control-lg"
+                id="accountNumber"
+                v-model="form.accountNumber"
+                placeholder="Masukkan Nomor Rekening"
             >
-            <div v-if="errors.accountNumber" class="invalid-feedback">
-              {{ errors.accountNumber }}
-            </div>
           </div>
 
           <div class="mb-4">
             <label for="qrisImage" class="form-label">Upload QR Code</label>
-            <input 
-              type="file" 
-              class="form-control form-control-lg" 
-              id="qrisImage" 
-              @change="onQRISImageChange"
-              :class="{ 'is-invalid': errors.qrisImage }"
+            <input
+                type="file"
+                class="form-control form-control-lg"
+                id="qrisImage"
+                @change="onQRISImageChange"
+                :class="{ 'is-invalid': errors.qrisImage }"
             >
             <div v-if="errors.qrisImage" class="invalid-feedback">
               {{ errors.qrisImage }}
             </div>
-            <div v-if="form.qrisImage" class="mt-3">
-              <img :src="form.qrisImage" alt="QR Code Preview" class="img-thumbnail" />
+            <div v-if="qrisPreview">
+              <img :src="qrisPreview" alt="Preview Image" style="max-width: 300px; max-height: 300px;">
             </div>
           </div>
 
           <!-- Submit and Cancel Buttons -->
           <div class="d-flex justify-content-between mt-4">
             <button @click="cancel" class="btn btn-outline-secondary btn-lg">Batalkan</button>
-            <button type="submit" class="btn btn-success btn-lg">Buat Kegiatan</button>
+            <button type="submit" class="btn btn-success btn-lg">Simpan Perubahan</button>
           </div>
         </form>
       </div>
@@ -148,8 +132,7 @@
 </template>
 
 <script>
-import $ from 'jquery';
-import 'summernote/dist/summernote-bs4.min.js';
+import axios from "axios";
 
 export default {
   data() {
@@ -164,77 +147,137 @@ export default {
         accountNumber: '',
         qrisImage: null,
       },
-      errors: {}
+      imagePreview: null,
+      qrisPreview: null,
+      errors: {},
+      id_kegiatan: null,
     };
   },
-  mounted() {
-    $(this.$refs.summernoteEditor).summernote({
-      placeholder: 'Masukkan Deskripsi',
-      tabsize: 2,
-      height: 200,
-      callbacks: {
-        onChange: (contents) => {
-          this.form.description = contents;
-        }
-      }
-    });
+  created() {
+    this.id_kegiatan = this.$route.params.id;
   },
   methods: {
     onImageChange(event) {
       const file = event.target.files[0];
       if (file) {
-        this.form.image = URL.createObjectURL(file);
+        if (!['image/jpg', 'image/png', 'application/pdf'].includes(file.type)) {
+          this.errors.image = 'Gambar harus berupa jpg, png, atau pdf.';
+        } else if (file.size > 5120 * 1024) {
+          this.errors.image = 'Ukuran file maksimal 5 MB.';
+        } else {
+          this.form.image = file;
+          this.imagePreview = URL.createObjectURL(file);
+          delete this.errors.image;
+        }
       }
     },
     onQRISImageChange(event) {
       const file = event.target.files[0];
       if (file) {
-        this.form.qrisImage = URL.createObjectURL(file);
+        if (!['image/jpg', 'image/png', 'application/pdf'].includes(file.type)) {
+          this.errors.qrisImage = 'QR Code harus berupa jpg, png, atau pdf.';
+        } else if (file.size > 5120 * 1024) {
+          this.errors.qrisImage = 'Ukuran file maksimal 5 MB.';
+        } else {
+          this.form.qrisImage = file;
+          this.qrisPreview = URL.createObjectURL(file);
+          delete this.errors.qrisImage;
+        }
       }
     },
     validateForm() {
       this.errors = {};
+      let missingFields = [];
+
+      if (this.form.targetAmount) {
+        if (isNaN(this.form.targetAmount) || this.form.targetAmount <= 0) {
+          this.errors.targetAmount = 'Target terkumpul harus lebih dari nol.';
+          alert(this.errors.targetAmount);
+          return;
+        }
+      }
 
       if (!this.form.image) {
-        this.errors.image = 'Gambar harus diunggah.';
+        missingFields.push('Gambar');
       }
-
       if (!this.form.name) {
-        this.errors.name = 'Nama kegiatan harus diisi.';
+        missingFields.push('Nama Kegiatan');
       }
-
       if (!this.form.type) {
-        this.errors.type = 'Jenis kegiatan harus diisi.';
+        missingFields.push('Jenis Kegiatan');
       }
-
       if (!this.form.description) {
-        this.errors.description = 'Deskripsi harus diisi.';
+        missingFields.push('Deskripsi');
       }
-
-      if (!this.form.targetAmount) {
-        this.errors.targetAmount = 'Target terkumpul harus diisi.';
-      } else if (isNaN(this.form.targetAmount) || this.form.targetAmount <= 0) {
-        this.errors.targetAmount = 'Target harus berupa angka positif.';
-      }
-
       if (!this.form.timeLimit) {
-        this.errors.timeLimit = 'Tenggat waktu harus diisi.';
+        missingFields.push('Tenggat Waktu');
       }
-
       if (!this.form.accountNumber) {
-        this.errors.accountNumber = 'Nomor rekening harus diisi.';
+        missingFields.push('Nomor Rekening');
       }
-
       if (!this.form.qrisImage) {
-        this.errors.qrisImage = 'QR Code harus diunggah.';
+        missingFields.push('QR Code');
       }
 
-      if (Object.keys(this.errors).length === 0) {
+      if (missingFields.length > 0) {
+        const notificationMessage = `Beberapa field berikut tidak diisi:\n\n- ${missingFields.join(
+            '\n- '
+        )}\n\nField-field ini masih kosong, tetapi Anda perlu memastikannya.`;
+        alert(notificationMessage);
+      }
+
+      if (confirm('Semua field sudah diperiksa. Apakah Anda yakin ingin menyimpan perubahan ini?')) {
         this.submitForm();
       }
     },
-    submitForm() {
-      alert('Form berhasil disubmit!');
+    async submitForm() {
+      const formData = new FormData();
+
+      if (this.form.image) {
+        formData.append('thumbnail', this.form.image);
+      }
+      formData.append('name', this.form.name || '');
+      formData.append('type', this.form.type ? this.form.type.toUpperCase() : '');
+      formData.append('description', this.form.description || '');
+      formData.append('target', this.form.targetAmount || '');
+      formData.append('limit', this.form.timeLimit || '');
+      formData.append('rekening', this.form.accountNumber || '');
+
+      if (this.form.qrisImage) {
+        formData.append('qris', this.form.qrisImage);
+      }
+
+      formData.append('_method', 'PUT');
+
+      try {
+        const response = await axios({
+          method: 'POST',
+          url: `http://localhost:8000/api/edit-kegiatan/${this.id_kegiatan}`,
+          data: formData,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Accept': 'application/json',
+          },
+        });
+
+        alert('Kegiatan berhasil diperbarui!');
+        console.log(response.data);
+
+        this.$router.push({ name: 'ActivityList' });
+      } catch (error) {
+        if (error.response && error.response.data) {
+          const responseData = error.response.data;
+
+          if (responseData.field === 'name') {
+            alert(responseData.message);
+            this.errors.name = responseData.message;
+          } else {
+            this.errors.general = responseData.message || 'Terjadi kesalahan saat menyimpan kegiatan.';
+          }
+        } else {
+          this.errors.general = 'Terjadi kesalahan jaringan.';
+        }
+      }
     },
     cancel() {
       if (confirm('Apakah Anda yakin ingin membatalkan perubahan?')) {
@@ -246,6 +289,7 @@ export default {
 </script>
 
 <style scoped>
+/* Styles remain the same as in the original component */
 .container-fluid {
   max-width: 1200px;
 }
@@ -275,10 +319,6 @@ h2 {
   border-color: #80bdff;
 }
 
-.input-group-text {
-  border-radius: 8px 0 0 8px;
-}
-
 input[type="file"] {
   height: 180px;
   display: flex;
@@ -288,9 +328,9 @@ input[type="file"] {
   border-radius: 8px;
 }
 .custom-select-lg {
-  padding: 14px; /* Increase padding for a larger, more consistent look */
-  font-size: 1.1rem; /* Increase font size for better readability */
-  border-radius: 8px; /* Match border-radius with other form controls */
+  padding: 14px;
+  font-size: 1.1rem;
+  border-radius: 8px;
   border: 1px solid #ced4da;
   color: #495057;
   background-color: #fff;
