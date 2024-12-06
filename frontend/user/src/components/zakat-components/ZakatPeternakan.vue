@@ -37,15 +37,15 @@
       <div class="input-group">
         <span class="input-group-text">Rp</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="Isi harga jual di daerahmu saat membayar zakat"
-          v-model="localData.hargaHewan"
-          min="0"
-          @input="emitDataChange"
+          :value="formattedHargaHewan"
+          @input="formatCustomAmount('hargaHewan', $event)"
         />
       </div>
     </div>
+
     <p class="description">
       Zakat peternakan adalah zakat yang wajib dikeluarkan oleh pemilik ternak
       atas hewan ternak mereka, seperti sapi, domba, atau kerbau, jika telah
@@ -80,7 +80,19 @@ export default {
       },
     };
   },
+  computed: {
+    formattedHargaHewan() {
+      return new Intl.NumberFormat("id-ID").format(this.localData.hargaHewan);
+    },
+  },
   methods: {
+    formatCustomAmount(key, event) {
+      const rawValue = event.target.value.replace(/\D/g, "");
+      event.target.value = new Intl.NumberFormat("id-ID").format(rawValue);
+      this.localData[key] = parseInt(rawValue, 10) || 0;
+      this.emitDataChange();
+    },
+
     emitDataChange() {
       this.$emit("update:data", this.localData);
     },

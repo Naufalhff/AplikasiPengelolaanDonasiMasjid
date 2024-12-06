@@ -3,13 +3,13 @@
     <div class="mb-3">
       <label class="form-label">Penghasilan Per Bulan</label>
       <div class="input-group">
-        <span class="input-group-text">Rp.</span>
+        <span class="input-group-text">Rp</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="0"
-          min="0"
-          v-model="localData.PenghasilanPerBulan"
+          :value="formattedPenghasilanPerBulan"
+          @input="formatCustomAmount('PenghasilanPerBulan', $event)"
         />
       </div>
     </div>
@@ -17,13 +17,13 @@
     <div class="mb-3">
       <label class="form-label">Penghasilan Lain (Optional)</label>
       <div class="input-group">
-        <span class="input-group-text">Rp.</span>
+        <span class="input-group-text">Rp</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="0"
-          min="0"
-          v-model="localData.PenghasilanLain"
+          :value="formattedPenghasilanLain"
+          @input="formatCustomAmount('PenghasilanLain', $event)"
         />
       </div>
     </div>
@@ -31,26 +31,26 @@
     <div class="mb-3">
       <label class="form-label">Hutang/Cicilan (Optional)</label>
       <div class="input-group">
-        <span class="input-group-text">Rp.</span>
+        <span class="input-group-text">Rp</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="0"
-          min="0"
-          v-model="localData.HutangCicilan"
+          :value="formattedHutangCicilan"
+          @input="formatCustomAmount('HutangCicilan', $event)"
         />
       </div>
     </div>
     <div class="mb-3">
       <label class="form-label">Harga emas per gram saat ini</label>
       <div class="input-group">
-        <span class="input-group-text">Rp.</span>
+        <span class="input-group-text">Rp</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="0"
-          min="0"
-          v-model="localData.HargaEmas"
+          :value="formattedHargaEmas"
+          @input="formatCustomAmount('HargaEmas', $event)"
         />
       </div>
     </div>
@@ -97,6 +97,33 @@ export default {
         HargaEmas: this.data.HargaEmas || 0,
       },
     };
+  },
+  computed: {
+    formattedPenghasilanPerBulan() {
+      return new Intl.NumberFormat("id-ID").format(
+        this.localData.PenghasilanPerBulan
+      );
+    },
+    formattedPenghasilanLain() {
+      return new Intl.NumberFormat("id-ID").format(
+        this.localData.PenghasilanLain
+      );
+    },
+    formattedHutangCicilan() {
+      return new Intl.NumberFormat("id-ID").format(
+        this.localData.HutangCicilan
+      );
+    },
+    formattedHargaEmas() {
+      return new Intl.NumberFormat("id-ID").format(this.localData.HargaEmas);
+    },
+  },
+  methods: {
+    formatCustomAmount(key, event) {
+      const rawValue = event.target.value.replace(/[^0-9]/g, "");
+      event.target.value = new Intl.NumberFormat("id-ID").format(rawValue);
+      this.localData[key] = parseInt(rawValue, 10) || 0;
+    },
   },
   watch: {
     localData: {

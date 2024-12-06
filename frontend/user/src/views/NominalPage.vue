@@ -30,7 +30,7 @@
             class="form-control"
             id="customAmount"
             v-model="formattedAmount"
-            placeholder="Minimal donasi Rp 1.000"
+            placeholder="Minimal donasi Rp 1.000,00"
             min="1000"
             @input="formatCustomAmount"
           />

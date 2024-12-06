@@ -83,7 +83,7 @@
           </div>
           <div class="modal-body">
             <p>Jumlah zakat yang harus dibayarkan:</p>
-            <h4 class="text-success">Rp.{{ zakatResult.toLocaleString() }}</h4>
+            <h4 class="text-success">{{ formatCurrency(zakatResult) }}</h4>
             <p v-if="alertMessage" class="text-danger">{{ alertMessage }}</p>
           </div>
           <div class="modal-footer">
@@ -157,6 +157,12 @@ export default {
     this.zakatModal = new Modal(document.getElementById("zakatModal"));
   },
   methods: {
+    formatCurrency(value) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      }).format(value);
+    },
     calculateZakat() {
       this.alertMessage = "";
 
@@ -201,8 +207,8 @@ export default {
           return;
         }
       } else if (this.selectedZakatType === "pertambangan") {
-        if (!this.zakatData.keuntungan) {
-          this.alertMessage = "Silakan isi keuntungan.";
+        if (!this.zakatData.keuntungan || !this.zakatData.HargaEmas) {
+          this.alertMessage = "Silakan isi keuntungan dan harga emas saat ini.";
           return;
         }
       } else if (this.selectedZakatType === "pendapatan") {
@@ -381,9 +387,10 @@ export default {
         this.alertMessage = "Jumlah zakat tidak valid.";
         return;
       }
+      const formattedAmount = this.formatCurrency(amount);
 
       navigator.clipboard
-        .writeText(amount.toString())
+        .writeText(formattedAmount)
         .then(() => {
           console.log("Nominal zakat berhasil disalin ke clipboard");
           this.alertMessage = "Nominal zakat berhasil disalin!";

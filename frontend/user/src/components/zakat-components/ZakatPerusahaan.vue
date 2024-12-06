@@ -1,33 +1,36 @@
 <template>
   <div class="mb-3">
+    <!-- Keuntungan Bersih -->
     <div class="mb-3">
       <label class="form-label">Keuntungan Bersih</label>
       <div class="input-group">
         <span class="input-group-text">Rp.</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="0"
-          min="0"
-          v-model="localData.keuntunganBersih"
+          :value="formattedKeuntunganBersih"
+          @input="formatCustomAmount('keuntunganBersih', $event)"
         />
       </div>
     </div>
 
+    <!-- Utang Lancar -->
     <div class="mb-3">
       <label class="form-label">Utang Lancar (Optional)</label>
       <div class="input-group">
         <span class="input-group-text">Rp.</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="0"
-          min="0"
-          v-model="localData.UtangLancar"
+          :value="formattedUtangLancar"
+          @input="formatCustomAmount('UtangLancar', $event)"
         />
       </div>
     </div>
 
+    <!-- Tahun Operasional -->
     <div class="mb-3">
       <label class="form-label">Tahun Operasional</label>
       <div class="input-group">
@@ -41,19 +44,22 @@
         <span class="input-group-text">Tahun</span>
       </div>
     </div>
+
+    <!-- Harga Emas -->
     <div class="mb-3">
-      <label class="form-label">Harga emas per gram saat ini</label>
+      <label class="form-label">Harga Emas per gram saat ini</label>
       <div class="input-group">
         <span class="input-group-text">Rp.</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="0"
-          min="0"
-          v-model="localData.HargaEmas"
+          :value="formattedHargaEmas"
+          @input="formatCustomAmount('HargaEmas', $event)"
         />
       </div>
     </div>
+
     <p class="description">
       Zakat perusahaan adalah kewajiban zakat yang dikenakan kepada sebuah
       entitas bisnis atau perusahaan yang memiliki keuntungan bersih selama satu
@@ -84,6 +90,26 @@ export default {
         HargaEmas: this.data.HargaEmas || 0,
       },
     };
+  },
+  computed: {
+    formattedKeuntunganBersih() {
+      return new Intl.NumberFormat("id-ID").format(
+        this.localData.keuntunganBersih
+      );
+    },
+    formattedUtangLancar() {
+      return new Intl.NumberFormat("id-ID").format(this.localData.UtangLancar);
+    },
+    formattedHargaEmas() {
+      return new Intl.NumberFormat("id-ID").format(this.localData.HargaEmas);
+    },
+  },
+  methods: {
+    formatCustomAmount(key, event) {
+      const rawValue = event.target.value.replace(/\D/g, "");
+      event.target.value = new Intl.NumberFormat("id-ID").format(rawValue);
+      this.localData[key] = parseInt(rawValue, 10) || 0;
+    },
   },
   watch: {
     localData: {

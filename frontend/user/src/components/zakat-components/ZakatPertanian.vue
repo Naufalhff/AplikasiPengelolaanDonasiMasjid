@@ -1,5 +1,6 @@
 <template>
   <div class="mb-3">
+    <!-- Pilih Jenis Pertanian -->
     <div class="mb-3">
       <label for="zakatType" class="form-label d-block"
         >Pilih Jenis Pertanian</label
@@ -15,6 +16,7 @@
       </select>
     </div>
 
+    <!-- Hasil Panen -->
     <div class="mb-3">
       <label class="form-label">Hasil Panen</label>
       <div class="input-group">
@@ -29,20 +31,22 @@
       </div>
     </div>
 
+    <!-- Harga jual komoditas -->
     <div class="mb-3">
       <label class="form-label">Harga jual komoditas (per Kg)</label>
       <div class="input-group">
         <span class="input-group-text">Rp</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="Isi harga jual di daerahmu saat membayar zakat"
-          v-model="localData.hargaJual"
-          min="0"
+          :value="formattedHargaJual"
+          @input="formatCustomAmount('hargaJual', $event)"
         />
       </div>
     </div>
 
+    <!-- Pilih Jenis Pengairan -->
     <div class="mb-3">
       <label class="form-label">Pilih Jenis Pengairan</label>
       <div>
@@ -72,6 +76,8 @@
         </div>
       </div>
     </div>
+
+    <!-- Deskripsi -->
     <p class="description">
       Zakat pertanian adalah zakat yang wajib dikeluarkan oleh petani atas hasil
       pertanian mereka, seperti gabah, beras, atau komoditas lainnya, jika telah
@@ -110,6 +116,18 @@ export default {
         jenisPengairan: this.data.jenisPengairan || "tadahHujan",
       },
     };
+  },
+  computed: {
+    formattedHargaJual() {
+      return new Intl.NumberFormat("id-ID").format(this.localData.hargaJual);
+    },
+  },
+  methods: {
+    formatCustomAmount(key, event) {
+      const rawValue = event.target.value.replace(/\D/g, "");
+      event.target.value = new Intl.NumberFormat("id-ID").format(rawValue);
+      this.localData[key] = parseInt(rawValue, 10) || 0;
+    },
   },
   watch: {
     localData: {
