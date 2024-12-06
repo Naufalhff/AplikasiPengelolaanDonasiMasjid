@@ -76,7 +76,11 @@
         </div>
 
         <!-- Submit Button -->
-        <button class="btn btn-success btn-block mt-4" @click="submitFile">
+        <button
+          class="btn btn-success btn-block mt-4"
+          @click="submitFile"
+          :disabled="!isValidFile(selectedFile)"
+        >
           Kirim
         </button>
       </div>
@@ -143,6 +147,7 @@ export default {
       email: "",
     };
   },
+
   mounted() {
     this.modal = new Modal(document.getElementById("confirmationModal"));
     this.fetchData();
@@ -154,16 +159,26 @@ export default {
       const files = event.dataTransfer.files;
       if (files.length > 0) {
         this.selectedFile = files[0];
-        this.updateImageUrl();
-        this.errorMessage = "";
+        if (this.isValidFile(this.selectedFile)) {
+          this.updateImageUrl();
+          this.errorMessage = "";
+        } else {
+          this.errorMessage =
+            "Format file tidak didukung. Harap unggah file PDF, JPG, atau PNG.";
+        }
       }
     },
     handleFileSelect(event) {
       const files = event.target.files;
       if (files.length > 0) {
         this.selectedFile = files[0];
-        this.updateImageUrl();
-        this.errorMessage = "";
+        if (this.isValidFile(this.selectedFile)) {
+          this.updateImageUrl();
+          this.errorMessage = "";
+        } else {
+          this.errorMessage =
+            "Format file tidak didukung. Harap unggah file PDF, JPG, atau PNG.";
+        }
       }
     },
     browseFile() {
@@ -171,7 +186,6 @@ export default {
     },
     submitFile() {
       if (this.selectedFile) {
-        console.log("FILE OK");
         const formData = new FormData();
         formData.append("file", this.selectedFile);
         formData.append("id", this.$route.query.id);
@@ -189,10 +203,9 @@ export default {
           .then((response) => response.json())
           .then((data) => {
             if (data.message) {
-              console.log("DATA OK");
               this.modal.show();
             } else {
-              console.log("DATA FAIL");
+              console.log("Data upload failed");
             }
           })
           .catch((error) => {
@@ -200,7 +213,6 @@ export default {
           });
       } else {
         this.errorMessage = "Maaf, gambar belum di-upload.";
-        this.successMessage = "";
       }
     },
     redirectToDonationPage() {
@@ -219,6 +231,9 @@ export default {
     },
     isPDF(file) {
       return file && file.type === "application/pdf";
+    },
+    isValidFile(file) {
+      return this.isImage(file) || this.isPDF(file);
     },
     fetchData() {
       const id = this.$route.query.id;
