@@ -117,8 +117,14 @@ export default {
         });
         console.log("Login berhasil");
         const UserRole = response.data.user.peran;
+        const fullName = response.data.user.nama_lengkap; // Ambil nama lengkap
+        const email = this.email; // Ambil email
+
         sessionStorage.setItem("isLogin", "true");
         sessionStorage.setItem("loginAs", UserRole);
+        sessionStorage.setItem("fullName", fullName); // Simpan nama lengkap
+        sessionStorage.setItem("email", email); // Simpan email
+
         console.log(sessionStorage.getItem("loginAs"));
         if (UserRole === "Donatur") {
           this.$router.push("/home");

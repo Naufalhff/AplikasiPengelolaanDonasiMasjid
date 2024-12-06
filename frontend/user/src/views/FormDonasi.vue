@@ -191,6 +191,12 @@ export default {
   mounted() {
     this.donationModal = new Modal(document.getElementById("donationModal"));
     this.fetchData();
+
+    // Ambil data dari sessionStorage jika sudah login
+    if (sessionStorage.getItem("isLogin") === "true") {
+      this.donor.fullName = sessionStorage.getItem("fullName") || "";
+      this.donor.email = sessionStorage.getItem("email") || "";
+    }
   },
   methods: {
     goBack() {
