@@ -55,10 +55,6 @@ const routes = [
           requiresAuth: true,
           hideNavbar: true,
           hideFooter: true,
-          allowedRoles: ["Pengurus Masjid", "Administrator"],
-        },
-      },
-      {
         path: "/create-activity",
         name: "CreateActivity",
         component: CreateActivity,

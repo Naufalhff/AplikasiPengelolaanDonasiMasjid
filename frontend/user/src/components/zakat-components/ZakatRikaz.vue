@@ -5,11 +5,11 @@
       <div class="input-group">
         <span class="input-group-text">Rp.</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="0"
-          min="0"
-          v-model="localData.JumlahHarta"
+          :value="formattedJumlahHarta"
+          @input="formatCustomAmount('JumlahHarta', $event)"
         />
       </div>
     </div>
@@ -50,12 +50,21 @@ export default {
       },
     };
   },
-  watch: {
-    localData: {
-      handler(newData) {
-        this.$emit("update:data", newData);
-      },
-      deep: true,
+  computed: {
+    formattedJumlahHarta() {
+      return new Intl.NumberFormat("id-ID").format(this.localData.JumlahHarta);
+    },
+  },
+  methods: {
+    formatCustomAmount(key, event) {
+      const rawValue = event.target.value.replace(/\D/g, "");
+      event.target.value = new Intl.NumberFormat("id-ID").format(rawValue);
+      this.localData[key] = parseInt(rawValue, 10) || 0;
+      this.emitDataChange();
+    },
+
+    emitDataChange() {
+      this.$emit("update:data", this.localData);
     },
   },
 };

@@ -19,10 +19,10 @@
           class="d-flex flex-column align-items-center p-3 mr-5 me-4 border rounded"
           :class="{
             'border-success':
-              selectedCategory === 'ZAKAT' ||
+              selectedCategory === 'ZAKAT MAL' ||
               selectedCategory === 'ZAKAT FITRAH',
           }"
-          @click="selectedCategory = 'ZAKAT'"
+          @click="selectedCategory = 'ZAKAT MAL'"
         >
           <i class="fas fa-balance-scale fa-2x text-success p-3 mb-2"></i>
           <span>Zakat</span>
@@ -107,8 +107,8 @@ export default {
     filteredPrograms() {
       return this.program.filter((program) => {
         const isZakatCategory =
-          this.selectedCategory === "ZAKAT" &&
-          (program.jenis_kegiatan === "ZAKAT" ||
+          this.selectedCategory === "ZAKAT MAL" &&
+          (program.jenis_kegiatan === "ZAKAT MAL" ||
             program.jenis_kegiatan === "ZAKAT FITRAH");
         const matchesCategory =
           program.jenis_kegiatan === this.selectedCategory || isZakatCategory;
@@ -140,13 +140,12 @@ export default {
         });
     },
     determineRoute(category) {
-      // Routing based on the category type
-      if (category === "ZAKAT") {
+      if (category === "ZAKAT MAL") {
         return "/detailzakat";
       } else if (category === "ZAKAT FITRAH") {
         return "/detaildonasi";
       }
-      return "/detaildonasi"; // Default for other categories
+      return "/detaildonasi";
     },
   },
   mounted() {

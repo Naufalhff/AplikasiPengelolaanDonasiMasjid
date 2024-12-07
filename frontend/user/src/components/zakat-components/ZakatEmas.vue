@@ -1,14 +1,5 @@
 <template>
   <div class="mb-3">
-    <!-- <h2 class="card-title">Tentang Zakat Emas</h2>
-    <p class="description">
-      Zakat yang dikenakan atas Emas, perak dan logam lainnya yang telah
-      mencapai nisab dan haul. Zakat Emas dan Perak ditunaikan jika seorang
-      muzaki (orang yang menunaikan zakat) memiliki Emas mencapai nisab senilai
-      85 gram (atau 91,92 gram Emas) atau perak dengan mencapai nisab 595 gram.
-      Tarif zakat yang harus dibayarkan adalah sebesar 2,5% dari Emas atau perak
-      yang dimiliki. Haul Zakat Emas dan Perak adalah satu tahun.
-    </p> -->
     <div class="mb-3">
       <label for="logamMuliaType" class="form-label d-block"
         >Pilih Jenis Logam Mulia</label
@@ -44,11 +35,11 @@
       <div class="input-group">
         <span class="input-group-text">Rp</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="Rp.0"
-          v-model="localData.HargaEmasPerak"
-          min="0"
+          :value="formattedAmount"
+          @input="formatCustomAmount"
         />
       </div>
     </div>
@@ -111,8 +102,22 @@ export default {
     nisabComputed() {
       return this.selectedLogamMulia === "emas" ? 85 : 595;
     },
+    formattedAmount() {
+      return new Intl.NumberFormat("id-ID").format(
+        this.localData.HargaEmasPerak
+      );
+    },
   },
   methods: {
+    formatCustomAmount(event) {
+      let value = event.target.value.replace(/[^0-9]/g, "");
+      if (value) {
+        event.target.value = new Intl.NumberFormat("id-ID").format(value);
+        this.localData.HargaEmasPerak = parseInt(value, 10);
+      } else {
+        this.localData.HargaEmasPerak = 0;
+      }
+    },
     updateSelectedLogamMulia() {
       this.$emit("update:data", {
         ...this.localData,

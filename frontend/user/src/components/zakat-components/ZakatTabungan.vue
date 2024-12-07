@@ -1,17 +1,17 @@
 <template>
   <div class="mb-3">
     <div class="mb-3">
-      <label class="form-label"
-        >Nilai tabungan atau investasi yang dimiliki</label
-      >
+      <label class="form-label">
+        Nilai tabungan atau investasi yang dimiliki
+      </label>
       <div class="input-group">
         <span class="input-group-text">Rp.</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="0"
-          min="0"
-          v-model="localData.NilaiTabungan"
+          :value="formattedNilaiTabungan"
+          @input="formatCustomAmount('NilaiTabungan', $event)"
         />
       </div>
     </div>
@@ -21,11 +21,11 @@
       <div class="input-group">
         <span class="input-group-text">Rp.</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="0"
-          min="0"
-          v-model="localData.HargaEmas"
+          :value="formattedHargaEmas"
+          @input="formatCustomAmount('HargaEmas', $event)"
         />
       </div>
     </div>
@@ -49,12 +49,26 @@ export default {
       },
     };
   },
-  watch: {
-    localData: {
-      handler(newData) {
-        this.$emit("update:data", newData);
-      },
-      deep: true,
+  computed: {
+    formattedNilaiTabungan() {
+      return new Intl.NumberFormat("id-ID").format(
+        this.localData.NilaiTabungan
+      );
+    },
+    formattedHargaEmas() {
+      return new Intl.NumberFormat("id-ID").format(this.localData.HargaEmas);
+    },
+  },
+  methods: {
+    formatCustomAmount(key, event) {
+      const rawValue = event.target.value.replace(/\D/g, "");
+      event.target.value = new Intl.NumberFormat("id-ID").format(rawValue);
+      this.localData[key] = parseInt(rawValue, 10) || 0;
+      this.emitDataChange();
+    },
+
+    emitDataChange() {
+      this.$emit("update:data", this.localData);
     },
   },
 };

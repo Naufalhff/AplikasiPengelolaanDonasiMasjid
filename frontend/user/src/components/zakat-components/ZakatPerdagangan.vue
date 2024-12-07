@@ -1,71 +1,76 @@
 <template>
   <div class="mb-3">
+    <!-- Modal yang Diputar selama 1 tahun -->
     <div class="mb-3">
       <label class="form-label">Modal yang Diputar selama 1 tahun</label>
       <div class="input-group">
-        <span class="input-group-text">Rp.</span>
+        <span class="input-group-text">Rp</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="0"
-          min="0"
-          v-model="localData.modal"
+          :value="formattedModal"
+          @input="formatCustomAmount('modal', $event)"
         />
       </div>
     </div>
 
+    <!-- Keuntungan selama 1 tahun -->
     <div class="mb-3">
       <label class="form-label">Keuntungan selama 1 tahun</label>
       <div class="input-group">
-        <span class="input-group-text">Rp.</span>
+        <span class="input-group-text">Rp</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="0"
-          min="0"
-          v-model="localData.keuntungan"
+          :value="formattedKeuntungan"
+          @input="formatCustomAmount('keuntungan', $event)"
         />
       </div>
     </div>
 
+    <!-- Piutang Dagang (Optional) -->
     <div class="mb-3">
       <label class="form-label">Piutang Dagang (Optional)</label>
       <div class="input-group">
-        <span class="input-group-text">Rp.</span>
+        <span class="input-group-text">Rp</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="0"
-          min="0"
-          v-model="localData.piutangDagang"
+          :value="formattedPiutangDagang"
+          @input="formatCustomAmount('piutangDagang', $event)"
         />
       </div>
     </div>
 
+    <!-- Utang Jatuh Tempo (Optional) -->
     <div class="mb-3">
       <label class="form-label">Utang jatuh tempo (Optional)</label>
       <div class="input-group">
-        <span class="input-group-text">Rp.</span>
+        <span class="input-group-text">Rp</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="0"
-          min="0"
-          v-model="localData.utangJatuhTempo"
+          :value="formattedUtangJatuhTempo"
+          @input="formatCustomAmount('utangJatuhTempo', $event)"
         />
       </div>
     </div>
 
+    <!-- Kerugian selama 1 tahun (Optional) -->
     <div class="mb-3">
       <label class="form-label">Kerugian selama 1 tahun (Optional)</label>
       <div class="input-group">
-        <span class="input-group-text">Rp.</span>
+        <span class="input-group-text">Rp</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="0"
-          min="0"
-          v-model="localData.kerugian"
+          :value="formattedKerugian"
+          @input="formatCustomAmount('kerugian', $event)"
         />
       </div>
     </div>
@@ -115,6 +120,37 @@ export default {
         HargaEmas: this.data.HargaEmas || 0,
       },
     };
+  },
+  computed: {
+    formattedModal() {
+      return new Intl.NumberFormat("id-ID").format(this.localData.modal);
+    },
+    formattedKeuntungan() {
+      return new Intl.NumberFormat("id-ID").format(this.localData.keuntungan);
+    },
+    formattedPiutangDagang() {
+      return new Intl.NumberFormat("id-ID").format(
+        this.localData.piutangDagang
+      );
+    },
+    formattedUtangJatuhTempo() {
+      return new Intl.NumberFormat("id-ID").format(
+        this.localData.utangJatuhTempo
+      );
+    },
+    formattedKerugian() {
+      return new Intl.NumberFormat("id-ID").format(this.localData.kerugian);
+    },
+    formattedHargaEmas() {
+      return new Intl.NumberFormat("id-ID").format(this.localData.HargaEmas);
+    },
+  },
+  methods: {
+    formatCustomAmount(key, event) {
+      const rawValue = event.target.value.replace(/[^0-9]/g, "");
+      event.target.value = new Intl.NumberFormat("id-ID").format(rawValue);
+      this.localData[key] = parseInt(rawValue, 10) || 0;
+    },
   },
   watch: {
     localData: {

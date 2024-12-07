@@ -61,7 +61,7 @@ export default {
   data() {
     return {
       search: "",
-      selectedCategory: "ZAKAT MAL",
+      selectedCategory: "JENIS ZAKAT MAL",
       image: require("../assets/images/infaq.jpeg"),
       program: [],
     };

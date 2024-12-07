@@ -76,7 +76,11 @@
         </div>
 
         <!-- Submit Button -->
-        <button class="btn btn-success btn-block mt-4" @click="submitFile">
+        <button
+          class="btn btn-success btn-block mt-4"
+          @click="submitFile"
+          :disabled="!isValidFile(selectedFile)"
+        >
           Kirim
         </button>
       </div>
@@ -97,15 +101,19 @@
           <div class="modal-body text-center p-4">
             <i class="fas fa-check-circle fa-5x text-success"></i>
             <h5 class="mb-3 mt-3">Bukti Pembayaran Berhasil Dikirim!</h5>
-            <p>
-              Terima kasih, pembayaran Anda akan diverifikasi oleh admin. Mohon
-              tunggu maksimal 24 jam. Bukti pembayaran akan dikirimkan ke email
-              Anda!
+            <p class="text-justify">
+              Terima kasih atas pembayaran Anda. Bukti pembayaran sedang dalam
+              proses verifikasi oleh admin dan akan selesai dalam waktu maksimal
+              24 jam. Hasil verifikasi akan dikirimkan melalui email yang telah
+              Anda daftarkan.
+              <br /><br />
+              Jika Anda belum menerima konfirmasi setelah 24 jam, silakan
+              hubungi admin melalui WhatsApp yang terdapat di website ini.
             </p>
             <div class="d-flex justify-content-center mt-4">
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-success btn-block"
                 @click="redirectToDonationPage"
               >
                 Oke
@@ -139,6 +147,7 @@ export default {
       email: "",
     };
   },
+
   mounted() {
     this.modal = new Modal(document.getElementById("confirmationModal"));
     this.fetchData();
@@ -150,16 +159,26 @@ export default {
       const files = event.dataTransfer.files;
       if (files.length > 0) {
         this.selectedFile = files[0];
-        this.updateImageUrl();
-        this.errorMessage = "";
+        if (this.isValidFile(this.selectedFile)) {
+          this.updateImageUrl();
+          this.errorMessage = "";
+        } else {
+          this.errorMessage =
+            "Format file tidak didukung. Harap unggah file PDF, JPG, atau PNG.";
+        }
       }
     },
     handleFileSelect(event) {
       const files = event.target.files;
       if (files.length > 0) {
         this.selectedFile = files[0];
-        this.updateImageUrl();
-        this.errorMessage = "";
+        if (this.isValidFile(this.selectedFile)) {
+          this.updateImageUrl();
+          this.errorMessage = "";
+        } else {
+          this.errorMessage =
+            "Format file tidak didukung. Harap unggah file PDF, JPG, atau PNG.";
+        }
       }
     },
     browseFile() {
@@ -167,7 +186,6 @@ export default {
     },
     submitFile() {
       if (this.selectedFile) {
-        console.log("FILE OK");
         const formData = new FormData();
         formData.append("file", this.selectedFile);
         formData.append("id", this.$route.query.id);
@@ -185,10 +203,9 @@ export default {
           .then((response) => response.json())
           .then((data) => {
             if (data.message) {
-              console.log("DATA OK");
               this.modal.show();
             } else {
-              console.log("DATA FAIL");
+              console.log("Data upload failed");
             }
           })
           .catch((error) => {
@@ -196,7 +213,6 @@ export default {
           });
       } else {
         this.errorMessage = "Maaf, gambar belum di-upload.";
-        this.successMessage = "";
       }
     },
     redirectToDonationPage() {
@@ -215,6 +231,9 @@ export default {
     },
     isPDF(file) {
       return file && file.type === "application/pdf";
+    },
+    isValidFile(file) {
+      return this.isImage(file) || this.isPDF(file);
     },
     fetchData() {
       const id = this.$route.query.id;

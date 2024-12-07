@@ -1,15 +1,16 @@
 <template>
   <div class="mb-3">
+    <!-- Keuntungan yang diperoleh -->
     <div class="mb-3">
       <label class="form-label">Keuntungan yang diperoleh</label>
       <div class="input-group">
-        <span class="input-group-text">Rp.</span>
+        <span class="input-group-text">Rp</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="0"
-          min="0"
-          v-model="localData.keuntungan"
+          :value="formattedKeuntungan"
+          @input="formatCustomAmount('keuntungan', $event)"
         />
       </div>
     </div>
@@ -55,6 +56,21 @@ export default {
         HargaEmas: this.data.HargaEmas || 0,
       },
     };
+  },
+  computed: {
+    formattedKeuntungan() {
+      return new Intl.NumberFormat("id-ID").format(this.localData.keuntungan);
+    },
+    formattedHargaEmas() {
+      return new Intl.NumberFormat("id-ID").format(this.localData.HargaEmas);
+    },
+  },
+  methods: {
+    formatCustomAmount(key, event) {
+      const rawValue = event.target.value.replace(/\D/g, "");
+      event.target.value = new Intl.NumberFormat("id-ID").format(rawValue);
+      this.localData[key] = parseInt(rawValue, 10) || 0;
+    },
   },
   watch: {
     localData: {

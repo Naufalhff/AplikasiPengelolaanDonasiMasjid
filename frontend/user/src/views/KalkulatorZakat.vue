@@ -157,6 +157,12 @@ export default {
     this.zakatModal = new Modal(document.getElementById("zakatModal"));
   },
   methods: {
+    formatCurrency(value) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      }).format(value);
+    },
     calculateZakat() {
       this.alertMessage = "";
 
