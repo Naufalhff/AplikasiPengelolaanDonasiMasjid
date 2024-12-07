@@ -198,13 +198,13 @@ const routes = [
     meta: { hideNavbar: true, hideFooter: true, hideWa: true },
   },
   {
-    path: "/verify-code",
+    path: "/verify-code/:encryptedEmail",
     name: "VerifyCode",
     component: VerifyCode,
     meta: { hideNavbar: true, hideFooter: true, hideWa: true },
   },
   {
-    path: "/reset-password",
+    path: "/reset-password/:encryptedEmail",
     name: "ResetPassword",
     component: ResetPassword,
     meta: { hideNavbar: true, hideFooter: true, hideWa: true },
@@ -241,7 +241,7 @@ const routes = [
     component: PembayaranPage,
   },
   {
-    path: "/verify-register",
+    path: "/verify-register/:encryptedEmail",
     name: "VerifyRegister",
     component: VerifyRegister,
     meta: { hideNavbar: true, hideFooter: true, hideWa: true },

@@ -100,6 +100,7 @@
 
 <script>
 import axios from "axios";
+import CryptoJS from "crypto-js";
 
 export default {
   data() {
@@ -115,45 +116,36 @@ export default {
     togglePasswordVisibility() {
       this.showPassword = !this.showPassword;
     },
-    async checkEmailExists(email) {
-      try {
-        const response = await axios.get(`/api/check-email?email=${email}`);
-        return response.data.exists;
-      } catch (error) {
-        console.error("Error checking email:", error);
-        return false;
-      }
+
+    encryptEmail(email) {
+      const encryptionKey = "secretKey123";
+      return CryptoJS.AES.encrypt(email, encryptionKey).toString();
     },
 
     async submitForm() {
       this.errorMessage = "";
 
-      const emailExists = await this.checkEmailExists(this.email);
-      if (emailExists) {
-        this.errorMessage = "Email sudah digunakan.";
-        return;
-      }
-
       try {
         const response = await axios.post(
-          "http://localhost:8000/api/register/Donatur",
-          {
-            nama_lengkap: this.nama,
-            email: this.email,
-            password: this.password,
-          }
+            "http://localhost:8000/api/register/Donatur",
+            {
+              nama_lengkap: this.nama,
+              email: this.email,
+              password: this.password,
+            }
         );
 
         console.log(response.data.message);
+        const encryptedEmail = this.encryptEmail(this.email);
+
         this.$router.push({
           name: "VerifyRegister",
-          query: { email: this.email },
+          params: {encryptedEmail: encryptedEmail},
         });
       } catch (error) {
         if (error.response) {
           this.errorMessage =
-            error.response.data.message ||
-            "Terjadi kesalahan. Silakan coba lagi.";
+              error.response.data.message || "Terjadi kesalahan. Silakan coba lagi.";
         } else {
           this.errorMessage = "Terjadi kesalahan. Silakan coba lagi.";
         }

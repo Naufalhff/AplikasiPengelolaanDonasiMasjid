@@ -12,6 +12,8 @@ Route::post('/login', [UserController::class, 'login']);
 Route::post('/register/{selected_role}', [UserController::class, 'register']);
 Route::post('/resend-otp', [UserController::class, 'resendOTP']);
 Route::post('/verify-otp', [UserController::class, 'verifyOTP']);
+Route::post('/send-reset', [UserController::class, 'sendReset']);
+Route::put('/reset-password', [UserController::class, 'resetPassword']);
 
 Route::get('/daftar-kegiatan', [EventController::class, 'index']);
 Route::get('/donasi', [EventController::class, 'index']);
@@ -45,5 +47,5 @@ Route::delete('/hapus-pengeluaran/{id_pengeluaran}', [ExpenseController::class, 
 Route::post('/upload', [FileUploadController::class, 'upload']);
 Route::post('/tambah-pengeluaran', [FileUploadController::class, 'addExpense']);
 
-Route::get('/getDonasi', [DonationController::class, 'getDonasi']); 
+Route::get('/getDonasi', [DonationController::class, 'getDonasi']);
 Route::get('/getPaymentById/{id}', [PaymentController::class, 'getDataById']);

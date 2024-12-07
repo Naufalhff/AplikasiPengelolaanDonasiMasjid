@@ -30,7 +30,8 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
+import CryptoJS from "crypto-js";
 
 export default {
   data() {
@@ -39,23 +40,47 @@ export default {
       errorMessage: "",
       disableResend: false,
       timeRemaining: 60,
+      encryptedEmail: this.$route.params.encryptedEmail,
     };
   },
   methods: {
-    async submitCode() {
+    decryptEmail(encryptedEmail) {
       try {
-        await axios.post('http://localhost:8000/api/verify-otp', null, {
+        const encryptionKey = "secretKey123";
+        const bytes = CryptoJS.AES.decrypt(encryptedEmail, encryptionKey);
+        const decryptedEmail = bytes.toString(CryptoJS.enc.Utf8);
+        if (!decryptedEmail) {
+          throw new Error('Dekripsi gagal, email tidak valid.');
+        }
+        return decryptedEmail;
+      } catch (error) {
+        console.error("Error during decryption: ", error);
+        this.errorMessage = "Terjadi kesalahan saat mendekripsi email.";
+        return null;
+      }
+    },
+
+    async submitCode() {
+      const email = this.decryptEmail(this.encryptedEmail);
+
+      if (!email) {
+        return;
+      }
+
+      try {
+        await axios.post("http://localhost:8000/api/verify-otp", null, {
           params: {
-            email: this.$route.query.email,
+            email: email,
             otp: this.verifyCode,
           },
         });
-        this.$router.push('/login');
+        this.$router.push("/login");
       } catch (error) {
         if (error.response) {
-          this.errorMessage = error.response.data.message || 'Terjadi kesalahan. Silakan coba lagi.';
+          this.errorMessage =
+              error.response.data.message || "Terjadi kesalahan. Silakan coba lagi.";
         } else {
-          this.errorMessage = 'Terjadi kesalahan. Silakan coba lagi.';
+          this.errorMessage = "Terjadi kesalahan. Silakan coba lagi.";
         }
       }
     },
@@ -63,12 +88,17 @@ export default {
     async resendCode() {
       this.disableResend = true;
       this.timeRemaining = 60;
+      const email = this.decryptEmail(this.encryptedEmail);
+
+      if (!email) {
+        return;
+      }
 
       try {
-        await axios.post('http://localhost:8000/api/resend-otp', null, {
+        await axios.post("http://localhost:8000/api/resend-otp", null, {
           params: {
-            email: this.$route.query.email
-          }
+            email: email,
+          },
         });
         this.errorMessage = "Kode OTP telah dikirim ulang.";
       } catch (error) {

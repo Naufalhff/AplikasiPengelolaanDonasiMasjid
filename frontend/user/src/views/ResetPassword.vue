@@ -28,84 +28,125 @@
       </div>
     </div>
   </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        newPassword: "",
-        confirmPassword: "",
-        errorMessage: "",
-      };
-    },
-    methods: {
-      submitNewPassword() {
-        if (this.newPassword !== this.confirmPassword) {
-          this.errorMessage = "Password tidak cocok.";
-          return;
+
+<script>
+import axios from "axios";
+import CryptoJS from "crypto-js";
+
+export default {
+  data() {
+    return {
+      encryptedEmail: this.$route.params.encryptedEmail,
+      newPassword: "",
+      confirmPassword: "",
+      errorMessage: "",
+    };
+  },
+  methods: {
+    decryptEmail(encryptedEmail) {
+      try {
+        const encryptionKey = "secretKey123";
+        const bytes = CryptoJS.AES.decrypt(encryptedEmail, encryptionKey);
+        const decryptedEmail = bytes.toString(CryptoJS.enc.Utf8);
+        if (!decryptedEmail) {
+          throw new Error("Dekripsi gagal, email tidak valid.");
         }
-        alert('Password berhasil direset. Silakan login.');
-        this.$router.push({ name: 'Login' });
-      },
+        return decryptedEmail;
+      } catch (error) {
+        console.error("Error during decryption: ", error);
+        this.errorMessage = "Terjadi kesalahan saat mendekripsi email.";
+        return null;
+      }
     },
-  };
-  </script>
-  
-  <style scoped>
-  /* Full-height container */
-  .forgot-password-container {
-    height: 100vh;
-  }
-  
-  /* Gambar sisi kiri */
-  .building-image {
-    object-fit: cover;
-    height: 100%;
-    width: 100%;
-  }
-  
-  /* Section Form */
-  .form-section {
-    background-color: #fff;
-    padding: 20px;
-  }
-  
-  /* Form Style */
-  .reset-password-form {
-    max-width: 400px;
-  }
-  
-  /* Judul Form */
-  h2 {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  /* Paragraf informasi */
-  p {
-    font-size: 14px;
-    color: #6c757d;
-  }
-  
-  /* Label Input */
-  .form-label {
-    font-weight: 500;
-  }
-  
-  /* Tombol Reset */
-  .btn-success {
-    background-color: #28a745;
-    border: none;
-  }
-  
-  .btn-success:hover {
-    background-color: #218838;
-  }
-  
-  /* Pesan Kesalahan */
-  .text-danger {
-    font-size: 14px;
-  }
-  </style>
+
+    async submitNewPassword() {
+      const email = this.decryptEmail(this.encryptedEmail);
+
+      if (!email) {
+        return;
+      }
+
+      if (this.newPassword !== this.confirmPassword) {
+        this.errorMessage = "Password tidak cocok.";
+        return;
+      }
+
+      try {
+        await axios.put("http://localhost:8000/api/reset-password", {
+          email: email,
+          password_baru: this.newPassword,
+          konfirmasi_password: this.confirmPassword,
+        });
+
+        alert("Password berhasil direset. Silakan login.");
+        this.$router.push("/login");
+      } catch (error) {
+        if (error.response && error.response.data) {
+          this.errorMessage = error.response.data.message || "Terjadi kesalahan.";
+        } else {
+          this.errorMessage = "Terjadi kesalahan jaringan.";
+        }
+      }
+    },
+  },
+};
+</script>
+
+<style scoped>
+/* Full-height container */
+.forgot-password-container {
+  height: 100vh;
+}
+
+/* Gambar sisi kiri */
+.building-image {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+/* Section Form */
+.form-section {
+  background-color: #fff;
+  padding: 20px;
+}
+
+/* Form Style */
+.reset-password-form {
+  max-width: 400px;
+}
+
+/* Judul Form */
+h2 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Paragraf informasi */
+p {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+/* Label Input */
+.form-label {
+  font-weight: 500;
+}
+
+/* Tombol Reset */
+.btn-success {
+  background-color: #28a745;
+  border: none;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}
+
+/* Pesan Kesalahan */
+.text-danger {
+  font-size: 14px;
+}
+</style>
   
   

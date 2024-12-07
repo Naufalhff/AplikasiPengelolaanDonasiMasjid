@@ -15,6 +15,7 @@
               <div class="mb-4">
                 <label for="email" class="form-label">Email address</label>
                 <input type="email" id="email" v-model="email" class="form-control" required />
+                <p v-if="emailError || errorMessage" class="text-danger mt-1">{{ emailError || errorMessage }}</p>
               </div>
               <button type="submit" class="btn btn-primary w-100">Kirim Kode Verifikasi</button>
             </form>
@@ -23,24 +24,69 @@
       </div>
     </div>
   </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        email: "",
-      };
+
+<script>
+import axios from 'axios';
+import CryptoJS from "crypto-js";
+
+export default {
+  data() {
+    return {
+      email: "",
+      errorMessage: "",
+      emailError: "",
+      isLoading: false
+    };
+  },
+  methods: {
+    encryptEmail(email) {
+      const encryptionKey = "secretKey123";
+      return CryptoJS.AES.encrypt(email, encryptionKey).toString();
     },
-    methods: {
-      submitEmail() {
-        console.log("Email:", this.email);
-        // Alihkan ke screen verifikasi kode setelah sukses
-        this.$router.push({ name: 'VerifyCode' });
-      },
-    },
-  };
-  </script>
-  
+
+    async submitEmail() {
+      // Reset previous errors
+      this.errorMessage = "";
+      this.emailError = "";
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(this.email)) {
+        this.emailError = "Format email tidak valid";
+        return;
+      }
+
+      this.isLoading = true;
+
+      try {
+        await axios.post('http://localhost:8000/api/send-reset', {
+          email: this.email
+        });
+
+        const encryptedEmail = this.encryptEmail(this.email);
+        this.$router.push({
+          name: 'VerifyCode',
+          params: {encryptedEmail: encryptedEmail},
+        });
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 404) {
+            this.errorMessage = "Email tidak dapat ditemukan.";
+          } else {
+            this.errorMessage = error.response.data.message || "Terjadi kesalahan saat mengirim kode verifikasi.";
+          }
+        } else if (error.request) {
+          this.errorMessage = "Tidak ada respon dari server. Silakan coba lagi.";
+        } else {
+          this.errorMessage = "Terjadi kesalahan. Silakan coba lagi.";
+        }
+      } finally {
+        this.isLoading = false;
+      }
+    }
+  }
+};
+</script>
+
   <style scoped>
 /* Full-height container */
 .forgot-password-container {
@@ -93,4 +139,3 @@ p {
 }
 </style>
 
-  
