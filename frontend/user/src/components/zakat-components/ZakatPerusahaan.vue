@@ -44,19 +44,22 @@
         <span class="input-group-text">Tahun</span>
       </div>
     </div>
+
+    <!-- Harga Emas -->
     <div class="mb-3">
-      <label class="form-label">Harga emas per gram saat ini</label>
+      <label class="form-label">Harga Emas per gram saat ini</label>
       <div class="input-group">
         <span class="input-group-text">Rp.</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="0"
-          min="0"
-          v-model="localData.HargaEmas"
+          :value="formattedHargaEmas"
+          @input="formatCustomAmount('HargaEmas', $event)"
         />
       </div>
     </div>
+
     <p class="description">
       Zakat perusahaan adalah kewajiban zakat yang dikenakan kepada sebuah
       entitas bisnis atau perusahaan yang memiliki keuntungan bersih selama satu

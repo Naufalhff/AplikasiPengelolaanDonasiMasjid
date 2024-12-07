@@ -14,19 +14,22 @@
         />
       </div>
     </div>
+
+    <!-- Harga emas per gram saat ini -->
     <div class="mb-3">
       <label class="form-label">Harga emas per gram saat ini</label>
       <div class="input-group">
-        <span class="input-group-text">Rp.</span>
+        <span class="input-group-text">Rp</span>
         <input
-          type="number"
+          type="text"
           class="form-control"
           placeholder="0"
-          min="0"
-          v-model="localData.HargaEmas"
+          :value="formattedHargaEmas"
+          @input="formatCustomAmount('HargaEmas', $event)"
         />
       </div>
     </div>
+
     <p class="description">
       Zakat pertambangan adalah zakat yang wajib dikeluarkan atas hasil tambang
       yang diperoleh, seperti emas, perak, batu bara, minyak, atau mineral
