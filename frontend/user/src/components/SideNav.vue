@@ -11,13 +11,12 @@
     </div>
 
     <ul>
-      <li 
-        v-for="menu in filteredMenus" 
-        :key="menu.text">
-        <router-link 
-          :to="menu.link" 
-          class="menu-link" 
-          active-class="active-menu">{{ menu.text }}
+      <li v-for="menu in filteredMenus" :key="menu.text">
+        <router-link
+          :to="menu.link"
+          class="menu-link"
+          active-class="active-menu"
+          >{{ menu.text }}
         </router-link>
       </li>
     </ul>
@@ -67,7 +66,9 @@
 </template>
 
 <script>
-export default { 
+import { Modal } from "bootstrap";
+
+export default {
   name: "SideNav",
   data() {
     return {
@@ -75,27 +76,63 @@ export default {
       logoutModal: null,
       menus: [
         { text: "Dashboard", link: "/dashboard-page", role: "Administrator" },
-        { text: "Transaksi Donasi", link: "/transaksidonasi", role: "Bendahara" },
-        { text: "Transaksi Pengeluaran", link: "/pilih-kegiatan", role: "Bendahara"},
-        { text: "Daftar Kegiatan", link: "/activity-list", role: "Pengurus Masjid" },
-        { text: "Laporan Keuangan", link: "/laporankeuangan", role: "Bendahara" },
+        {
+          text: "Transaksi Donasi",
+          link: "/transaksidonasi",
+          role: "Bendahara",
+        },
+        {
+          text: "Transaksi Pengeluaran",
+          link: "/pilih-kegiatan",
+          role: "Bendahara",
+        },
+        {
+          text: "Daftar Kegiatan",
+          link: "/activity-list",
+          role: "Pengurus Masjid",
+        },
+        {
+          text: "Laporan Keuangan",
+          link: "/laporankeuangan",
+          role: "Bendahara",
+        },
       ],
     };
   },
   computed: {
-  filteredMenus() {
-    const userRole = sessionStorage.getItem('role');
-    // Jika peran adalah Administrator, tampilkan semua menu
-    if (userRole === "Administrator") {
-      return this.menus;
-    }
-    // Selain itu, filter menu berdasarkan role
-    return this.menus.filter(menu => !menu.role || menu.role === userRole);
+    filteredMenus() {
+      const userRole = sessionStorage.getItem("role");
+      // Jika peran adalah Administrator, tampilkan semua menu
+      if (userRole === "Administrator") {
+        return this.menus;
+      }
+      // Selain itu, filter menu berdasarkan role
+      return this.menus.filter((menu) => !menu.role || menu.role === userRole);
     },
+  },
+  methods: {
+    confirmLogout() {
+      sessionStorage.clear();
+      this.$router.push("/login");
+      this.hideLogoutModal();
+    },
+    triggerLogout() {
+      this.logoutModal.show();
+    },
+    hideLogoutModal() {
+      this.logoutModal.hide();
+    },
+    logout() {
+      sessionStorage.removeItem("isLogin");
+      sessionStorage.removeItem("loginAs");
+      this.$router.push("/login");
+    },
+  },
+  mounted() {
+    this.logoutModal = new Modal(document.getElementById("logoutModal"));
   },
 };
 </script>
-
 
 <style scoped>
 /* Container untuk Side Navigation */
