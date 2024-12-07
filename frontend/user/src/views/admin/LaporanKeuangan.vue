@@ -70,16 +70,14 @@
           </tr>
         </tbody>
       </table>
-
-      <!-- Pagination Controls -->
       <div class="pagination-controls text-center mt-3">
         <button 
-          class="btn btn-primary" 
+          class="pagination-btn previous" 
           :disabled="currentPage === 1" 
           @click="currentPage--">Previous</button>
-        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+        <span class="pagination-text">Page {{ currentPage }} of {{ totalPages }}</span>
         <button 
-          class="btn btn-primary" 
+          class="pagination-btn next" 
           :disabled="currentPage === totalPages" 
           @click="currentPage++">Next</button>
       </div>
@@ -215,4 +213,39 @@ export default {
   border-radius: 6px;
   border: 1px solid #ced4da;
 }
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; 
+}
+
+.pagination-btn {
+  background-color: #007bff; 
+  color: white;
+  border: none; 
+  border-radius: 20px;
+  padding: 10px 20px; 
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; 
+  margin: 0 5px; 
+}
+
+.pagination-btn:hover {
+  background-color: #0056b3; 
+}
+
+.pagination-btn:disabled {
+  background-color: #d6d6d6;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.pagination-text {
+  font-size: 14px; 
+  color: #333; 
+}
+
 </style>

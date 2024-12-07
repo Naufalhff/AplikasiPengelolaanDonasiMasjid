@@ -100,7 +100,7 @@ export default {
 
 <style scoped>
 .donation-transactions {
-  padding: 20px;
+  padding: 10px;
   background-color: #f8f9fa;
   border-radius: 8px;
   display: flex;
@@ -111,7 +111,7 @@ export default {
 }
 
 .donation-table {
-  width: 80%; 
+  width: 95%; 
   max-width: 1200px;
   border-collapse: collapse;
   margin-top: 20px;
