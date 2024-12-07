@@ -11,7 +11,7 @@ class SeederKegiatan extends Seeder
     {
         $kegiatan = [
             [
-                'foto_kegiatan' => 'zakat_fitrah.jpg',
+                'foto_kegiatan' => 'thumbnail_kegiatan/1.png',
                 'nama_kegiatan' => 'Zakat Fitrah',
                 'jenis_kegiatan' => 'ZAKAT FITRAH',
                 'deskripsi_kegiatan' => 'Zakat Fitrah adalah zakat yang wajib dikeluarkan oleh umat Muslim pada bulan Ramadan sebagai bentuk penyucian diri dan solidaritas kepada mereka yang membutuhkan.',
@@ -23,7 +23,7 @@ class SeederKegiatan extends Seeder
                 'tenggat_waktu' => now()->addDays(30),
             ],
             [
-                'foto_kegiatan' => 'sumbangan_bencana.jpg',
+                'foto_kegiatan' => 'thumbnail_kegiatan/2.png',
                 'nama_kegiatan' => 'Penggalangan Sumbangan Bencana',
                 'jenis_kegiatan' => 'SUMBANGAN',
                 'deskripsi_kegiatan' => 'Sumbangan untuk korban bencana alam di wilayah terdampak.',
@@ -35,7 +35,7 @@ class SeederKegiatan extends Seeder
                 'tenggat_waktu' => now()->addDays(30),
             ],
             [
-                'foto_kegiatan' => 'zakat_mal.jpg',
+                'foto_kegiatan' => 'thumbnail_kegiatan/3.png',
                 'nama_kegiatan' => 'Zakat Mal',
                 'jenis_kegiatan' => 'ZAKAT MAL',
                 'deskripsi_kegiatan' => 'Zakat Mal adalah zakat harta yang dikeluarkan oleh umat Muslim atas kekayaan yang dimiliki, seperti emas, perak, uang, dan aset lainnya, untuk membantu mereka yang membutuhkan.',
@@ -47,7 +47,7 @@ class SeederKegiatan extends Seeder
                 'tenggat_waktu' => now()->addDays(30),
             ],
             [
-                'foto_kegiatan' => 'bantuan_sosial.jpg',
+                'foto_kegiatan' => 'thumbnail_kegiatan/4.png',
                 'nama_kegiatan' => 'Bantuan Sosial untuk Keluarga Kurang Mampu',
                 'jenis_kegiatan' => 'SUMBANGAN',
                 'deskripsi_kegiatan' => 'Program bantuan sosial untuk mendukung keluarga kurang mampu.',
@@ -59,7 +59,7 @@ class SeederKegiatan extends Seeder
                 'tenggat_waktu' => now()->addDays(30),
             ],
             [
-                'foto_kegiatan' => 'pembangunan_mesjid.jpg',
+                'foto_kegiatan' => 'thumbnail_kegiatan/5.png',
                 'nama_kegiatan' => 'Pembangunan Masjid',
                 'jenis_kegiatan' => 'SUMBANGAN',
                 'deskripsi_kegiatan' => 'Menggalang dana untuk pembangunan masjid baru di desa.',
@@ -71,7 +71,7 @@ class SeederKegiatan extends Seeder
                 'tenggat_waktu' => now()->addDays(30),
             ],
             [
-                'foto_kegiatan' => 'zakat_emas.jpg',
+                'foto_kegiatan' => 'thumbnail_kegiatan/6.png',
                 'nama_kegiatan' => 'Zakat Emas dan Logam',
                 'jenis_kegiatan' => 'JENIS ZAKAT MAL',
                 'deskripsi_kegiatan' => 'Zakat emas dan logam merupakan zakat yang dikenakan atas kepemilikan emas dan logam mulia lainnya yang telah mencapai nisab dan haul.',
@@ -83,7 +83,7 @@ class SeederKegiatan extends Seeder
                 'tenggat_waktu' => now()->addDays(30),
             ],
             [
-                'foto_kegiatan' => 'penggalangan_dana.jpg',
+                'foto_kegiatan' => 'thumbnail_kegiatan/7.png',
                 'nama_kegiatan' => 'Penggalangan Dana Umum',
                 'jenis_kegiatan' => 'SUMBANGAN',
                 'deskripsi_kegiatan' => 'Penggalangan dana umum untuk keperluan sosial dan kemanusiaan.',
@@ -95,7 +95,7 @@ class SeederKegiatan extends Seeder
                 'tenggat_waktu' => now()->addDays(30),
             ],
             [
-                'foto_kegiatan' => 'renovasi_sekolah.jpg',
+                'foto_kegiatan' => 'thumbnail_kegiatan/8.png',
                 'nama_kegiatan' => 'Renovasi Sekolah Dasar',
                 'jenis_kegiatan' => 'SUMBANGAN',
                 'deskripsi_kegiatan' => 'Menggalang dana untuk merenovasi sekolah dasar yang rusak.',
@@ -107,7 +107,7 @@ class SeederKegiatan extends Seeder
                 'tenggat_waktu' => now()->addDays(30),
             ],
             [
-                'foto_kegiatan' => 'zakat_fitrah3.jpg',
+                'foto_kegiatan' => 'thumbnail_kegiatan/9.png',
                 'nama_kegiatan' => 'Zakat Perusahaan',
                 'jenis_kegiatan' => 'JENIS ZAKAT MAL',
                 'deskripsi_kegiatan' => 'Zakat perusahaan adalah zakat yang dikenakan atas keuntungan perusahaan yang telah mencapai nisab selama satu tahun.',
@@ -119,7 +119,7 @@ class SeederKegiatan extends Seeder
                 'tenggat_waktu' => now()->addDays(30),
             ],
             [
-                'foto_kegiatan' => 'zakat_fitrah3.jpg',
+                'foto_kegiatan' => 'thumbnail_kegiatan/10.png',
                 'nama_kegiatan' => 'Zakat Perdagangan',
                 'jenis_kegiatan' => 'JENIS ZAKAT MAL',
                 'deskripsi_kegiatan' => 'Zakat perdagangan dikenakan atas harta perdagangan seperti barang dagangan yang mencapai nisab dan haul.',
@@ -131,7 +131,7 @@ class SeederKegiatan extends Seeder
                 'tenggat_waktu' => now()->addDays(30),
             ],
             [
-                'foto_kegiatan' => 'zakat_fitrah3.jpg',
+                'foto_kegiatan' => 'thumbnail_kegiatan/11.png',
                 'nama_kegiatan' => 'Zakat Tabungan dan Investasi',
                 'jenis_kegiatan' => 'JENIS ZAKAT MAL',
                 'deskripsi_kegiatan' => 'Zakat tabungan dan investasi merupakan zakat yang dikenakan atas harta simpanan dan investasi yang telah mencapai nisab.',
@@ -143,7 +143,7 @@ class SeederKegiatan extends Seeder
                 'tenggat_waktu' => now()->addDays(30),
             ],
             [
-                'foto_kegiatan' => 'zakat_fitrah3.jpg',
+                'foto_kegiatan' => 'thumbnail_kegiatan/12.png',
                 'nama_kegiatan' => 'Zakat Pertanian',
                 'jenis_kegiatan' => 'JENIS ZAKAT MAL',
                 'deskripsi_kegiatan' => 'Zakat pertanian adalah zakat yang dikeluarkan dari hasil panen pertanian setelah mencapai nisab.',
@@ -155,7 +155,7 @@ class SeederKegiatan extends Seeder
                 'tenggat_waktu' => now()->addDays(30),
             ],
             [
-                'foto_kegiatan' => 'zakat_fitrah3.jpg',
+                'foto_kegiatan' => 'thumbnail_kegiatan/13.png',
                 'nama_kegiatan' => 'Zakat Peternakan',
                 'jenis_kegiatan' => 'JENIS ZAKAT MAL',
                 'deskripsi_kegiatan' => 'Zakat peternakan dikenakan atas hasil peternakan yang mencapai nisab, seperti kambing, sapi, dan unta.',
@@ -167,7 +167,7 @@ class SeederKegiatan extends Seeder
                 'tenggat_waktu' => now()->addDays(30),
             ],
             [
-                'foto_kegiatan' => 'zakat_fitrah3.jpg',
+                'foto_kegiatan' => 'thumbnail_kegiatan/14.png',
                 'nama_kegiatan' => 'Zakat Pertambangan',
                 'jenis_kegiatan' => 'JENIS ZAKAT MAL',
                 'deskripsi_kegiatan' => 'Zakat pertambangan adalah zakat yang dikeluarkan dari hasil pertambangan yang mencapai nisab.',
@@ -179,7 +179,7 @@ class SeederKegiatan extends Seeder
                 'tenggat_waktu' => now()->addDays(30),
             ],
             [
-                'foto_kegiatan' => 'zakat_fitrah3.jpg',
+                'foto_kegiatan' => 'thumbnail_kegiatan/15.png',
                 'nama_kegiatan' => 'Zakat Rikaz',
                 'jenis_kegiatan' => 'JENIS ZAKAT MAL',
                 'deskripsi_kegiatan' => 'Zakat rikaz adalah zakat yang dikenakan atas harta karun atau barang temuan yang ditemukan.',
@@ -191,7 +191,7 @@ class SeederKegiatan extends Seeder
                 'tenggat_waktu' => now()->addDays(30),
             ],
             [
-                'foto_kegiatan' => 'zakat_fitrah3.jpg',
+                'foto_kegiatan' => 'thumbnail_kegiatan/16.png',
                 'nama_kegiatan' => 'Zakat Penghasilan',
                 'jenis_kegiatan' => 'JENIS ZAKAT MAL',
                 'deskripsi_kegiatan' => 'Zakat penghasilan adalah zakat yang dikenakan atas penghasilan atau gaji yang telah mencapai nisab.',
@@ -203,7 +203,7 @@ class SeederKegiatan extends Seeder
                 'tenggat_waktu' => now()->addDays(30),
             ],
             [
-                'foto_kegiatan' => 'bakti_sosial.jpg',
+                'foto_kegiatan' => 'thumbnail_kegiatan/17.png',
                 'nama_kegiatan' => 'Bakti Sosial',
                 'jenis_kegiatan' => 'SUMBANGAN',
                 'deskripsi_kegiatan' => 'Kegiatan bakti sosial untuk membantu warga yang membutuhkan.',
