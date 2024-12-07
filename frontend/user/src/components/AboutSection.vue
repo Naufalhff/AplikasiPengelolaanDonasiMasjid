@@ -36,12 +36,16 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-success btn-lg mt-4 px-5">Lebih Lanjut</button>
+        <router-link class="about-link" to="/about" >
+          <button class="btn btn-success btn-lg mt-4 px-5">Lebih Lanjut</button>
+        </router-link>
       </div>
     </section>
   </template>
   
   <script>
+
+
   export default {
     name: "AboutSection",
   };

@@ -44,8 +44,9 @@
               >
                 <option value="" disabled selected>Pilih jenis kegiatan</option>
                 <option value="sumbangan">Sumbangan</option>
-                <option value="zakat">Zakat</option>
+                <option value="zakat">Zakat Fitrah</option>
                 <option value="zakat mal">Zakat Mal</option>
+                <option value="zakat mal">Jenis Zakat Mal</option>
               </select>
             </div>
           </div>
@@ -65,20 +66,21 @@
           <div class="row">
             <div class="col-md-6 mb-3">
               <label for="targetAmount" class="form-label">Target Terkumpul</label>
-              <div class="input-group input-group-lg">
-                <input
-                    type="number"
+                <div class="input-group input-group-lg">
+                  <input
+                    type="text"
                     class="form-control"
                     id="targetAmount"
-                    v-model="form.targetAmount"
+                    :value="formattedTargetAmount"
                     placeholder="Masukkan Target Terkumpul"
+                    @input="formatTargetAmount"
                     :class="{ 'is-invalid': errors.targetAmount }"
-                >
+                  />
+                </div>
+                <div v-if="errors.targetAmount" class="invalid-feedback d-block">
+                  {{ errors.targetAmount }}
+                </div>
               </div>
-              <div v-if="errors.targetAmount" class="invalid-feedback d-block">
-                {{ errors.targetAmount }}
-              </div>
-            </div>
 
             <div class="col-md-6 mb-3">
               <label for="timeLimit" class="form-label">Tenggat Waktu</label>
@@ -93,7 +95,7 @@
 
           <!-- Payment Details -->
           <div class="mb-4">
-            <label for="accountNumber" class="form-label">Nomor Rekening</label>
+            <label for="accountNumber" class="form-label">Nomor Rekening BSI</label>
             <input
                 type="text"
                 class="form-control form-control-lg"
@@ -104,7 +106,7 @@
           </div>
 
           <div class="mb-4">
-            <label for="qrisImage" class="form-label">Upload QR Code</label>
+            <label for="qrisImage" class="form-label">Upload QR Code Qris</label>
             <input
                 type="file"
                 class="form-control form-control-lg"
@@ -147,6 +149,7 @@ export default {
         accountNumber: '',
         qrisImage: null,
       },
+      formattedTargetAmount: '',
       imagePreview: null,
       qrisPreview: null,
       errors: {},
@@ -157,11 +160,29 @@ export default {
     this.id_kegiatan = this.$route.params.id;
   },
   methods: {
+    formatCurrency(value) {
+      if (!value || isNaN(value)) return "";
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0,
+      }).format(value);
+    },
+    formatTargetAmount(event) {
+      const rawValue = event.target.value.replace(/[^0-9]/g, ""); // Hanya angka
+      if (rawValue) {
+        this.formattedTargetAmount = this.formatCurrency(rawValue);
+        this.form.targetAmount = parseInt(rawValue, 10);
+      } else {
+        this.formattedTargetAmount = "";
+        this.form.targetAmount = "";
+      }
+    },
     onImageChange(event) {
       const file = event.target.files[0];
       if (file) {
-        if (!['image/jpg', 'image/png', 'application/pdf'].includes(file.type)) {
-          this.errors.image = 'Gambar harus berupa jpg, png, atau pdf.';
+        if (!['image/jpg', 'image/jpeg', 'image/png'].includes(file.type)) {
+          this.errors.image = 'Thumbnail harus berupa file gambar (jpg, jpeg, png).';
         } else if (file.size > 5120 * 1024) {
           this.errors.image = 'Ukuran file maksimal 5 MB.';
         } else {
@@ -174,8 +195,8 @@ export default {
     onQRISImageChange(event) {
       const file = event.target.files[0];
       if (file) {
-        if (!['image/jpg', 'image/png', 'application/pdf'].includes(file.type)) {
-          this.errors.qrisImage = 'QR Code harus berupa jpg, png, atau pdf.';
+        if (!['image/jpg', 'image/jpeg', 'image/png'].includes(file.type)) {
+          this.errors.qrisImage = 'QR Code harus berupa file gambar (jpg, jpeg, png).';
         } else if (file.size > 5120 * 1024) {
           this.errors.qrisImage = 'Ukuran file maksimal 5 MB.';
         } else {
@@ -185,6 +206,7 @@ export default {
         }
       }
     },
+    
     validateForm() {
       this.errors = {};
       let missingFields = [];
