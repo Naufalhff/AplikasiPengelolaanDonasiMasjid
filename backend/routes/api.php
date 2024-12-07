@@ -32,6 +32,7 @@ Route::get('/jumlah-donasi', [DonationController::class, 'countDonation']);
 Route::get('/transaksi-donasi', [DonationController::class, 'index']);
 Route::get('/ringkasan-donasi/{id_donasi}', [DonationController::class, 'viewDetailDonation']);
 Route::put('/verifikasi-donasi/{id_donasi}', [DonationController::class, 'verifyDonation']);
+Route::put('/reset-status/{id_donasi}', [DonationController::class, 'resetVerification']);
 Route::post('/send-donation-receipt/{id_donasi}', [UserController::class, 'sendDonationReceipt']);
 
 Route::get('/informasi-statistik', [DashboardController::class, 'getStatistics']);

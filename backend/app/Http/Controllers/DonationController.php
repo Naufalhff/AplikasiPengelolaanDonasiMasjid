@@ -30,6 +30,29 @@ class DonationController extends Controller
         return response()->json($donasi);
     }
 
+    public function viewDetailDonation($id_donasi)
+    {
+        $donation = Donasi::with('kegiatan')->find($id_donasi);
+
+        if (!$donation) {
+            return response()->json(['message' => 'Donation not found'], 404);
+        }
+
+        return response()->json([
+            'nama_donatur' => $donation->nama_donatur,
+            'alamat_donatur' => $donation->alamat_donatur,
+            'no_telepon_donatur' => $donation->no_telepon_donatur,
+            'email_donatur' => $donation->email_donatur,
+            'jumlah_donasi' => $donation->jumlah_donasi,
+            'metode_pembayaran' => $donation->metode_pembayaran,
+            'bukti_pembayaran' => $donation->bukti_pembayaran,
+            'status_verifikasi' => $donation->status_verifikasi,
+            'tanggal_donasi' => $donation->tanggal_donasi,
+            'tanggal_verifikasi' => $donation->tanggal_verifikasi,
+            'nama_kegiatan' => $donation->kegiatan->nama_kegiatan,
+        ], 200);
+    }
+
     public function verifyDonation(Request $request, $id_donasi)
     {
         $donation = Donasi::find($id_donasi);
@@ -54,26 +77,23 @@ class DonationController extends Controller
         return response()->json(['message' => 'Donation verified successfully', 'donation' => $donation], 200);
     }
 
-    public function viewDetailDonation($id_donasi)
+    public function resetVerification($id_donasi)
     {
-        $donation = Donasi::with('kegiatan')->find($id_donasi);
+        $donation = Donasi::find($id_donasi);
 
         if (!$donation) {
             return response()->json(['message' => 'Donation not found'], 404);
         }
 
-        return response()->json([
-            'nama_donatur' => $donation->nama_donatur,
-            'alamat_donatur' => $donation->alamat_donatur,
-            'no_telepon_donatur' => $donation->no_telepon_donatur,
-            'email_donatur' => $donation->email_donatur,
-            'jumlah_donasi' => $donation->jumlah_donasi,
-            'metode_pembayaran' => $donation->metode_pembayaran,
-            'bukti_pembayaran' => $donation->bukti_pembayaran,
-            'status_verifikasi' => $donation->status_verifikasi,
-            'tanggal_donasi' => $donation->tanggal_donasi,
-            'tanggal_verifikasi' => $donation->tanggal_verifikasi,
-            'nama_kegiatan' => $donation->kegiatan->nama_kegiatan,
-        ], 200);
+        if (!in_array($donation->status_verifikasi, ['VALID', 'INVALID'])) {
+            return response()->json(['message' => 'Only VALID or INVALID donations can be reset to PENDING'], 400);
+        }
+
+        $donation->update([
+            'status_verifikasi' => 'PENDING',
+            'tanggal_verifikasi' => null,
+        ]);
+
+        return response()->json(['message' => 'Donation status reset success', 'donation' => $donation], 200);
     }
 }

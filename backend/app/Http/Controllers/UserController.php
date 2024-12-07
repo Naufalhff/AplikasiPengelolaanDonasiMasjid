@@ -82,6 +82,7 @@ class UserController extends Controller
 
         return response()->json(['message' => 'OTP berhasil diverifikasi.'], 200);
     }
+
     public function registerCache(Request $request, $selected_role)
     {
         try {
