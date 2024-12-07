@@ -56,14 +56,14 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'thumbnail' => 'required|file|mimes:jpg,png,pdf|max:5120',
+            'thumbnail' => 'required|file|mimes:jpg,jpeg,png|max:5120',
             'name' => 'required|string|max:100|unique:kegiatan,nama_kegiatan',
             'type' => 'required|string|in:ZAKAT,SUMBANGAN,ZAKAT MAL',
             'description' => 'required|string|max:255',
             'target' => 'required|numeric|min:0',
             'limit' => 'required|date_format:Y-m-d',
             'rekening' => 'required|string|min:1',
-            'qris' => 'required|file|mimes:jpg,png,pdf|max:5120',
+            'qris' => 'required|file|mimes:jpg,jpeg,png|max:5120',
         ]);
 
         if ($validator->fails()) {
@@ -147,14 +147,14 @@ class EventController extends Controller
     public function update(Request $request, $id_kegiatan)
     {
         $validator = Validator::make($request->all(), [
-            'thumbnail' => 'nullable|file|mimes:jpg,png,pdf|max:5120',
+            'thumbnail' => 'nullable|file|mimes:jpg,jpeg,png|max:5120',
             'name' => 'nullable|string|max:100|unique:kegiatan,nama_kegiatan,' . $id_kegiatan . ',id_kegiatan',
             'type' => 'nullable|string|in:ZAKAT,SUMBANGAN,ZAKAT MAL',
             'description' => 'nullable|string|max:255',
             'target' => 'nullable|numeric|min:0',
             'limit' => 'nullable|date_format:Y-m-d',
             'rekening' => 'nullable|string|min:1',
-            'qris' => 'nullable|file|mimes:jpg,png,pdf|max:5120',
+            'qris' => 'nullable|file|mimes:jpg,jpeg,png|max:5120',
         ]);
 
         if ($validator->fails()) {

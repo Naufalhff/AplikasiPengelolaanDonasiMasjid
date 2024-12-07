@@ -158,8 +158,47 @@ export default {
   },
   created() {
     this.id_kegiatan = this.$route.params.id;
+    this.fetchEventData();
+    this.fetchPaymentData();
   },
   methods: {
+    toLowerCase(value) {
+      if (!value) return "";
+      return value.toLowerCase();
+    },
+    async fetchEventData() {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/donasi/${this.id_kegiatan}`);
+        const event = response.data;
+
+        if (event) {
+          this.form.name = event.nama_kegiatan || '';
+          this.form.type = this.toLowerCase(event.jenis_kegiatan || '');
+          this.form.description = event.deskripsi_kegiatan || '';
+          this.form.targetAmount = event.anggaran_donasi || '';
+          this.formattedTargetAmount = this.formatCurrency(event.anggaran_donasi);
+
+          if (event.tenggat_waktu) {
+            const date = new Date(event.tenggat_waktu);
+            this.form.timeLimit = date.toISOString().split('T')[0];
+          }
+        }
+      } catch (error) {
+        console.error("Gagal mengambil data event:", error);
+      }
+    },
+    async fetchPaymentData() {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/getPaymentById/${this.id_kegiatan}`);
+        const { bsi } = response.data;
+
+        if (bsi.length > 0) {
+          this.form.accountNumber = bsi[0].informasi_rekening || '';
+        }
+      } catch (error) {
+        console.error("Gagal mengambil data pembayaran:", error);
+      }
+    },
     formatCurrency(value) {
       if (!value || isNaN(value)) return "";
       return new Intl.NumberFormat("id-ID", {
@@ -206,7 +245,6 @@ export default {
         }
       }
     },
-    
     validateForm() {
       this.errors = {};
       let missingFields = [];
