@@ -1,14 +1,12 @@
 <template>
-  <head>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-  </head>
-  <div class="container mt-5">
+  <div class="container mt-5 pt-5 mb-3">
     <div class="card p-4">
       <div class="text-center">
-        <img :src="donation.image" alt="Donasi" class="img-thumbnail mb-3" />
+        <img
+          :src="'http://localhost:8000/storage/' + data.foto_kegiatan"
+          alt="Donasi"
+          class="img-thumbnail mb-3 rounded"
+        />
         <h5>{{ data.nama_kegiatan }}</h5>
         <p>{{ data.deskripsi_kegiatan }}</p>
       </div>
@@ -19,9 +17,9 @@
         </div>
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span>Nominal donasi Anda</span>
-          <span class="font-weight-bold"
-            >Rp{{ selectedAmount.toLocaleString() }}</span
-          >
+          <span class="font-weight-bold">
+            {{ formatCurrency(selectedAmount) }}
+          </span>
         </div>
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h6>Metode Pembayaran</h6>
@@ -38,12 +36,14 @@
         <hr />
         <div class="mb-3">
           <h6>Info Donatur</h6>
-          <p>
-            <a href="#" @click.prevent="login" class="text-primary"
-              >Masuk Akun</a
-            >
-            atau lengkapi data dibawah ini
-          </p>
+          <div v-if="isLoggedIn">
+            <p>
+              Anda sudah login sebagai <strong>{{ donor.fullName }}</strong>
+            </p>
+          </div>
+          <div v-else>
+            <p>lengkapi data di bawah ini</p>
+          </div>
           <form @submit.prevent="confirmDonation">
             <div class="form-group">
               <label for="fullName">Nama Lengkap</label>
@@ -53,6 +53,7 @@
                 id="fullName"
                 v-model="donor.fullName"
                 placeholder="Nama Lengkap"
+                :disabled="donor.anonymous || isLoggedIn"
                 required
               />
             </div>
@@ -89,9 +90,19 @@
                 required
               />
             </div>
+            <div class="form-group">
+              <label class="d-flex align-items-center ml-4">
+                Sembunyikan nama saya (Anonim)
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  v-model="donor.anonymous"
+                  @change="setAnonymous"
+                />
+              </label>
+            </div>
             <p class="mt-3">
-              Dengan melanjutkan donasi, saya setuju
-              <a href="#" class="text-primary">Syarat & Ketentuan</a>
+              Dengan melanjutkan donasi, saya setuju Syarat & Ketentuan
             </p>
             <div
               v-if="errorMessage"
@@ -107,7 +118,7 @@
         </div>
       </div>
     </div>
-
+    <!-- Modal -->
     <div
       class="modal fade"
       id="donationModal"
@@ -123,7 +134,7 @@
             <i class="fas fa-check-circle fa-5x text-success"></i>
             <h5 class="mb-3 mt-2">Konfirmasi Donasi</h5>
             <p>
-              Donasi Anda senilai Rp{{ selectedAmount.toLocaleString() }} akan
+              Donasi Anda senilai {{ formatCurrency(selectedAmount) }} akan
               disalurkan
             </p>
             <div class="d-flex justify-content-center mt-4">
@@ -159,14 +170,12 @@ export default {
   data() {
     return {
       selectedAmount: this.$route.query.amount || 0,
-      donation: {
-        image: require("../assets/images/infaq.jpeg"),
-      },
       donor: {
         fullName: "",
         phoneNumber: "",
         address: "",
         email: "",
+        anonymous: false,
         paymentMethod: "",
       },
       donationModal: null,
@@ -179,6 +188,11 @@ export default {
   mounted() {
     this.donationModal = new Modal(document.getElementById("donationModal"));
     this.fetchData();
+
+    if (sessionStorage.getItem("isLogin") === "true") {
+      this.donor.fullName = sessionStorage.getItem("fullName") || "";
+      this.donor.email = sessionStorage.getItem("email") || "";
+    }
   },
   methods: {
     goBack() {
@@ -205,6 +219,12 @@ export default {
         this.donor.email &&
         this.donor.paymentMethod
       );
+    },
+    formatCurrency(value) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      }).format(value);
     },
     fetchData() {
       const id = this.$route.query.id;
@@ -237,7 +257,6 @@ export default {
         path: "/detaildonasi/nominal/formdonasi/pembayaran",
         query: {
           id: this.data.id_kegiatan,
-
           name: name,
           phone: phone,
           address: address,
@@ -246,6 +265,9 @@ export default {
           payment: this.donor.paymentMethod,
         },
       });
+    },
+    setAnonymous() {
+      this.donor.fullName = this.donor.anonymous ? "Hamba Allah" : "";
     },
   },
 };

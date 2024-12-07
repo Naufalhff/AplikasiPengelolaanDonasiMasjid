@@ -1,20 +1,30 @@
 <template>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
   <div class="container-fluid login-container">
     <div class="row h-100">
       <!-- Left Section -->
       <div class="col-md-6 d-none d-md-block p-0">
         <img
-            src="../assets/images/mesjid.jpg"
-            alt="mesjid"
-            class="img-fluid building-image"
+          src="../assets/images/mesjid.jpg"
+          alt="mesjid"
+          class="img-fluid building-image"
         />
       </div>
 
       <!-- Right Section -->
-      <div class="col-md-6 d-flex justify-content-center align-items-center form-section">
+      <div
+        class="col-md-6 d-flex justify-content-center align-items-center form-section"
+      >
         <div class="login-form w-75">
           <div class="position-relative mb-5">
-            <router-link to="/" class="text-secondary mb-5 position_absolute d-block">Kembali</router-link>
+            <router-link
+              to="/"
+              class="text-secondary mb-5 position_absolute d-block"
+              >Kembali</router-link
+            >
           </div>
           <h2 class="mb-4">Daftar</h2>
 
@@ -22,36 +32,53 @@
             <div class="mb-2">
               <label for="nama" class="form-label">Nama Lengkap</label>
               <input
-                  type="text"
-                  id="nama"
-                  v-model="nama"
-                  class="form-control"
-                  required
+                type="text"
+                id="nama"
+                v-model="nama"
+                class="form-control"
+                required
+                placeholder="Nama Lengkap"
               />
             </div>
 
             <div class="mb-2">
               <label for="email" class="form-label">Email address</label>
               <input
-                  type="email"
-                  id="email"
-                  v-model="email"
-                  class="form-control"
-                  required
+                type="email"
+                id="email"
+                v-model="email"
+                class="form-control"
+                required
+                placeholder="email@example.com"
               />
             </div>
 
-            <p v-if="errorMessage" class="text-danger mt-3">{{ errorMessage }}</p>
+            <p v-if="errorMessage" class="text-danger mt-3">
+              {{ errorMessage }}
+            </p>
 
-            <div class="mb-2">
+            <div class="mb-3">
               <label for="password" class="form-label">Password</label>
-              <input
-                  type="password"
+              <div class="input-group">
+                <input
+                  :type="showPassword ? 'text' : 'password'"
                   id="password"
                   v-model="password"
                   class="form-control"
                   required
-              />
+                  placeholder="Password"
+                />
+                <div class="input-group-append">
+                  <span
+                    class="input-group-text"
+                    @click="togglePasswordVisibility"
+                  >
+                    <i
+                      :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+                    ></i>
+                  </span>
+                </div>
+              </div>
             </div>
 
             <button type="submit" class="btn btn-success w-100">
@@ -72,7 +99,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   data() {
@@ -81,9 +108,13 @@ export default {
       email: "",
       password: "",
       errorMessage: "",
+      showPassword: false,
     };
   },
   methods: {
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
+    },
     async checkEmailExists(email) {
       try {
         const response = await axios.get(`/api/check-email?email=${email}`);
@@ -104,23 +135,31 @@ export default {
       }
 
       try {
-        const response = await axios.post('http://localhost:8000/api/register', {
-          nama_lengkap: this.nama,
-          email: this.email,
-          password: this.password,
-        });
+        const response = await axios.post(
+          "http://localhost:8000/api/register/Donatur",
+          {
+            nama_lengkap: this.nama,
+            email: this.email,
+            password: this.password,
+          }
+        );
 
         console.log(response.data.message);
-        this.$router.push({ name: 'VerifyRegister', query: { email: this.email } });
+        this.$router.push({
+          name: "VerifyRegister",
+          query: { email: this.email },
+        });
       } catch (error) {
         if (error.response) {
-          this.errorMessage = error.response.data.message || 'Terjadi kesalahan. Silakan coba lagi.';
+          this.errorMessage =
+            error.response.data.message ||
+            "Terjadi kesalahan. Silakan coba lagi.";
         } else {
-          this.errorMessage = 'Terjadi kesalahan. Silakan coba lagi.';
+          this.errorMessage = "Terjadi kesalahan. Silakan coba lagi.";
         }
       }
     },
-  }
+  },
 };
 </script>
 
@@ -164,5 +203,11 @@ h2 {
 
 .text-danger {
   font-size: 14px;
+}
+
+.input-group-text {
+  cursor: pointer;
+  background-color: #fff;
+  border: 1px solid #ced4da;
 }
 </style>

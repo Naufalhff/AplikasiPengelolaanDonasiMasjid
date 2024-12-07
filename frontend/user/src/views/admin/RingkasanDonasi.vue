@@ -1,15 +1,15 @@
 <template>
   <div class="donation-summary">
+    <button class="back-button" @click="goBack">← Kembali</button>
     <h2>Ringkasan Donasi</h2>
     <div class="summary-container">
       <div class="donation-details">
         <p><strong>Nominal donasi</strong></p>
-        <p>{{ donation.amount }}</p>
+        <p>{{ formatCurrency(donation.amount) }}</p>
 
-        <div class="payment-method">
-          <p>
-            <strong>Metode Pembayaran</strong>
-          </p>
+        <div class="payment-method" v-if="donation.donorInfo">
+          <p><strong>Metode Pembayaran</strong></p>
+          <p>{{ donation.donorInfo.paymentMethod }}</p>
         </div>
 
         <p><strong>Info Donatur</strong></p>
@@ -25,7 +25,7 @@
           <li><strong>Kegiatan</strong></li>
           <li>{{ donation.donorInfo.activity }}</li>
           <li><strong>Tanggal Transaksi</strong></li>
-          <li>{{ donation.donorInfo.transactionDate }}</li>
+          <p>{{ formatDate(donation.donorInfo.transactionDate) }}</p>
           <li><strong>Status</strong></li>
           <li :class="getStatusClass(donation.donorInfo.status)">
             {{ donation.donorInfo.status }}
@@ -46,27 +46,46 @@
     <div v-if="showConfirmDialog" class="confirmation-dialog">
       <p>
         Apakah Anda yakin ingin
-        {{ confirmAction === "approve" ? "menerima" : "menolak" }} pembayaran
+        {{ confirmAction === "approve" ? "menerima" : confirmAction === "reject" ? "menolak" : "membatalkan" }} pembayaran
         ini?
       </p>
       <div class="dialog-buttons">
-        <button @click="showConfirmDialog = false" class="cancel-button">
+        <button @click="showConfirmDialog = false" class="cancel-button2">
           Kembali
         </button>
         <button
           @click="handleConfirmedAction"
           :class="
-            confirmAction === 'approve' ? 'confirm-button' : 'reject2-button'
+            confirmAction === 'approve' ? 'confirm-button' : confirmAction === 'reject' ? 'reject2-button' : 'cancel-button'
           "
         >
-          {{ confirmAction === "approve" ? "Setuju" : "Tolak" }}
+          {{ confirmAction === "approve" ? "Setuju" : confirmAction === "reject" ? "Tolak" : "Batalkan" }}
         </button>
       </div>
     </div>
 
-    <div v-if="showActionButtons" class="action-buttons">
-      <button class="reject-button" @click="confirmReject">✖</button>
-      <button class="approve-button" @click="confirmApprove">✔</button>
+    <div class="action-buttons">
+      <button
+        v-if="donation.donorInfo?.status === 'PENDING'"
+        class="approve-button"
+        @click="confirmApprove"
+      >
+        Setuju
+      </button>
+      <button
+        v-if="donation.donorInfo?.status === 'PENDING'"
+        class="reject-button"
+        @click="confirmReject"
+      >
+        Tolak
+      </button>
+      <button
+        v-if="donation.donorInfo?.status === 'VALID' || donation.donorInfo?.status === 'INVALID'"
+        class="cancel-button"
+        @click="confirmCancel"
+      >
+        Batalkan
+      </button>
     </div>
   </div>
 </template>
@@ -93,6 +112,17 @@ export default {
     },
   },
   methods: {
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const options = { year: "numeric", month: "long", day: "numeric" };
+      return date.toLocaleDateString("id-ID", options);
+    },
+    formatCurrency(value) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      }).format(value);
+    },
     fetchDonationDetail(id_donasi) {
       axios
         .get(`http://localhost:8000/api/ringkasan-donasi/${id_donasi}`)
@@ -100,19 +130,20 @@ export default {
           this.donation = {
             amount: response.data.jumlah_donasi,
             donorInfo: {
+              paymentMethod: response.data.metode_pembayaran,
               fullName: response.data.nama_donatur,
               phoneNumber: response.data.no_telepon_donatur,
               address: response.data.alamat_donatur,
               email: response.data.email_donatur,
-              activity: response.data.event.nama_kegiatan,
+              activity: response.data.nama_kegiatan,
               transactionDate: response.data.tanggal_donasi,
               status: response.data.status_verifikasi,
             },
-            receiptImage: response.data.bukti_pembayaran,
+            receiptImage: `http://localhost:8000/storage/${response.data.bukti_pembayaran}`,
           };
         })
         .catch((error) => {
-          console.error("Error fetching donation details:", error);
+          console.error("Error fetching donation details:", error); 
         });
     },
     confirmReject() {
@@ -123,17 +154,21 @@ export default {
       this.confirmAction = "approve";
       this.showConfirmDialog = true;
     },
+    confirmCancel() {
+      this.confirmAction = "cancel";
+      this.showConfirmDialog = true;
+    },
     handleConfirmedAction() {
       const id_donasi = this.$route.params.id;
       const status = this.confirmAction === "approve" ? "VALID" : "INVALID";
 
       axios
-          .put(`http://localhost:8000/api/verifikasi-donasi/${id_donasi}`, {
-            status_verifikasi: status,
-          })
-          .then((response) => {
-            console.log(response.data.message);
-            this.donation.donorInfo.status = status;
+        .put(`http://localhost:8000/api/verifikasi-donasi/${id_donasi}`, {
+          status_verifikasi: status,
+        })
+        .then((response) => {
+          console.log(response.data.message);
+          this.donation.donorInfo.status = status;
 
           if (status === "VALID") {
             axios
@@ -158,6 +193,12 @@ export default {
     },
     getStatusClass(status) {
       return status.toLowerCase() === "pending" ? "status-pending" : "";
+    },
+    cancelAction() {
+      this.$router.push({ name: "TransaksiDonasi" });
+    },
+    goBack() {
+      this.$router.push({ name: "TransaksiDonasi" }); // Navigasi ke halaman Transaksi Donasi
     },
   },
 };
@@ -196,14 +237,13 @@ p {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 }
 
 .payment-method {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 10px;
+  flex-direction: column;
+  gap: 5px;
 }
 
 ul {
@@ -251,27 +291,34 @@ ul li {
   gap: 10px;
 }
 
-.reject-button,
-.approve-button {
-  font-size: 24px;
-  width: 50px;
-  height: 50px;
-  border: none;
+.approve-button, .reject-button {
+  font-family: Arial, sans-serif; /* Sama seperti cancel-button */
+  font-size: 14px;
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
   cursor: pointer;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  transition: background-color 0.3s ease;
 }
 
 .reject-button {
   background-color: #dc3545;
   color: white;
+  border-color: #c82333;
+}
+
+.reject-button:hover {
+  background-color: #c82333; 
 }
 
 .approve-button {
-  background-color: #28a745;
+  background-color: #28a745; 
   color: white;
+  border-color: #218838;
+}
+
+.approve-button:hover {
+  background-color: #218838;
 }
 
 /* Dialog Konfirmasi */
@@ -295,8 +342,17 @@ ul li {
   gap: 10px;
 }
 
+.cancel-button2 {
+  background-color: #cccccc;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 .cancel-button {
-  background-color: #ff8800;
+  background-color: #f57c00;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -320,5 +376,18 @@ ul li {
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+.back-button:hover {
+  text-decoration: underline;
 }
 </style>

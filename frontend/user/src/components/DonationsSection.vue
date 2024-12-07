@@ -13,12 +13,12 @@
               <h5 class="card-title">{{ donation.nama_kegiatan }}</h5>
               <span class="badge badge-pill category-badge">{{ donation.jenis_kegiatan }}</span>
               <p class="card-text">Terkumpul: 
-                <span class="text-success font-weight-bold">{{ donation.anggaran_terkumpul }}</span>
+                <span class="text-success font-weight-bold">{{ formatCurrency(donation.anggaran_terkumpul) }}</span>
               </p>
               <div class="progress mb-3">
                 <div class="progress-bar bg-success" role="progressbar" 
-                     :style="{width: ((donation.anggaran_terkumpul / donation.anggaran_kegiatan) * 100) + '%'}" 
-                     aria-valuenow="((donation.anggaran_terkumpul / donation.anggaran_kegiatan) * 100)" aria-valuemin="0" aria-valuemax="100"></div>
+                     :style="{width: ((donation.anggaran_terkumpul / donation.anggaran_donasi) * 100) + '%'}"
+                     aria-valuenow="((donation.anggaran_donasi / donation.anggaran_kegiatan) * 100)" aria-valuemin="0" aria-valuemax="100"></div>
               </div>
             </div>
           </div>
@@ -43,6 +43,12 @@ export default {
     };
   },
   methods: {
+    formatCurrency(value) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      }).format(value);
+    },
     fetchData(){
       axios
         .get('http://localhost:8000/api/donasiLimited')

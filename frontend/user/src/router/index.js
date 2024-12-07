@@ -26,6 +26,10 @@ import DetailZakat from "../views/DetailZakat.vue";
 import TransaksiDonasi from "../views/admin/TransaksiDonasi.vue";
 import RingkasanDonasi from "../views/admin/RingkasanDonasi.vue";
 import LaporanKeuangan from "../views/admin/LaporanKeuangan.vue";
+import PilihKegiatan from "@/views/admin/PilihKegiatan.vue";
+import RiwayatPengeluaran from "@/views/admin/RiwayatPengeluaran.vue";
+import RingkasanPengeluaran from "@/views/admin/RingkasanPengeluaran.vue";
+import BuatPengeluaran from "@/views/admin/BuatPengeluaran.vue";
 
 const routes = [
   {
@@ -36,46 +40,124 @@ const routes = [
         path: "/dashboard-page",
         name: "DashboardPage",
         component: DashboardPage,
-        meta: { hideNavbar: true },
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Administrator"],
+        },
       },
-    
       {
         path: "/activity-list",
         name: "ActivityList",
         component: ActivityList,
-        meta: { hideNavbar: true },
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Pengurus Masjid", "Administrator"],
+        },
       },
       {
         path: "/create-activity",
         name: "CreateActivity",
         component: CreateActivity,
-        meta: { hideNavbar: true },
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Pengurus Masjid"],
+        },
       },
       {
         path: "/edit-activity/:id",
         name: "EditActivity",
         component: EditActivity,
-        meta: { hideNavbar: true },
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Pengurus Masjid"],
+        },
       },
       {
         path: "/transaksidonasi",
         name: "TransaksiDonasi",
         component: TransaksiDonasi,
-        meta: { hideNavbar: true },
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Bendahara", "Administrator"],
+        },
       },
       {
         path: "/ringkasan-donasi/:id",
         name: "RingkasanDonasi",
         component: RingkasanDonasi,
-        meta: { hideNavbar: true },
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Bendahara"],
+        },
       },
       {
         path: "/laporankeuangan",
         name: "LaporanKeuangan",
         component: LaporanKeuangan,
-        meta: { hideNavbar: true },
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Bendahara", "Administrator"],
+        },
       },
-    ]
+      {
+        path: "/pilih-kegiatan",
+        name: "PilihKegiatan",
+        component: PilihKegiatan,
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Bendahara", "Administrator"],
+        },
+      },
+      {
+        path: "/riwayat-pengeluaran/:id",
+        name: "RiwayatPengeluaran",
+        component: RiwayatPengeluaran,
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Bendahara"],
+        },
+      },
+      {
+        path: "/ringkasan-pengeluaran/:id",
+        name: "RingkasanPengeluaran",
+        component: RingkasanPengeluaran,
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Bendahara"],
+        },
+      },
+      {
+        path: "/buat-pengeluaran/:id",
+        name: "BuatPengeluaran",
+        component: BuatPengeluaran,
+        meta: {
+          requiresAuth: true,
+          hideNavbar: true,
+          hideFooter: true,
+          allowedRoles: ["Bendahara"],
+        },
+      },
+    ],
   },
   {
     path: "",
@@ -96,31 +178,31 @@ const routes = [
   {
     path: "/login",
     component: LoginPage,
-    meta: { hideNavbar: true },
+    meta: { hideNavbar: true, hideFooter: true },
   },
   {
     path: "/forgot-password",
     name: "ForgotPassword",
     component: ForgotPassword,
-    meta: { hideNavbar: true },
+    meta: { hideNavbar: true, hideFooter: true },
   },
   {
     path: "/verify-code",
     name: "VerifyCode",
     component: VerifyCode,
-    meta: { hideNavbar: true },
+    meta: { hideNavbar: true, hideFooter: true },
   },
   {
     path: "/reset-password",
     name: "ResetPassword",
     component: ResetPassword,
-    meta: { hideNavbar: true },
+    meta: { hideNavbar: true, hideFooter: true },
   },
   {
     path: "/register",
     name: "RegisterPage",
     component: RegisterPage,
-    meta: { hideNavbar: true },
+    meta: { hideNavbar: true, hideFooter: true },
   },
   {
     path: "/donasi",
@@ -151,7 +233,7 @@ const routes = [
     path: "/verify-register",
     name: "VerifyRegister",
     component: VerifyRegister,
-    meta: { hideNavbar: true },
+    meta: { hideNavbar: true, hideFooter: true },
   },
   {
     path: "/detaildonasi/nominal/formdonasi/pembayaran/uploadbukti",
@@ -168,12 +250,32 @@ const routes = [
     name: "DetailZakat",
     component: DetailZakat,
   },
-  
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const isLogin = sessionStorage.getItem("isLogin") === "true";
+  const loginAs = sessionStorage.getItem("loginAs");
+
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!isLogin) {
+      next({ path: "/login" });
+    } else if (
+      to.meta.allowedRoles &&
+      !to.meta.allowedRoles.includes(loginAs)
+    ) {
+      next(false);
+      alert("Forbidden");
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;

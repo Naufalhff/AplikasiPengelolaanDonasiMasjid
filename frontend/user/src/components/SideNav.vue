@@ -6,7 +6,9 @@
     </div>
 
     <ul>
-      <li v-for="menu in menus" :key="menu.text">
+      <li 
+        v-for="menu in filteredMenus" 
+        :key="menu.text">
         <router-link 
           :to="menu.link" 
           class="menu-link" 
@@ -18,20 +20,33 @@
 </template>
 
 <script>
-export default {
+export default { 
   name: "SideNav",
   data() {
     return {
       menus: [
-        { text: "Dashboard", link: "/dashboard-page" },
-        { text: "Transaksi Donasi", link: "/transaksidonasi" },
-        { text: "Daftar Kegiatan", link: "/activity-list" },
-        { text: "Laporan Keuangan", link: "/laporankeuangan" },
+        { text: "Dashboard", link: "/dashboard-page", role: "Administrator" },
+        { text: "Transaksi Donasi", link: "/transaksidonasi", role: "Bendahara" },
+        { text: "Transaksi Pengeluaran", link: "/pilih-kegiatan", role: "Bendahara"},
+        { text: "Daftar Kegiatan", link: "/activity-list", role: "Pengurus Masjid" },
+        { text: "Laporan Keuangan", link: "/laporankeuangan", role: "Bendahara" },
       ],
     };
   },
+  computed: {
+  filteredMenus() {
+    const userRole = sessionStorage.getItem('role');
+    // Jika peran adalah Administrator, tampilkan semua menu
+    if (userRole === "Administrator") {
+      return this.menus;
+    }
+    // Selain itu, filter menu berdasarkan role
+    return this.menus.filter(menu => !menu.role || menu.role === userRole);
+    },
+  },
 };
 </script>
+
 
 <style scoped>
 /* Container untuk Side Navigation */

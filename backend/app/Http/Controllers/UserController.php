@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Donation;
-use App\Models\Event;
+use App\Models\Pengguna;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
@@ -25,18 +23,18 @@ class UserController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            return response()->json(['message' => 'Login berhasil', 'user' => $user], 200);
+            $pengguna = Auth::user();
+            return response()->json(['message' => 'Login berhasil', 'user' => $pengguna], 200);
         } else {
             return response()->json(['message' => 'Email atau Password salah'], 401);
         }
     }
 
-    public function register(Request $request)
+    public function register(Request $request, $selected_role)
     {
         $request->validate([
             'nama_lengkap' => 'required|string|max:100',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:pengguna,email',
             'password' => 'required|string|min:8',
         ]);
 
@@ -44,7 +42,7 @@ class UserController extends Controller
             'nama_lengkap' => $request->nama_lengkap,
             'email' => $request->email,
             'password' => $request->password,
-            'id_role' => 4
+            'peran' => $selected_role,
         ];
 
         Cache::put('user_register_' . $request->email, $userData, 60);
@@ -92,11 +90,11 @@ class UserController extends Controller
             return response()->json(['message' => 'Data user tidak ditemukan.'], 404);
         }
 
-        $user = new User();
+        $user = new Pengguna();
         $user->nama_lengkap = $userData['nama_lengkap'];
         $user->email = $userData['email'];
         $user->password = Hash::make($userData['password']);
-        $user->id_role = $userData['id_role'];
+        $user->peran = $userData['peran'];
         $user->save();
 
         Cache::forget('otp_' . $request->email);

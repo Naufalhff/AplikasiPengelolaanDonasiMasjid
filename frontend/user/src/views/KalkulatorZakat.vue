@@ -1,10 +1,20 @@
 <template>
-  <div class="container mt-5 pt-5">
-    <h2 class="text-center mb-4">Kalkulator Zakat Mal</h2>
+  <div class="container mt-5 pt-5 mb-4">
     <div class="card shadow-sm">
       <div class="card-body">
         <!-- Dropdown Pilihan Jenis Zakat -->
         <div class="mb-3">
+          <h2 class="text-center mb-4">Ayo Hitung Zakat Mal Anda Disini!</h2>
+          <p>
+            Kalkulator Zakat Mal dirancang untuk memudahkan umat Muslim dalam
+            menghitung jumlah zakat mal yang wajib dibayar berdasarkan jenis
+            harta yang dimiliki. Zakat mal sendiri merupakan zakat yang
+            dikenakan atas harta benda yang telah mencapai nisab dan dimiliki
+            selama satu tahun. Kalkulator ini dapat digunakan untuk menghitung
+            zakat dari berbagai jenis harta yang berbeda, termasuk emas, perak,
+            tabungan, perdagangan, perusahaan, pertanian, peternakan,
+            pertambangan, dan pendapatan.
+          </p>
           <label for="zakatType" class="form-label d-block"
             >Pilih Jenis Zakat</label
           >
@@ -50,17 +60,19 @@
         >
           Hitung Zakat Saya
         </button>
+        <div v-if="alertMessage" class="alert alert-danger mt-2" role="alert">
+          {{ alertMessage }}
+        </div>
       </div>
     </div>
 
-    <!-- Modal untuk Hasil Perhitungan Zakat -->
+    <!-- Modal Hasil Perhitungan Zakat -->
     <div
       class="modal fade"
       id="zakatModal"
       tabindex="-1"
       aria-labelledby="zakatModalLabel"
       aria-hidden="true"
-      ref="zakatModal"
     >
       <div class="modal-dialog">
         <div class="modal-content">
@@ -70,27 +82,25 @@
             </h5>
           </div>
           <div class="modal-body">
+            <p>Jumlah zakat yang harus dibayarkan:</p>
+            <h4 class="text-success">Rp.{{ zakatResult.toLocaleString() }}</h4>
             <p v-if="alertMessage" class="text-danger">{{ alertMessage }}</p>
-            <p v-else>Jumlah zakat yang harus dibayarkan:</p>
-            <h4 v-if="!alertMessage" class="text-success">
-              Rp.{{ zakatResult.toLocaleString() }}
-            </h4>
           </div>
           <div class="modal-footer">
             <button
               type="button"
               class="btn btn-secondary"
               data-bs-dismiss="modal"
-              @click="resetForm"
+              @click="recalculate"
             >
               Hitung Kembali
             </button>
             <button
               type="button"
               class="btn btn-primary"
-              data-bs-dismiss="modal"
+              @click="copyToClipboard"
             >
-              Tunaikan Zakat
+              Salin
             </button>
           </div>
         </div>
@@ -118,6 +128,7 @@ export default {
       zakatData: {},
       zakatResult: 0,
       alertMessage: "",
+      zakatModal: null,
     };
   },
   computed: {
@@ -142,9 +153,70 @@ export default {
       this.alertMessage = "";
     },
   },
+  mounted() {
+    this.zakatModal = new Modal(document.getElementById("zakatModal"));
+  },
   methods: {
     calculateZakat() {
       this.alertMessage = "";
+
+      if (this.selectedZakatType === "emas") {
+        if (!this.zakatData.BeratEmasPerak || !this.zakatData.HargaEmasPerak) {
+          this.alertMessage = "Silakan isi berat dan harga emas/perak.";
+          return;
+        }
+      } else if (this.selectedZakatType === "tabungan") {
+        if (!this.zakatData.NilaiTabungan || !this.zakatData.HargaEmas) {
+          this.alertMessage = "Silakan isi nilai tabungan dan harga emas.";
+          return;
+        }
+      } else if (this.selectedZakatType === "perdagangan") {
+        if (
+          !this.zakatData.modal ||
+          !this.zakatData.keuntungan ||
+          !this.zakatData.HargaEmas
+        ) {
+          this.alertMessage =
+            "Silakan isi modal, keuntungan dan harga emas saat ini.";
+          return;
+        }
+      } else if (this.selectedZakatType === "perusahaan") {
+        if (
+          !this.zakatData.keuntunganBersih ||
+          !this.zakatData.TahunOperasional ||
+          !this.zakatData.HargaEmas
+        ) {
+          this.alertMessage =
+            "Silakan isi keuntungan bersih, tahun operational dan harga emas saat ini.";
+          return;
+        }
+      } else if (this.selectedZakatType === "pertanian") {
+        if (!this.zakatData.hasilPanen || !this.zakatData.hargaJual) {
+          this.alertMessage = "Silakan isi hasil panen dan harga jual.";
+          return;
+        }
+      } else if (this.selectedZakatType === "peternakan") {
+        if (!this.zakatData.jumlahHewan || !this.zakatData.hargaHewan) {
+          this.alertMessage = "Silakan isi jumlah hewan dan harga hewan.";
+          return;
+        }
+      } else if (this.selectedZakatType === "pertambangan") {
+        if (!this.zakatData.keuntungan) {
+          this.alertMessage = "Silakan isi keuntungan.";
+          return;
+        }
+      } else if (this.selectedZakatType === "pendapatan") {
+        if (!this.zakatData.PenghasilanPerBulan || !this.zakatData.HargaEmas) {
+          this.alertMessage =
+            "Silakan isi penghasilan per bulan dan Harga emas saat ini.";
+          return;
+        }
+      } else if (this.selectedZakatType === "rikaz") {
+        if (!this.zakatData.JumlahHarta) {
+          this.alertMessage = "Silakan isi jumlah harta.";
+          return;
+        }
+      }
 
       switch (this.selectedZakatType) {
         case "emas": {
@@ -295,17 +367,31 @@ export default {
           this.zakatResult = 0;
           this.alertMessage = "Jenis zakat tidak valid.";
       }
-
-      this.$nextTick(() => {
-        const zakatModal = new Modal(this.$refs.zakatModal);
-        zakatModal.show();
-      });
+      this.zakatModal.show();
     },
-    resetForm() {
-      this.zakatResult = 0;
-      this.selectedZakatType = "";
-      this.zakatData = {};
-      this.alertMessage = "";
+    recalculate() {
+      if (this.zakatModal) {
+        this.zakatModal.hide();
+      }
+    },
+    copyToClipboard() {
+      const amount = this.zakatResult;
+
+      if (amount <= 0) {
+        this.alertMessage = "Jumlah zakat tidak valid.";
+        return;
+      }
+
+      navigator.clipboard
+        .writeText(amount.toString())
+        .then(() => {
+          console.log("Nominal zakat berhasil disalin ke clipboard");
+          this.alertMessage = "Nominal zakat berhasil disalin!";
+        })
+        .catch((err) => {
+          console.error("Gagal menyalin nominal zakat", err);
+          this.alertMessage = "Gagal menyalin nominal zakat.";
+        });
     },
   },
 };

@@ -65,6 +65,22 @@
         <span class="input-group-text">Gram</span>
       </div>
     </div>
+    <p class="description">
+      Zakat Emas dan Perak adalah zakat yang dikenakan atas logam mulia yang
+      dimiliki seseorang. Nisab zakat untuk <b>emas</b> adalah
+      <b>85 gram</b> dan untuk <b>perak</b> adalah <b>595 gram</b>. Tarif zakat
+      yang wajib dikeluarkan adalah sebesar <b>2,5%</b> dari total nilai logam
+      mulia yang dimiliki jika telah mencapai nisab dan melewati haul (1 tahun
+      kepemilikan).
+    </p>
+    <p class="description">
+      Rumus perhitungannya adalah sebagai berikut:
+      <b
+        >Zakat = Berat Emas/Perak (gram) × Harga Emas/Perak per gram (Rp) ×
+        2,5%</b
+      >. Jika berat logam mulia yang dimiliki kurang dari nisab, maka zakat
+      tidak wajib dikeluarkan.
+    </p>
   </div>
 </template>
 

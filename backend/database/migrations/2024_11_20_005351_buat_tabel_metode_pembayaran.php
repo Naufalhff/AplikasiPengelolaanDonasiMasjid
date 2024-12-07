@@ -8,14 +8,14 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('metode_pembayaran', function (Blueprint $table) {
-            $table->id('id_metode');
+        Schema::create('rekening_pembayaran', function (Blueprint $table) {
+            $table->id('id_rekening');
             $table->foreignId('id_kegiatan')
                 ->constrained('kegiatan', 'id_kegiatan')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->enum('metode', ['BSI', 'QRIS']);
-            $table->string('detail', 255);
+            $table->enum('jenis_rekening', ['BSI', 'QRIS']);
+            $table->string('informasi_rekening', 255);
         });
     }
 

@@ -44,6 +44,8 @@ export default {
       transactions: [], // Data semua transaksi
       currentPage: 1, // Halaman yang sedang aktif
       itemsPerPage: 10, // Jumlah item per halaman
+      key: "Proyek-3-Mantap",
+      role: "",
     };
   },
   computed: {
@@ -57,17 +59,19 @@ export default {
     },
   },
   created() {
-    axios.get('http://localhost:8000/api/transaksi-donasi')
-      .then(response => {
-        this.transactions = response.data.map(donation => ({
-          id: donation.id_donasi,
-          nama: donation.nama_donatur,
-          activity: donation.nama_kegiatan,
-          verificationStatus: donation.status_verifikasi
-        }));
-      })
-      .catch(error => {
-        console.error("Error fetching transactions:", error);
+    this.role = sessionStorage.getItem("role");
+    console.log(this.role)
+      axios.get('http://localhost:8000/api/transaksi-donasi')
+        .then(response => {
+          this.transactions = response.data.map(donation => ({
+            id: donation.id_donasi,
+            nama: donation.nama_donatur,
+            activity: donation.nama_kegiatan,
+            verificationStatus: donation.status_verifikasi
+          }));
+        })
+        .catch(error => {
+          console.error("Error fetching transactions:", error);
       });
   },
   methods: {
@@ -101,14 +105,14 @@ export default {
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Memusatkan konten secara horizontal */
+  align-items: center; 
   justify-content: flex-start;
   min-height: 100vh;
 }
 
 .donation-table {
-  width: 80%; /* Membatasi lebar tabel */
-  max-width: 1200px; /* Menambahkan batas maksimal lebar tabel */
+  width: 80%; 
+  max-width: 1200px;
   border-collapse: collapse;
   margin-top: 20px;
 }
@@ -159,27 +163,31 @@ export default {
 
 .pagination {
   display: flex;
-  justify-content: center; /* Memusatkan tombol pagination */
+  justify-content: center;
   align-items: center;
   margin-top: 20px;
 }
 
 .pagination button {
-  padding: 10px 15px;
-  background-color: #007bff;
+  background-color: #007bff; 
   color: white;
-  border: none;
-  border-radius: 5px;
+  border: none; 
+  border-radius: 20px;
+  padding: 10px 20px; 
+  font-size: 14px;
   cursor: pointer;
-  margin: 0 5px;
+  transition: background-color 0.3s ease; 
+  margin: 0 5px; 
+}
+
+.pagination button:hover {
+  background-color: #0056b3; 
 }
 
 .pagination button:disabled {
-  background-color: #6c757d;
+  background-color: #d6d6d6;
+  color: #999;
+  cursor: not-allowed;
 }
 
-.pagination span {
-  margin: 0 10px;
-  font-size: 16px;
-}
 </style>

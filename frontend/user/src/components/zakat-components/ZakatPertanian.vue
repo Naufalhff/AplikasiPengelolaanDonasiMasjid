@@ -72,6 +72,29 @@
         </div>
       </div>
     </div>
+    <p class="description">
+      Zakat pertanian adalah zakat yang wajib dikeluarkan oleh petani atas hasil
+      pertanian mereka, seperti gabah, beras, atau komoditas lainnya, jika telah
+      mencapai nisab. Nisab zakat pertanian adalah setara dengan
+      <b>653 kg gabah</b> atau <b>520 kg beras</b>.
+    </p>
+    <p class="description">
+      Besaran zakat pertanian bergantung pada jenis pengairan yang digunakan:
+    </p>
+    <ul>
+      <li>
+        <b>10%</b> (1/10) dari hasil panen untuk pengairan alami, seperti tadah
+        hujan.
+      </li>
+      <li>
+        <b>5%</b> (1/20) dari hasil panen untuk pengairan berbayar, seperti
+        irigasi yang memerlukan biaya.
+      </li>
+    </ul>
+    <p class="description">
+      Zakat ini wajib dikeluarkan setiap kali panen, tanpa menunggu haul (satu
+      tahun), karena berkaitan langsung dengan masa panen.
+    </p>
   </div>
 </template>
 

@@ -12,11 +12,11 @@ return new class extends Migration
         {
             $table->id('id_pengguna');
             $table->string('nama_lengkap', 75);
-            $table->string('email', 255);
+            $table->string('email', 255)->unique();
             $table->string('password', 255);
             $table->enum('peran', ['Pengurus Masjid', 'Donatur', 'Administrator', 'Bendahara']);
-            $table->timestamp('tanggal_dibuat');
-            $table->timestamp('tanggal_dirubah')->nullable();
+            $table->timestamp('tanggal_dibuat')->useCurrent();
+            $table->timestamp('tanggal_dirubah')->nullable()->useCurrentOnUpdate();
         });
     }
 

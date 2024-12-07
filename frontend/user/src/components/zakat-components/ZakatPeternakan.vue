@@ -46,6 +46,25 @@
         />
       </div>
     </div>
+    <p class="description">
+      Zakat peternakan adalah zakat yang wajib dikeluarkan oleh pemilik ternak
+      atas hewan ternak mereka, seperti sapi, domba, atau kerbau, jika telah
+      mencapai nisab. Nisab zakat peternakan adalah sebagai berikut:
+      <b>30 ekor sapi</b>, <b>40 ekor domba</b>, atau <b>30 ekor kerbau</b>.
+    </p>
+    <p class="description">
+      Besaran zakat peternakan bergantung pada jumlah ternak yang dimiliki dan
+      jenis ternaknya:
+    </p>
+    <ul>
+      <li><b>2,5%</b> dari jumlah ternak untuk sapi dan kerbau.</li>
+      <li><b>2,5%</b> dari jumlah ternak untuk domba.</li>
+    </ul>
+    <p class="description">
+      Zakat ini wajib dikeluarkan setiap tahun apabila jumlah ternak mencapai
+      nisab dan haul (satu tahun), karena berkaitan dengan kepemilikan ternak
+      yang telah mencapai batas minimum.
+    </p>
   </div>
 </template>
 

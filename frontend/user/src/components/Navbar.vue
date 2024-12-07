@@ -33,30 +33,100 @@
             <router-link class="nav-link" to="/donasi">Donasi</router-link>
           </li>
           <li class="nav-item">
+            <router-link class="nav-link" to="/kalkulatorzakat"
+              >Kalkulator Zakat</router-link
+            >
+          </li>
+          <li class="nav-item" v-if="!isLoggedInAsDonatur">
             <router-link to="/login">
               <button class="btn btn-login ms-3">Login</button>
             </router-link>
+          </li>
+          <li class="nav-item" v-else>
+            <button class="btn btn-logout ms-3" @click="triggerLogout">
+              Logout
+            </button>
           </li>
         </ul>
       </div>
     </div>
   </nav>
+  <!-- Modal for Logout Confirmation -->
+  <div
+    class="modal fade"
+    id="logoutModal"
+    tabindex="-1"
+    aria-labelledby="logoutModalLabel"
+    aria-hidden="true"
+    data-bs-backdrop="false"
+    data-bs-keyboard="false"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body text-center p-4">
+          <i class="fas fa-exclamation-circle fa-5x text-warning"></i>
+          <h5 class="mb-3 mt-2">Konfirmasi Logout</h5>
+          <p>Apakah Anda yakin ingin logout?</p>
+          <div class="d-flex justify-content-center mt-4">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="hideLogoutModal"
+            >
+              Tidak
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger ml-5"
+              @click="confirmLogout"
+            >
+              Ya, Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+import { Modal } from "bootstrap";
+
 export default {
   name: "NavBar",
   data() {
     return {
       isHomePage: false,
+      showLogoutModal: false,
+      logoutModal: null,
     };
+  },
+  computed: {
+    isLoggedInAsDonatur() {
+      return (
+        sessionStorage.getItem("isLogin") === "true" &&
+        sessionStorage.getItem("loginAs") === "Donatur"
+      );
+    },
   },
   mounted() {
     this.checkRoute();
     window.addEventListener("scroll", this.handleScroll);
     this.$router.afterEach(this.checkRoute);
+    this.logoutModal = new Modal(document.getElementById("logoutModal"));
   },
   methods: {
+    confirmLogout() {
+      sessionStorage.clear();
+      this.$router.push("/login");
+      this.hideLogoutModal();
+    },
+    triggerLogout() {
+      this.logoutModal.show();
+    },
+    hideLogoutModal() {
+      this.logoutModal.hide();
+    },
     checkRoute() {
       this.isHomePage = this.$route.path === "/";
       this.handleScroll();
@@ -68,6 +138,11 @@ export default {
       } else if (this.isHomePage) {
         navbar.classList.remove("scrolled");
       }
+    },
+    logout() {
+      sessionStorage.removeItem("isLogin");
+      sessionStorage.removeItem("loginAs");
+      this.$router.push("/login");
     },
   },
 };
@@ -154,6 +229,21 @@ export default {
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
+.btn-logout {
+  background-color: #dc3545;
+  border-radius: 20px;
+  padding: 0.5rem 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-logout:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 /* Hover effect on button */
 .btn-login:hover {
   background-color: #218838;
@@ -179,6 +269,14 @@ export default {
   .btn-login {
     width: 100%;
     margin-top: 1rem;
+  }
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
   }
 }
 </style>
