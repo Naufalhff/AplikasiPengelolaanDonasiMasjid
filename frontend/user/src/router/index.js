@@ -55,6 +55,9 @@ const routes = [
           requiresAuth: true,
           hideNavbar: true,
           hideFooter: true,
+        },
+      },
+      {
         path: "/create-activity",
         name: "CreateActivity",
         component: CreateActivity,
