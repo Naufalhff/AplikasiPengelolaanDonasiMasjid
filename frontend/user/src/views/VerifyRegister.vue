@@ -74,6 +74,10 @@ export default {
             otp: this.verifyCode,
           },
         });
+
+        await axios.post("http://localhost:8000/api/save-account", { email });
+
+        alert("Akun berhasil diaktifkan. Silakan login.");
         this.$router.push("/login");
       } catch (error) {
         if (error.response) {

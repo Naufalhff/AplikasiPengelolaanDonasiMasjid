@@ -9,7 +9,8 @@ use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [UserController::class, 'login']);
-Route::post('/register/{selected_role}', [UserController::class, 'register']);
+Route::post('/register/{selected_role}', [UserController::class, 'registerCache']);
+Route::post('/save-account', [UserController::class, 'saveCache']);
 Route::post('/resend-otp', [UserController::class, 'resendOTP']);
 Route::post('/verify-otp', [UserController::class, 'verifyOTP']);
 Route::post('/send-reset', [UserController::class, 'sendReset']);

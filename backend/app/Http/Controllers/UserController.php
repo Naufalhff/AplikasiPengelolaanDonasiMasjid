@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use App\Mail\OTPMail;
 use App\Mail\DonationReceipt;
 
@@ -29,37 +30,6 @@ class UserController extends Controller
             return response()->json(['message' => 'Login berhasil', 'user' => $pengguna], 200);
         } else {
             return response()->json(['message' => 'Email atau Password salah'], 401);
-        }
-    }
-
-    public function register(Request $request, $selected_role)
-    {
-        try {
-            $request->validate([
-                'nama_lengkap' => 'required|string|max:100',
-                'email' => 'required|email|unique:pengguna,email',
-                'password' => 'required|string|min:8',
-            ]);
-
-            $user = Pengguna::create([
-                'nama_lengkap' => $request->nama_lengkap,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-                'peran' => $selected_role,
-            ]);
-
-            $this->sendOTP($user->email);
-
-            return response()->json(['message' => 'OTP telah dikirim ke email Anda. Silakan verifikasi.'], 201);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            $errors = $e->validator->errors();
-            if ($errors->has('email')) {
-                return response()->json(['message' => 'Email sudah digunakan.'], 422);
-            }
-
-            return response()->json(['message' => 'Data tidak valid.'], 422);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Terjadi kesalahan saat pendaftaran.'], 500);
         }
     }
 
@@ -111,6 +81,63 @@ class UserController extends Controller
         Cache::forget('otp_' . $request->email);
 
         return response()->json(['message' => 'OTP berhasil diverifikasi.'], 200);
+    }
+    public function registerCache(Request $request, $selected_role)
+    {
+        try {
+            $request->validate([
+                'nama_lengkap' => 'required|string|max:100',
+                'email' => 'required|email|unique:pengguna,email',
+                'password' => 'required|string|min:8',
+            ]);
+
+            $userData = [
+                'nama_lengkap' => $request->nama_lengkap,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'peran' => $selected_role,
+            ];
+
+            Cache::put('register_user_' . $request->email, $userData, now()->addMinutes(10));
+
+            $this->sendOTP($request->email);
+
+            return response()->json(['message' => 'OTP telah dikirim ke email Anda. Silakan verifikasi.'], 201);
+        } catch (ValidationException $e) {
+            $errors = $e->validator->errors();
+            if ($errors->has('email')) {
+                return response()->json(['message' => 'Email sudah digunakan.'], 422);
+            }
+
+            return response()->json(['message' => 'Data tidak valid.'], 422);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Terjadi kesalahan saat pendaftaran.'], 500);
+        }
+    }
+
+    public function saveCache(Request $request)
+    {
+        try {
+            $request->validate([
+                'email' => 'required|email',
+            ]);
+
+            $cachedData = Cache::get('register_user_' . $request->email);
+
+            if (!$cachedData) {
+                return response()->json(['message' => 'Data pendaftaran tidak ditemukan atau telah kedaluwarsa.'], 404);
+            }
+
+            $user = Pengguna::create($cachedData);
+
+            Cache::forget('register_user_' . $request->email);
+
+            return response()->json(['message' => 'Pendaftaran berhasil.', 'user' => $user], 201);
+        } catch (ValidationException $e) {
+            return response()->json(['message' => 'Data tidak valid.'], 422);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Terjadi kesalahan saat menyimpan data.'], 500);
+        }
     }
 
     public function sendDonationReceipt($id_donasi)
