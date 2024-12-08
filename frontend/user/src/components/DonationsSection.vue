@@ -8,7 +8,7 @@
       <div class="row justify-content-center">
         <div class="col-md-6 col-lg-4 mb-4" v-for="donation in donations" :key="donation.id_kegiatan">
           <div class="card donation-card shadow-sm h-100">
-            <img :src="image" class="card-img-top" :alt="donation.nama_kegiatan">
+            <img :src="'http://localhost:8000/storage/' + donation.foto_kegiatan" class="card-img-top" :alt="donation.nama_kegiatan">
             <div class="card-body">
               <h5 class="card-title">{{ donation.nama_kegiatan }}</h5>
               <span class="badge badge-pill category-badge">{{ donation.jenis_kegiatan }}</span>
@@ -38,7 +38,6 @@ export default {
   name: "DonationsSection",
   data() {
     return {
-      image: require("../assets/images/infaq.jpeg"),
       donations: []
     };
   },
