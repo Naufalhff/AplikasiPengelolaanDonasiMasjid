@@ -21,7 +21,6 @@ Route::get('/donasi', [EventController::class, 'index']);
 Route::get('/donasiLimited', [EventController::class, 'getEventLimited']);
 Route::get('/donasi/{id}', [EventController::class, 'getDataById']);
 Route::get('/jumlah_donatur/{id}', [EventController::class, 'countDonatur']);
-Route::patch('/update-anggaran-terkumpul/{id}', [EventController::class, 'updateAmount']);
 Route::post('/buat-kegiatan', [EventController::class, 'store']);
 Route::put('/edit-kegiatan/{id_kegiatan}', [EventController::class, 'update']);
 Route::delete('/hapus-kegiatan', [EventController::class, 'destroy']);
@@ -42,12 +41,12 @@ Route::get('/jumlah-donasi', [DashboardController::class, 'countDonation']);
 Route::get('/jumlah-kegiatan', [DashboardController::class, 'countEvent']);
 Route::get('/jumlah-donatur', [DashboardController::class, 'countDonatur']);
 
+Route::post('/tambah-pengeluaran', [ExpenseController::class, 'store']);
 Route::get('/riwayat-transaksi/{id_kegiatan}', [ExpenseController::class, 'showExpense']);
 Route::get('/detail-pengeluaran/{id_pengeluaran}', [ExpenseController::class, 'expenseDetails']);
-Route::delete('/hapus-pengeluaran/{id_pengeluaran}', [ExpenseController::class, 'deleteExpense']);
+Route::delete('/hapus-pengeluaran/{id_pengeluaran}', [ExpenseController::class, 'destroy']);
 
 Route::post('/upload', [FileUploadController::class, 'upload']);
-Route::post('/tambah-pengeluaran', [FileUploadController::class, 'addExpense']);
 
 Route::get('/getDonasi', [DonationController::class, 'getDonasi']);
 Route::get('/getPaymentById/{id}', [PaymentController::class, 'getDataById']);

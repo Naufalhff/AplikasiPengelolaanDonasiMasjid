@@ -111,16 +111,16 @@ export default {
       });
     },
     openConfirmationModal(id) {
-      this.transactionIdToCancel = id; // Menyimpan id transaksi yang akan dibatalkan
-      this.showModal = true; // Menampilkan modal
+      this.transactionIdToCancel = id;
+      this.showModal = true;
     },
     confirmCancelTransaction() {
       this.cancelTransaction(this.transactionIdToCancel);
-      this.closeModal(); // Menutup modal setelah konfirmasi
+      this.closeModal();
     },
     closeModal() {
-      this.showModal = false; // Menutup modal
-      this.transactionIdToCancel = null; // Reset id transaksi
+      this.showModal = false;
+      this.transactionIdToCancel = null;
     },
     cancelTransaction(id) {
       axios

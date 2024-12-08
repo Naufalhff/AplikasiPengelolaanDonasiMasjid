@@ -64,10 +64,11 @@
               <label for="targetAmount" class="form-label">Total Pengeluaran</label>
               <div class="input-group input-group-lg">
                 <input
-                    type="number"
+                    type="text"
                     class="form-control"
                     id="targetAmount"
-                    v-model="form.targetAmount"
+                    v-model="form.displayAmount"
+                    @input="formatRupiah"
                     placeholder="Masukkan Nominal Pengeluaran"
                     :class="{ 'is-invalid': errors.targetAmount }"
                 >
@@ -112,7 +113,8 @@ export default {
         imageName: null,
         name: '',
         description: '',
-        targetAmount: ''
+        displayAmount: '',
+        targetAmount: '',
       },
       errors: {},
       showDialog: false,
@@ -124,21 +126,31 @@ export default {
       const file = event.target.files[0];
       this.form.imageName = file ? file.name : null;
     },
+    formatRupiah() {
+      let value = this.form.displayAmount.replace(/\D/g, '');
+
+      const numericValue = parseInt(value);
+
+      if (!isNaN(numericValue)) {
+        this.form.targetAmount = numericValue;
+
+        this.form.displayAmount = new Intl.NumberFormat('id-ID', {
+          style: 'currency',
+          currency: 'IDR',
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0
+        }).format(numericValue);
+      } else {
+        this.form.displayAmount = '';
+        this.form.targetAmount = '';
+      }
+    },
     async validateForm() {
       this.errors = {};
 
-      if (!this.form.imageName) {
-        this.errors.image = 'Gambar harus diunggah.';
-      }
-
-      if (!this.form.name) {
-        this.errors.name = 'Nama transaksi harus diisi.';
-      }
-
-      if (!this.form.description) {
-        this.errors.description = 'Deskripsi harus diisi.';
-      }
-
+      if (!this.form.imageName) this.errors.image = 'Gambar harus diunggah.';
+      if (!this.form.name) this.errors.name = 'Nama transaksi harus diisi.';
+      if (!this.form.description) this.errors.description = 'Deskripsi harus diisi.';
       if (!this.form.targetAmount || this.form.targetAmount <= 0) {
         this.errors.targetAmount = 'Total pengeluaran harus berupa angka positif.';
       }
@@ -157,7 +169,7 @@ export default {
         if (totalPengeluaran > parseFloat(eventData.anggaran_terkumpul)) {
           this.openDialog();
         } else {
-          this.submitForm(eventData);
+          this.submitForm();
         }
       } catch (error) {
         console.error("Error fetching event data:", error);
@@ -170,7 +182,7 @@ export default {
     closeDialog() {
       this.showDialog = false;
     },
-    async submitForm(eventData) {
+    async submitForm() {
       const formData = new FormData();
 
       formData.append('file', this.$refs.activityImage.files[0]);
@@ -182,18 +194,16 @@ export default {
       try {
         const response = await axios.post('http://localhost:8000/api/tambah-pengeluaran', formData, {
           headers: {
-            'Content-Type': 'multipart/form-data'
-          }
+            'Content-Type': 'multipart/form-data',
+          },
         });
 
         alert('Pengeluaran berhasil ditambahkan!');
         console.log(response.data);
 
-        await this.updateAnggaranTerkumpul(eventData.id_kegiatan, this.form.targetAmount);
-
-        this.$router.push({ name: "RiwayatPengeluaran" });
+        this.$router.push({ name: 'RiwayatPengeluaran' });
       } catch (error) {
-        console.error("Error submitting form:", error);
+        console.error('Error submitting form:', error);
         if (error.response && error.response.data.errors) {
           this.errors = error.response.data.errors;
         } else {
@@ -201,21 +211,10 @@ export default {
         }
       }
     },
-    async updateAnggaranTerkumpul(idKegiatan, targetAmount) {
-      try {
-        const response = await axios.patch(`http://localhost:8000/api/update-anggaran-terkumpul/${idKegiatan}`, {
-          anggaran_terkumpul: targetAmount
-        });
-
-        console.log('Anggaran terkumpul berhasil diperbarui:', response.data);
-      } catch (error) {
-        console.error("Error updating anggaran terkumpul:", error);
-      }
-    },
     cancel() {
-      this.$router.push({ name: "RiwayatPengeluaran" });
-    }
-  }
+      this.$router.push({name: 'RiwayatPengeluaran'});
+    },
+  },
 };
 </script>
 

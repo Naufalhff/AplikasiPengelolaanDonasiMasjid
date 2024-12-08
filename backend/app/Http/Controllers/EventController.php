@@ -35,18 +35,6 @@ class EventController extends Controller
         return response()->json(['message' => 'Event not found'], 404);
     }
 
-    public function updateAmount($id, Request $request)
-    {
-        $event = Kegiatan::findOrFail($id);
-        $event->anggaran_pengeluaran += $request->anggaran_terkumpul;
-        $event->save();
-
-        return response()->json([
-            'message' => 'Anggaran terkumpul berhasil diperbarui.',
-            'data' => $event
-        ], 200);
-    }
-
     public function countDonatur($id)
     {
         $count = Donasi::where('id_kegiatan', $id)->count();

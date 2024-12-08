@@ -60,45 +60,4 @@ class FileUploadController extends Controller
             ], 404);
         }
     }
-
-    public function addExpense(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'file' => 'required|file|mimes:jpg,png,pdf|max:2048',
-            'id' => 'required|integer',
-            'name' => 'required|string|max:100',
-            'description' => 'required|string|max:255',
-            'amount' => 'required|numeric|min:0',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validasi gagal.',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        try {
-            $path = $request->file('file')->store('bukti_pembayaran', 'public');
-
-            $pengeluaran = Pengeluaran::create([
-                'id_kegiatan' => $request->id,
-                'nama_transaksi' => $request->name,
-                'deskripsi_transaksi' => $request->description,
-                'total_pengeluaran' => $request->amount,
-                'bukti_transaksi' => $path,
-            ]);
-
-            return response()->json([
-                'message' => 'Pengeluaran berhasil dibuat.',
-                'data' => $pengeluaran,
-                'file_url' => Storage::url($path)
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Terjadi kesalahan saat menyimpan pengeluaran.',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
 }
