@@ -66,6 +66,11 @@ export default {
         return;
       }
 
+      if (this.newPassword.length < 8) {
+        this.errorMessage = "Password harus memiliki minimal 8 karakter.";
+        return;
+      }
+
       if (this.newPassword !== this.confirmPassword) {
         this.errorMessage = "Password tidak cocok.";
         return;

@@ -48,15 +48,6 @@ class UserController extends Controller
     {
         $request->validate(['email' => 'required|email']);
 
-        $user = Pengguna::where('email', $request->email)->first();
-
-        if (!$user) {
-            return response()->json([
-                'message' => 'Email tidak ditemukan atau belum terdaftar.',
-                'status' => 'error'
-            ], 404);
-        }
-
         $this->sendOTP($request->email);
 
         return response()->json([
