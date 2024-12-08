@@ -35,13 +35,20 @@
 
       <div class="receipt">
         <p><strong>Bukti Transfer</strong></p>
-        <img
-          :src="donation.receiptImage"
-          alt="Bukti Transfer"
-          class="transfer-receipt"
-          @click="openImageInNewTab(donation.receiptImage)"
-          style="cursor: pointer; max-width: 100%;"
-        />
+        <template v-if="isPdf(donation.receiptImage)">
+          <button @click="openPdfInNewTab(donation.receiptImage)" class="view-pdf-button">
+            Lihat PDF
+          </button>
+        </template>
+        <template v-else>
+          <img
+            :src="donation.receiptImage"
+            alt="Bukti Transfer"
+            class="transfer-receipt"
+            @click="openImageInNewTab(donation.receiptImage)"
+            style="cursor: pointer; max-width: 100%;"
+          />
+        </template>
       </div>
     </div>
 
@@ -145,7 +152,7 @@ export default {
           };
         })
         .catch((error) => {
-          console.error("Error fetching donation details:", error); 
+          console.error("Error fetching donation details:", error);
         });
     },
     openImageInNewTab(imageUrl) {
@@ -154,6 +161,17 @@ export default {
         newWindow.focus();
       } else {
         alert("Pop-up blocker aktif. Harap izinkan pop-up untuk melihat gambar.");
+      }
+    },
+    isPdf(fileUrl) {
+      return fileUrl?.endsWith(".pdf");
+    },
+    openPdfInNewTab(fileUrl) {
+      const newWindow = window.open(fileUrl, "_blank");
+      if (newWindow) {
+        newWindow.focus();
+      } else {
+        alert("Pop-up blocker aktif. Harap izinkan pop-up untuk membuka file PDF.");
       }
     },
     confirmReject() {
@@ -171,46 +189,50 @@ export default {
     handleConfirmedAction() {
       const id_donasi = this.$route.params.id;
 
-      if (this.confirmAction === 'cancel') {
+      if (this.confirmAction === "cancel") {
         axios
-            .put(`http://localhost:8000/api/reset-status/${id_donasi}`)
-            .then((response) => {
-              console.log(response.data.message);
-              this.donation.donorInfo.status = 'PENDING';
-              this.$router.push({ name: "TransaksiDonasi" });
-            })
-            .catch((error) => {
-              console.error("Error resetting donation status:", error);
-            });
+          .put(`http://localhost:8000/api/reset-status/${id_donasi}`)
+          .then((response) => {
+            console.log(response.data.message);
+            this.donation.donorInfo.status = "PENDING";
+            this.$router.push({ name: "TransaksiDonasi" });
+          })
+          .catch((error) => {
+            console.error("Error resetting donation status:", error);
+          });
       } else {
-        const status = this.confirmAction === "approve" ? "VALID" : "INVALID";
+        const status =
+          this.confirmAction === "approve" ? "VALID" : "INVALID";
 
         axios
-            .put(`http://localhost:8000/api/verifikasi-donasi/${id_donasi}`, {
-              status_verifikasi: status,
-            })
-            .then((response) => {
-              console.log(response.data.message);
-              this.donation.donorInfo.status = status;
+          .put(`http://localhost:8000/api/verifikasi-donasi/${id_donasi}`, {
+            status_verifikasi: status,
+          })
+          .then((response) => {
+            console.log(response.data.message);
+            this.donation.donorInfo.status = status;
 
-              if (status === "VALID") {
-                axios
-                    .post(
-                        `http://localhost:8000/api/send-donation-receipt/${id_donasi}`
-                    )
-                    .then((receiptResponse) => {
-                      console.log(receiptResponse.data.message);
-                    })
-                    .catch((receiptError) => {
-                      console.error("Error sending donation receipt:", receiptError);
-                    });
-              }
+            if (status === "VALID") {
+              axios
+                .post(
+                  `http://localhost:8000/api/send-donation-receipt/${id_donasi}`
+                )
+                .then((receiptResponse) => {
+                  console.log(receiptResponse.data.message);
+                })
+                .catch((receiptError) => {
+                  console.error(
+                    "Error sending donation receipt:",
+                    receiptError
+                  );
+                });
+            }
 
-              this.$router.push({ name: "Tables" });
-            })
-            .catch((error) => {
-              console.error("Error verifying donation:", error);
-            });
+            this.$router.push({ name: "Tables" });
+          })
+          .catch((error) => {
+            console.error("Error verifying donation:", error);
+          });
       }
 
       this.showConfirmDialog = false;
@@ -222,7 +244,7 @@ export default {
       this.$router.push({ name: "TransaksiDonasi" });
     },
     goBack() {
-      this.$router.push({ name: "TransaksiDonasi" }); // Navigasi ke halaman Transaksi Donasi
+      this.$router.push({ name: "TransaksiDonasi" });
     },
   },
 };
@@ -413,5 +435,20 @@ ul li {
 }
 .back-button:hover {
   text-decoration: underline;
+}
+
+.view-pdf-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.view-pdf-button:hover {
+  background-color: #45a049;
 }
 </style>

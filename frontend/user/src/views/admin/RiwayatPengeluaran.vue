@@ -1,40 +1,46 @@
 <template>
   <div class="donation-transactions">
-    <h2>Riwayat Pengeluaran</h2>
+    <!-- Header -->
+    <div class="header-section">
+      <!-- Tombol Kembali -->
+      <button @click="goBack" class="back-button">
+        ← Kembali
+      </button>
+      <!-- Judul Halaman -->
+      <h2 class="page-title">Riwayat Pengeluaran</h2>
+    </div>
+
     <table class="donation-table">
       <thead>
-      <tr>
-        <th>ID Pengeluaran</th>
-        <th>Nama Transaksi</th>
-        <th>Anggaran</th>
-        <th>Waktu</th>
-        <th>Pilih Proses</th>
-      </tr>
+        <tr>
+          <th>ID Pengeluaran</th>
+          <th>Nama Transaksi</th>
+          <th>Anggaran</th>
+          <th>Waktu</th>
+          <th>Pilih Proses</th>
+        </tr>
       </thead>
       <tbody>
-      <tr v-for="(transaction, index) in currentPageTransactions" :key="index">
-        <td>{{ transaction.id }}</td>
-        <td>{{ transaction.name }}</td>
-        <td>{{ formatCurrency(transaction.budget) }}</td>
-        <td>{{ transaction.time }}</td>
-        <td>
-          <div class="action-buttons">
-            <button @click="viewDetails(transaction.id)" class="btn btn-detail">
-              Lihat Detail
-            </button>
-            <button @click="openConfirmationModal(transaction.id)" class="btn-cancel-transaction">
-              Batalkan Transaksi
-            </button>
-          </div>
-        </td>
-      </tr>
+        <tr v-for="(transaction, index) in currentPageTransactions" :key="index">
+          <td>{{ transaction.id }}</td>
+          <td>{{ transaction.name }}</td>
+          <td>{{ formatCurrency(transaction.budget) }}</td>
+          <td>{{ transaction.time }}</td>
+          <td>
+            <div class="action-buttons">
+              <button @click="viewDetails(transaction.id)" class="btn btn-detail">
+                Lihat Detail
+              </button>
+              <button @click="openConfirmationModal(transaction.id)" class="btn-cancel-transaction">
+                Batalkan Transaksi
+              </button>
+            </div>
+          </td>
+        </tr>
       </tbody>
     </table>
 
     <div class="pagination-container">
-      <button @click="addTransaction" class="btn btn-add-transaction">
-        <i class="fas fa-plus"></i> Tambah Pengeluaran
-      </button>
       <div class="pagination">
         <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
         <span>Page {{ currentPage }} of {{ totalPages }}</span>
@@ -42,6 +48,12 @@
       </div>
     </div>
 
+    <!-- Floating Button -->
+    <button @click="addTransaction" class="floating-button">
+      <i class="fas fa-plus"></i> Tambah Pengeluaran
+    </button>
+
+    <!-- Modal Konfirmasi -->
     <div v-if="showModal" class="confirmation-dialog">
       <p>Apakah Anda yakin ingin membatalkan transaksi ini?</p>
       <div class="dialog-buttons">
@@ -53,7 +65,6 @@
         </button>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -150,11 +161,31 @@ export default {
         currency: "IDR",
       }).format(value);
     },
+    goBack() {
+      this.$router.push({ name: "PilihKegiatan" }); 
+    },
   },
 };
 </script>
 
 <style scoped>
+.header-section {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+  text-align: center;
+}
+
 .donation-transactions {
   padding: 20px;
   background-color: #f8f9fa;
@@ -167,7 +198,7 @@ export default {
 }
 
 .donation-table {
-  width: 80%;
+  width: 90%;
   max-width: 1200px;
   border-collapse: collapse;
   margin-top: 20px;
@@ -185,27 +216,6 @@ export default {
   background-color: #f1f3f5;
   color: #333;
   font-weight: bold;
-}
-
-.btn-add-transaction {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: background-color 0.3s ease;
-}
-
-.btn-add-transaction:hover {
-  background-color: #218838;
-}
-
-.btn-add-transaction i {
-  font-size: 16px;
 }
 
 .btn-detail {
@@ -244,6 +254,14 @@ export default {
   align-items: center;
 }
 
+.pagination-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -252,21 +270,52 @@ export default {
 }
 
 .pagination button {
-  padding: 10px 15px;
-  background-color: #007bff;
+  background-color: #007bff; 
   color: white;
-  border: none;
-  border-radius: 5px;
+  border: none; 
+  border-radius: 20px;
+  padding: 10px 20px; 
+  font-size: 14px;
   cursor: pointer;
-  margin: 0 5px;
+  transition: background-color 0.3s ease; 
+  margin: 0 5px; 
 }
 
 .pagination button:disabled {
-  background-color: #6c757d;
+  background-color: #d6d6d6;
+  color: #999;
+  cursor: not-allowed;
 }
 
 .pagination span {
   margin: 0 10px;
+  font-size: 16px;
+}
+
+.floating-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.floating-button:hover {
+  background-color: #218838;
+}
+
+.floating-button i {
   font-size: 16px;
 }
 
@@ -307,4 +356,23 @@ export default {
   border-radius: 5px;
   cursor: pointer;
 }
+
+.back-button {
+  position: absolute;
+  left: 0; 
+  margin-left: 20px; 
+  margin-right: 20px;
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+.back-button:hover {
+  text-decoration: underline;
+}
+
 </style>

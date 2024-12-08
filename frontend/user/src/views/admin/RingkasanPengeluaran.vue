@@ -1,5 +1,7 @@
 <template>
   <div class="donation-summary">
+    <button class="back-button" @click="goBack">← Kembali</button>
+    
     <h2>Ringkasan Pengeluaran</h2>
     <div class="summary-container">
       <div class="donation-details">
@@ -17,11 +19,18 @@
 
       <div class="receipt">
         <p><strong>Bukti Transaksi</strong></p>
-        <img
-          :src="expense.expenseImage"
-          alt="Bukti Transfer"
-          class="transfer-receipt"
-        />
+        <template v-if="isPdf(expense.expenseImage)">
+          <!-- Tombol untuk PDF -->
+          <button class="pdf-button" @click="openPdf(expense.expenseImage)">Baca PDF</button>
+        </template>
+        <template v-else>
+          <!-- Gambar jika bukan PDF -->
+          <img
+            :src="expense.expenseImage"
+            alt="Bukti Transfer"
+            class="transfer-receipt"
+          />
+        </template>
       </div>
     </div>
   </div>
@@ -44,8 +53,8 @@ export default {
   methods: {
     formatDate(dateString) {
       const date = new Date(dateString);
-      const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      return date.toLocaleDateString('id-ID', options);
+      const options = { year: "numeric", month: "long", day: "numeric" };
+      return date.toLocaleDateString("id-ID", options);
     },
     fetchExpenseDetail(id_pegeluaran) {
       axios
@@ -71,11 +80,36 @@ export default {
         currency: "IDR",
       }).format(value);
     },
+    goBack() {
+      this.$router.go(-1);
+    },
+    isPdf() {
+      return this.expense.expenseImage 
+        ? this.expense.expenseImage.toLowerCase().includes('.pdf')
+        : false;
+    },
+    openPdf(fileUrl) {
+      // Membuka PDF di tab baru
+      window.open(fileUrl, "_blank");
+    },
   },
 };
 </script>
 
 <style scoped>
+.back-button {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+.back-button:hover {
+  text-decoration: underline;
+}
+
 .donation-summary {
   padding: 20px;
   background-color: #f8f9fa;
@@ -111,12 +145,6 @@ p {
   gap: 5px;
 }
 
-.payment-method {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
 ul {
   list-style: none;
   padding: 0;
@@ -126,11 +154,6 @@ ul {
 ul li {
   margin-bottom: 8px;
   color: #333;
-}
-
-.status-pending {
-  color: orange;
-  font-weight: bold;
 }
 
 .receipt {
@@ -146,82 +169,16 @@ ul li {
   border: 1px solid #ddd;
 }
 
-.action-buttons {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  display: flex;
-  gap: 10px;
-}
-
-.reject-button,
-.approve-button {
-  font-size: 24px;
-  width: 50px;
-  height: 50px;
-  border: none;
-  cursor: pointer;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.reject-button {
-  background-color: #dc3545;
-  color: white;
-}
-
-.approve-button {
-  background-color: #28a745;
-  color: white;
-}
-
-/* Dialog Konfirmasi */
-.confirmation-dialog {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px 40px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  text-align: center;
-  z-index: 1000;
-}
-
-.dialog-buttons {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.cancel-button {
-  background-color: #ff8800;
-  color: white;
-  border: none;
+.pdf-button {
+  background-color: #007bff;
+  color: #fff;
   padding: 10px 20px;
+  border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
 }
-
-.confirm-button {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.reject2-button {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
+.pdf-button:hover {
+  background-color: #0056b3;
 }
 </style>
