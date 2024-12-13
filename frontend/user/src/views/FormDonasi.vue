@@ -111,7 +111,7 @@
             >
               {{ errorMessage }}
             </div>
-            <button class="btn btn-success w-100" @click="confirmDonation">
+            <button class="btn btn-success w-100" type="confirmDonation">
               Donasi Sekarang
             </button>
           </form>
