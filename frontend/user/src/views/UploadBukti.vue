@@ -159,6 +159,12 @@ export default {
       const files = event.dataTransfer.files;
       if (files.length > 0) {
         this.selectedFile = files[0];
+        if (this.selectedFile.size > 5 * 1024 * 1024) {
+          this.errorMessage =
+            "File terlalu besar. Maksimal ukuran file adalah 5MB.";
+          this.selectedFile = null;
+          return;
+        }
         if (this.isValidFile(this.selectedFile)) {
           this.updateImageUrl();
           this.errorMessage = "";
@@ -172,6 +178,12 @@ export default {
       const files = event.target.files;
       if (files.length > 0) {
         this.selectedFile = files[0];
+        if (this.selectedFile.size > 5 * 1024 * 1024) {
+          this.errorMessage =
+            "File terlalu besar. Maksimal ukuran file adalah 5MB.";
+          this.selectedFile = null;
+          return;
+        }
         if (this.isValidFile(this.selectedFile)) {
           this.updateImageUrl();
           this.errorMessage = "";
