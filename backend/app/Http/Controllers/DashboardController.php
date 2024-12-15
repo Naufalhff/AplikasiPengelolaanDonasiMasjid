@@ -106,7 +106,7 @@ class DashboardController extends Controller
 
     public function countDonatur()
     {
-        $count = Pengguna::where('peran', 'Donatur')->count();
+        $count = Donasi::distinct('email_donatur')->count('email_donatur');
         return response()->json(['donatur' => $count]);
     }
 }

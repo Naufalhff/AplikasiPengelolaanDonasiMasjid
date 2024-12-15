@@ -100,16 +100,20 @@ export default {
     };
   },
   computed: {
-    filteredMenus() {
-      const userRole = sessionStorage.getItem("role");
-      // Jika peran adalah Administrator, tampilkan semua menu
-      if (userRole === "Administrator") {
-        return this.menus;
-      }
-      // Selain itu, filter menu berdasarkan role
-      return this.menus.filter((menu) => !menu.role || menu.role === userRole);
-    },
+  filteredMenus() {
+    const userRole = sessionStorage.getItem("role");
+    
+    // Jika peran adalah Administrator, tampilkan semua menu
+    if (userRole === "Administrator") {
+      return this.menus;
+    }
+
+    // Filter menu berdasarkan role, tapi tambahkan kondisi agar menu Dashboard selalu terlihat
+    return this.menus.filter((menu) => 
+      menu.text === "Dashboard" || !menu.role || menu.role === userRole
+    );
   },
+},
   methods: {
     confirmLogout() {
       sessionStorage.clear();

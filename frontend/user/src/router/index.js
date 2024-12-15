@@ -45,7 +45,7 @@ const routes = [
           hideNavbar: true,
           hideFooter: true,
           hideWa: true,
-          allowedRoles: ["Administrator"],
+          allowedRoles: ["Administrator", "Pengurus Masjid", "Bendahara"],
         },
       },
       {

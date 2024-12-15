@@ -40,21 +40,14 @@
           <div class="icon-wrapper">
             <i class="fas fa-hand-holding-heart"></i>
           </div>
-          <h2 class="stat-number counter" data-target="5000">0</h2>
+          <h2 class="stat-number counter">Rp {{ formattedNumber() }},00</h2>
           <p class="stat-text">Donasi Terkumpul</p>
-        </div>
-        <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
-          <div class="icon-wrapper">
-            <i class="fas fa-users"></i>
-          </div>
-          <h2 class="stat-number counter" data-target="200">0</h2>
-          <p class="stat-text">Penerima Manfaat</p>
         </div>
         <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
           <div class="icon-wrapper">
             <i class="fas fa-donate"></i>
           </div>
-          <h2 class="stat-number counter" data-target="100">0</h2>
+          <h2 class="stat-number counter">{{ this.donatur }}</h2>
           <p class="stat-text">Jumlah Donatur</p>
         </div>
       </div>
@@ -122,12 +115,22 @@
 </template>
 
 <script>
+import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 export default {
   name: "AboutPage",
+  data(){
+    return {
+      donasi: [],
+      donatur: [],
+    };
+  },
   mounted() {
+    this.fetchTotalDonasi();
+    this.fetchTotalDonatur();
+
     // Initialize AOS
     AOS.init({
       duration: 1000,
@@ -139,6 +142,24 @@ export default {
     this.counterAnimation();
   },
   methods: {
+    fetchTotalDonasi(){
+      axios.get('http://localhost:8000/api/getDonasi')
+        .then((response) => {
+          this.donasi = response.data;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+    },
+    fetchTotalDonatur(){
+      axios.get('http://localhost:8000/api/jumlah-donatur')
+        .then((response) => {
+          this.donatur = response.data.donatur;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+    },
     counterAnimation() {
       const counters = document.querySelectorAll(".counter");
       const speed = 200; // Duration of the animation
@@ -161,6 +182,21 @@ export default {
 
         updateCount();
       });
+    },
+    formatNumber(value) {
+      if (!value) return "0";
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    },
+    totalDonasi(){
+      let total = 0;
+      for (let i = 0; i < this.donasi.length; i++){
+        total += parseFloat(this.donasi[i].jumlah_donasi) || 0;
+      }
+      return total;
+    },
+    formattedNumber(){
+      let number = this.formatNumber(this.totalDonasi());
+      return number;
     }
   }
 };

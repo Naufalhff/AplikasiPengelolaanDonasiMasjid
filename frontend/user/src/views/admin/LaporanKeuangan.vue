@@ -7,7 +7,7 @@
         <div class="col-lg-6 mb-3">
           <div class="card shadow-sm p-4 stat-card">
             <h5>Total Donasi</h5>
-            <h4 class="text-dark">Rp. {{ this.totalDonasi() }}.00</h4>
+            <h4 class="text-dark">Rp {{ formatNumber(this.totalDonasi()) }},00</h4>
           </div>
         </div>
         <!-- Total Transactions -->
@@ -66,7 +66,7 @@
             <td>{{ data.nama_donatur }}</td>
             <td>{{ data.metode_pembayaran }}</td>
             <td>{{ data.tanggal_donasi }}</td>
-            <td>Rp. {{ data.jumlah_donasi }}</td>
+            <td>Rp {{ formatNumber(data.jumlah_donasi) }}</td>
           </tr>
         </tbody>
       </table>
@@ -95,21 +95,6 @@ export default {
       selectedDonationType: "",
       selectedYear: "",
       selectedMonth: "",
-      donasiList: [
-        { nama: "Ariq", jenisDonasi: "Infaq", tanggal: "01-02-2026", jumlah: "Rp.1.000.000" },
-        { nama: "Firly", jenisDonasi: "Zakat", tanggal: "02-03-2025", jumlah: "Rp.1.000.000" },
-        { nama: "Tono", jenisDonasi: "Infaq", tanggal: "03-04-2024", jumlah: "Rp.1.000.000" },
-        { nama: "Zuhri", jenisDonasi: "Zakat", tanggal: "04-05-2026", jumlah: "Rp.1.000.000" },
-        { nama: "Sidiq", jenisDonasi: "Infaq", tanggal: "05-06-2024", jumlah: "Rp.1.000.000" },
-        { nama: "Yazid", jenisDonasi: "Infaq", tanggal: "06-07-2024", jumlah: "Rp.1.000.000" },
-        { nama: "Jagad", jenisDonasi: "Zakat", tanggal: "07-08-2024", jumlah: "Rp.1.000.000" },
-        { nama: "Rizky", jenisDonasi: "Infaq", tanggal: "05-06-2025", jumlah: "Rp.1.000.000" },
-        { nama: "Ariq", jenisDonasi: "Infaq", tanggal: "06-07-2027", jumlah: "Rp.1.000.000" },
-        { nama: "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz", jenisDonasi: "Zakat", tanggal: "07-08-2028", jumlah: "Rp.1.000.000" },
-        { nama: "Jagad", jenisDonasi: "Zakat", tanggal: "07-08-2024", jumlah: "Rp.1.000.000" },
-        { nama: "Rizky", jenisDonasi: "Infaq", tanggal: "05-06-2025", jumlah: "Rp.1.000.000" },
-        { nama: "Ariq", jenisDonasi: "Infaq", tanggal: "06-07-2027", jumlah: "Rp.1.000.000" },
-      ],
       data: [],
       years: Array.from({ length: 2080 - 2024 + 1 }, (_, i) => 2024 + i),
       months: [
@@ -164,7 +149,11 @@ export default {
         total += parseFloat(this.data[i].jumlah_donasi) || 0;
       }
       return total;
-    }
+    },
+    formatNumber(value) {
+      if (!value) return "0";
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    },
   },
   mounted(){
     this.fetchData();
