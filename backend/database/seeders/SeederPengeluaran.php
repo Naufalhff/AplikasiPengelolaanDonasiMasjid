@@ -50,46 +50,6 @@ class SeederPengeluaran extends Seeder
                 'bukti_transaksi' => 'material_pembangunan_mesjid.jpg',
                 'tanggal_transaksi' => now(),
             ],
-            [
-                'id_kegiatan' => 6,
-                'nama_transaksi' => 'Pembelian Alat Zakat Emas',
-                'deskripsi_transaksi' => 'Pembelian alat untuk proses distribusi zakat emas.',
-                'total_pengeluaran' => 2500000.00,
-                'bukti_transaksi' => 'alat_zakat_emas.jpg',
-                'tanggal_transaksi' => now(),
-            ],
-            [
-                'id_kegiatan' => 7,
-                'nama_transaksi' => 'Bantuan Umum',
-                'deskripsi_transaksi' => 'Pengeluaran dana umum untuk bantuan kemanusiaan.',
-                'total_pengeluaran' => 2000000.00,
-                'bukti_transaksi' => 'bantuan_umum.jpg',
-                'tanggal_transaksi' => now(),
-            ],
-            [
-                'id_kegiatan' => 8,
-                'nama_transaksi' => 'Renovasi Sekolah Tahap 1',
-                'deskripsi_transaksi' => 'Pembelian material untuk renovasi sekolah dasar.',
-                'total_pengeluaran' => 3000000.00,
-                'bukti_transaksi' => 'renovasi_sekolah.jpg',
-                'tanggal_transaksi' => now(),
-            ],
-            [
-                'id_kegiatan' => 9,
-                'nama_transaksi' => 'Distribusi Zakat Perusahaan',
-                'deskripsi_transaksi' => 'Penyaluran dana zakat perusahaan kepada penerima manfaat.',
-                'total_pengeluaran' => 4000000.00,
-                'bukti_transaksi' => 'distribusi_zakat_perusahaan.jpg',
-                'tanggal_transaksi' => now(),
-            ],
-            [
-                'id_kegiatan' => 10,
-                'nama_transaksi' => 'Distribusi Zakat Perdagangan',
-                'deskripsi_transaksi' => 'Distribusi dana zakat perdagangan kepada penerima manfaat.',
-                'total_pengeluaran' => 5000000.00,
-                'bukti_transaksi' => 'distribusi_zakat_perdagangan.jpg',
-                'tanggal_transaksi' => now(),
-            ],
         ];
 
         DB::table('pengeluaran')->insert($pengeluaran);
