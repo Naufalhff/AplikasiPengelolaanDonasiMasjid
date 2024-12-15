@@ -78,17 +78,32 @@ export default {
       }
     },
     submitDonation() {
-      const amount = this.selectedAmount || this.customAmount;
-      if (amount < 1000) {
-        this.errorMessage = "Minimal donasi Rp.1000";
-      } else {
-        this.errorMessage = " ";
-        this.$router.push({
-          path: "/detaildonasi/nominal/formdonasi",
-          query: { id: this.program.id_kegiatan, amount: amount },
-        });
+      let amount = this.selectedAmount || this.customAmount;
+      amount = amount.toString().replace(",", ".");
+
+      if (
+        !/^\d+(\.\d{1,2})?$/.test(amount) ||
+        amount.replace(".", "").length > 15
+      ) {
+        this.errorMessage =
+          "Jumlah donasi harus berupa angka dengan maksimal 15 digit dan 2 desimal.";
+        return;
       }
+
+      const parsedAmount = parseFloat(amount);
+
+      if (parsedAmount < 1000) {
+        this.errorMessage = "Minimal donasi Rp.1000";
+        return;
+      }
+
+      this.errorMessage = " ";
+      this.$router.push({
+        path: "/detaildonasi/nominal/formdonasi",
+        query: { id: this.program.id_kegiatan, amount: parsedAmount },
+      });
     },
+
     fetchData() {
       const id = this.$route.query.id;
       axios

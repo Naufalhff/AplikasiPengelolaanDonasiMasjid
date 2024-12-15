@@ -201,8 +201,11 @@ export default {
     },
     confirmDonation() {
       if (!this.validateForm()) {
-        this.errorMessage =
-          "Harap lengkapi semua data dan Pilih metode pembayaran";
+        // Jangan timpa this.errorMessage jika sudah diatur oleh validateForm
+        if (!this.errorMessage) {
+          this.errorMessage =
+            "Harap lengkapi semua data dan Pilih metode pembayaran";
+        }
       } else {
         this.errorMessage = "";
         this.donationModal.show();
@@ -212,6 +215,23 @@ export default {
       this.donationModal.hide();
     },
     validateForm() {
+      this.errorMessage = "";
+      if (this.donor.fullName.length > 255) {
+        this.errorMessage = "Nama donatur tidak boleh lebih dari 255 karakter.";
+        return false;
+      }
+      if (this.donor.address.length > 255) {
+        this.errorMessage = "Alamat tidak boleh lebih dari 255 karakter.";
+        return false;
+      }
+      if (this.donor.phoneNumber.length > 15) {
+        this.errorMessage = "No telepon tidak boleh lebih dari 15 karakter.";
+        return false;
+      }
+      if (this.donor.email.length > 255) {
+        this.errorMessage = "Email tidak boleh lebih dari 255 karakter.";
+        return false;
+      }
       return (
         this.donor.fullName &&
         this.donor.phoneNumber &&
