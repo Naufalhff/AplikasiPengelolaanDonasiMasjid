@@ -240,8 +240,8 @@
 
         if (!this.form.name) {
           this.errors.name = 'Nama kegiatan harus diisi.';
-        } else if (this.form.name.length > 255) {
-          this.errors.name = 'Nama kegiatan tidak boleh lebih dari 255 karakter.';
+        } else if (this.form.name.length > 100) {
+          this.errors.name = 'Nama kegiatan tidak boleh lebih dari 100 karakter.';
         }
 
         if (!this.form.type) {

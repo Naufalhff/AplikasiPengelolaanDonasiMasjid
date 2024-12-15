@@ -17,6 +17,6 @@
 <p>Donasi Anda sangat berarti bagi kami dan akan digunakan untuk mendukung kegiatan yang bermanfaat.</p>
 
 <p>Hormat kami,</p>
-<p>{{ config('app.name') }}</p>
+<p>DKM Luqmanul Hakim</p>
 </body>
 </html>
