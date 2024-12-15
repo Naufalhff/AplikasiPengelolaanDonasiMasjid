@@ -225,17 +225,23 @@
       isFutureDate(date) {
         const today = new Date().setHours(0, 0, 0, 0);
         return new Date(date).getTime() >= today;
-      },  
-
+      },
       validateForm() {
         this.errors = {};
 
-        if (!this.form.image) {
+        const imageFile = this.$refs.activityImage?.files?.[0];
+        const qrisFile = this.$refs.qrisImage?.files?.[0];
+
+        if (!imageFile) {
           this.errors.image = 'Gambar harus diunggah.';
+        } else if (imageFile.size > 5 * 1024 * 1024) {
+          this.errors.image = 'Ukuran gambar tidak boleh lebih dari 5 MB.';
         }
 
         if (!this.form.name) {
           this.errors.name = 'Nama kegiatan harus diisi.';
+        } else if (this.form.name.length > 255) {
+          this.errors.name = 'Nama kegiatan tidak boleh lebih dari 255 karakter.';
         }
 
         if (!this.form.type) {
@@ -250,21 +256,24 @@
           this.errors.targetAmount = 'Target terkumpul harus diisi.';
         } else if (isNaN(this.form.targetAmount) || this.form.targetAmount <= 0) {
           this.errors.targetAmount = 'Target terkumpul harus lebih dari nol.';
+        } else if (this.form.targetAmount.toString().length > 15) {
+          this.errors.targetAmount = 'Target terkumpul tidak boleh lebih dari 15 digit.';
         }
 
         if (!this.form.timeLimit) {
           this.errors.timeLimit = 'Tenggat waktu harus diisi.';
-        }
-
-        if (!this.isFutureDate(this.form.timeLimit)) {
+        } else if (!this.isFutureDate(this.form.timeLimit)) {
           this.errors.timeLimit = 'Tenggat waktu harus di masa mendatang.';
         }
+
         if (!this.form.accountNumber) {
           this.errors.accountNumber = 'Nomor rekening harus diisi.';
         }
 
-        if (!this.form.qrisImage) {
+        if (!qrisFile) {
           this.errors.qrisImage = 'QR Code harus diunggah.';
+        } else if (qrisFile.size > 5 * 1024 * 1024) {
+          this.errors.qrisImage = 'Ukuran QR Code tidak boleh lebih dari 5 MB.';
         }
 
         if (Object.keys(this.errors).length === 0) {

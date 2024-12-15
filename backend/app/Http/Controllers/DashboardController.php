@@ -88,7 +88,7 @@ class DashboardController extends Controller
 
     public function getTotalDonation()
     {
-        $total = Donasi::where('status_verifikasi', 'VALID')->sum('jumlah_donasi');
+        $total = Kegiatan::sum('anggaran_terkumpul');
         return response()->json(['total_donations' => $total]);
     }
 

@@ -153,11 +153,27 @@ export default {
     async validateForm() {
       this.errors = {};
 
-      if (!this.form.imageName) this.errors.image = 'Gambar harus diunggah.';
-      if (!this.form.name) this.errors.name = 'Nama transaksi harus diisi.';
-      if (!this.form.description) this.errors.description = 'Deskripsi harus diisi.';
+      const file = this.$refs.activityImage.files[0];
+      if (!file) {
+        this.errors.image = 'Gambar harus diunggah.';
+      } else if (file.size > 5 * 1024 * 1024) {
+        this.errors.image = 'Ukuran gambar tidak boleh lebih dari 5 MB.';
+      }
+
+      if (!this.form.name) {
+        this.errors.name = 'Nama transaksi harus diisi.';
+      } else if (this.form.name.length > 255) {
+        this.errors.name = 'Nama transaksi tidak boleh lebih dari 255 karakter.';
+      }
+
+      if (!this.form.description) {
+        this.errors.description = 'Deskripsi harus diisi.';
+      }
+
       if (!this.form.targetAmount || this.form.targetAmount <= 0) {
-        this.errors.targetAmount = 'Total pengeluaran harus berupa angka positif.';
+        this.errors.targetAmount = 'Total pengeluaran harus lebih dari nol.';
+      } else if (this.form.targetAmount.toString().length > 15) {
+        this.errors.targetAmount = 'Total pengeluaran tidak boleh lebih dari 15 digit.';
       }
 
       if (Object.keys(this.errors).length === 0) {

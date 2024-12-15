@@ -13,7 +13,7 @@ class ExpenseController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'file' => 'required|file|mimes:jpg,png,pdf|max:2048',
+            'file' => 'required|file|mimes:jpg,png,pdf|max:5120',
             'id' => 'required|integer',
             'name' => 'required|string|max:100',
             'description' => 'required|string|max:255',
