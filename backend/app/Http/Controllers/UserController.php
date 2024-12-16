@@ -134,11 +134,11 @@ class UserController extends Controller
 
     public function sendDonationReceipt($id_donasi)
     {
-        $donation = Donasi::with('event')->findOrFail($id_donasi);
+        $donation = Donasi::with('kegiatan')->findOrFail($id_donasi);
 
         $id_donasi = $donation->id_donasi;
         $tanggal_donasi = $donation->tanggal_donasi;
-        $nama_kegiatan = $donation->event->nama_kegiatan;
+        $nama_kegiatan = $donation->kegiatan->nama_kegiatan;
         $jumlah_donasi = $donation->jumlah_donasi;
         $nama_donatur = $donation->nama_donatur;
 
